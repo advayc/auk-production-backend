@@ -139,6 +139,19 @@ class Limits:
     asr_timeout: float = 180.0
 
 
+# Evidence-bounded application scope for nonverbal_remove (NVDEL-01 probe 2026-10-18,
+# binary ec0bf996, source build 795c45f): the runtime accepted a 23.88s input and
+# produced exactly 22.0s (combined 45.88s) in 29.75s inference on L4, ASR identical,
+# speaker cosine 0.9660. Runtime/vendor limits BEYOND this envelope are unverified; do
+# not raise without new probe evidence. Every other operation keeps the default caps.
+NVDEL_SCOPE = {'max_input_seconds': 25.0, 'max_output_seconds': 25.0, 'combined_seconds': 50.0}
+
+def scoped_limits(limits: Limits, operation: str) -> Limits:
+    if operation == 'nonverbal_remove':
+        return dataclasses.replace(limits, **NVDEL_SCOPE)
+    return limits
+
+
 @dataclasses.dataclass(frozen=True)
 class EditSpec:
     operation: str = 'custom'
@@ -152,6 +165,7 @@ class EditSpec:
     source_transcript: str = ''
     expected_transcript: str = ''
     seed: int = 42
+    sound: str = ''
 
 
 def _quote_words(text: str) -> str:
@@ -169,12 +183,13 @@ def build_plan(spec: EditSpec, duration: float, limits: Limits) -> dict:
     if isinstance(spec.seed, bool) or not isinstance(spec.seed, int) or not 0 <= spec.seed < 2**31:
         raise EditorError('invalid_seed', 'Use an integer seed from 0 to 2147483647.')
     for name in ('instruction', 'voice_description', 'old_words', 'new_words',
-                 'source_transcript', 'expected_transcript', 'emotion'):
+                 'source_transcript', 'expected_transcript', 'emotion', 'sound'):
         value = getattr(spec, name)
         if not isinstance(value, str) or len(value) > 4000 or '\x00' in value:
             raise EditorError('invalid_text', f'{name} must be text of at most 4,000 characters without NUL.')
     op = spec.operation
-    preserve_content = op in {'emotion', 'whisper', 'enhance', 'denoise', 'dereverb', 'voice', 'speed'}
+    preserve_content = op in {'emotion', 'whisper', 'enhance', 'denoise', 'dereverb', 'voice', 'speed',
+                              'nonverbal_remove'}
     prompts = {
         'whisper': 'Speak in a soft whisper, retaining the words and speaker identity.',
         'enhance': 'Clean the speech by reducing noise and room reverberation. Keep all speakers, words, and duration.',
@@ -211,6 +226,16 @@ def build_plan(spec: EditSpec, duration: float, limits: Limits) -> dict:
             raise EditorError('transcript_conflict', 'Expected transcript disagrees with the specified replacement.')
         expected = derived
         prompt = f'Replace {_quote_words(spec.old_words)} with {_quote_words(spec.new_words)}.'
+    elif op == 'nonverbal_remove':
+        # Vendor cookbook 4.4 mechanism (verified NVDEL-01 probe 2026-10-18): whole-clip
+        # regeneration at an explicit gen_seconds target - a regeneration length, not an
+        # excision length. Words are preserved; QA compares against the source transcript.
+        sound = spec.sound.strip()
+        if not sound:
+            raise EditorError('missing_sound', 'Name the nonverbal sound to remove, e.g. humming, breaths, laughs.')
+        if spec.target_seconds is None:
+            raise EditorError('missing_target', 'nonverbal_remove needs an explicit target_seconds shorter than the input.')
+        prompt = f'Remove the {sound} from the audio.'
     elif op == 'custom':
         prompt = spec.instruction.strip()
         if not prompt:
@@ -218,9 +243,11 @@ def build_plan(spec: EditSpec, duration: float, limits: Limits) -> dict:
     else:
         raise EditorError('unknown_operation', f'Unsupported operation: {op}')
     if spec.target_seconds is not None and op != 'speed':
-        if op not in {'custom', 'replace_words'} and abs(spec.target_seconds - duration) > .02:
+        if op not in {'custom', 'replace_words', 'nonverbal_remove'} and abs(spec.target_seconds - duration) > .02:
             raise EditorError('duration_conflict', 'This preset preserves duration. Use custom for a duration-changing edit.')
         target = require_finite(spec.target_seconds, 'target_seconds', limits.min_audio_seconds, limits.max_output_seconds)
+        if op == 'nonverbal_remove' and target >= duration:
+            raise EditorError('duration_conflict', 'nonverbal_remove must shorten the clip; target_seconds must be below the input duration.')
     if preserve_content and spec.source_transcript.strip():
         if expected and expected != spec.source_transcript.strip():
             raise EditorError('transcript_conflict', 'This operation should preserve the source transcript.')
