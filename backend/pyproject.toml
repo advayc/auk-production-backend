@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "auk-reliability"
+version = "0.3.0"
+requires-python = ">=3.10"
+description = "AuK single-worker reliability and evaluation candidate"
+[tool.setuptools.packages.find]
+include = ["auk_reliability*"]

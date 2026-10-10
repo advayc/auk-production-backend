@@ -1,0 +1,324 @@
+{
+  "voice_editor/emotion": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "voice_editor/voice_characteristics": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "voice_editor/whisper": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "voice_editor/speed": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "voice_editor/custom": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "transcript_editor/replace": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "transcript_editor/insert": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "transcript_editor/delete": {
+    "recommended_profile": null,
+    "status": "not_qualified",
+    "profile_results": {
+      "base_f32": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "base_q8": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      },
+      "flash_f16": {
+        "request_count": 0,
+        "technical_success_rate": 0,
+        "automatic_qa_pass_rate": 0,
+        "semantic_success_rate": 0,
+        "semantic_unreviewed_count": 0,
+        "p50_latency_seconds": null,
+        "p95_latency_seconds": null,
+        "failure_categories": {},
+        "failed_outputs": []
+      }
+    },
+    "reason": "Need real representative GPU runs, calibrated QA and reviewed quality; no automatic fastest-profile guess."
+  },
+  "historical_snapshot": true,
+  "note_v023": "Pre-migration snapshot, not GPU evidence. See runtime-generated reports."
+}
