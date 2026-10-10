@@ -192,7 +192,7 @@ class BackendTests(unittest.TestCase):
  def test_percentiles(self):self.assertEqual(percentile([1,2,3,4],.5),2.5);self.assertIsNone(percentile([],.95))
  def test_cross_process_root_lock(self):
   with self.assertRaises(EditorError):ReliabilityWorker(Adapter(),self.root/'runs')
- def test_all_operations_have_policy(self):self.assertEqual(sum(map(len,OPERATIONS.values())),11)
+ def test_all_operations_have_policy(self):self.assertEqual(sum(map(len,OPERATIONS.values())),12)  # v033: + voice_editor/nonverbal_remove
 
 
 class MakeVenvFallbackTests(unittest.TestCase):
