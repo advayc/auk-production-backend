@@ -13,6 +13,7 @@ class SemanticQAGate:
    text=observed.get('text','') if isinstance(observed,dict) else observed
    checks['transcript']=compare_transcript(plan['expected_transcript'],text)
    checks['transcript']['expected']=plan['expected_transcript'];checks['transcript']['observed']=text  # diagnostic only; gate unchanged
+   if isinstance(observed,dict) and observed.get('words'): checks['transcript']['words']=observed['words']  # diagnostic timings only; gate unchanged
    checks['transcript']['passed']=checks['transcript']['error_rate']<=self.max_text_error
   if plan['identity_required']:
    if self.speaker_verifier is None: unverified.append('speaker_qa_unavailable')
