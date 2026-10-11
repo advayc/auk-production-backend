@@ -37,8 +37,8 @@ class ScopeTests(test_backend.BackendTests):
  def test_benchmark_recommendations_have_eight_ops_and_no_enhancer_calls(self):
   r=benchmark_profiles(self.worker,self.manifest(),self.root/'bench',per_operation_limit=1)
   self.assertEqual(len(r['rows']),3);self.assertTrue(all(p['mode']=='voice_editor' for _,p in self.adapter.calls))
-  self.assertEqual(len(recommend_profiles(r)),8)
-  self.assertEqual(len(recommend_profiles(r,modes=tuple(OPERATIONS))),11)
+  self.assertEqual(len(recommend_profiles(r)),9)  # v033: + nonverbal_remove
+  self.assertEqual(len(recommend_profiles(r,modes=tuple(OPERATIONS))),12)
  def test_invalid_scope_or_unknown_manifest_mode_rejected(self):
   for m in [[],['unknown'],['voice_editor','voice_editor'],'voice_editor']:
    with self.assertRaises(ValueError):selected_modes(m)
