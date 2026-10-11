@@ -7,6 +7,8 @@ from .policy import plan_request, RETRYABLE, PROFILES
 from .qa import SemanticQAGate
 from .segment import normalize_recording, verify_alignment, splice
 from .transplant import insert_transplant, localized_transplant
+from .diagnostics import outside_interval_pcm_exact, classify_transcript_disagreement
+from .seam import seam_report
 
 @dataclasses.dataclass
 class Result:
@@ -113,6 +115,10 @@ class ReliabilityWorker:
      final=ad/'spliced.wav'
      record['splice']=localized_transplant(full,out,self.gate.transcriber,float(start),float(end),src_txt,full_edited,final)
      record['artifact_paths'].append(str(final))
+     try:
+      _seam_bounds=record['splice'].get('source_cut_seconds',[float(start),float(end)])
+      record['seam']=seam_report(final,_seam_bounds)
+     except Exception as seam_exc:record['seam_error']=getattr(seam_exc,'code',type(seam_exc).__name__)
     else:final=out
     record['technical_success']=True;technical=True
     if localized:
@@ -139,6 +145,15 @@ class ReliabilityWorker:
         record['automatic_qa_pass']=True;record['failure_reason']=None
       except Exception as salvage_exc:
        record['salvage_error']=getattr(salvage_exc,'code',type(salvage_exc).__name__)
+    if localized and reason=='qa_failed':
+     try:
+      _outside=outside_interval_pcm_exact(full,final,float(start),float(end))
+      record['outside_interval_pcm_exact']=_outside
+      _txw=(qa.get('checks',{}).get('transcript',{}) or {}).get('words')
+      _cut=(record.get('splice') or {}).get('source_cut_seconds')
+      _cls=classify_transcript_disagreement(qa,outside_exact=_outside,cut=_cut,timed_words=_txw)
+      if _cls:record['failure_class']=_cls
+     except Exception as cls_exc:record['classification_error']=getattr(cls_exc,'code',type(cls_exc).__name__)
    except Exception as exc:
     reason=getattr(exc,'code',type(exc).__name__);record['failure_reason']=reason
     record['error_detail']=str(exc)[:1800]
