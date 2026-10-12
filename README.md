@@ -62,3 +62,15 @@ GPU generation runs through the Colab only. Model weights (~15 GB) download at r
 ## Dataset
 
 Evaluation manifest at `backend/datasets/bootstrap/manifest.candidate.json` (LibriSpeech dev-clean, CC BY 4.0). Attribution lives in `backend/SOURCES.md` and must stay with the package.
+
+## v0.3.4 diagnostics (candidate, 2026-10-18, diagnostic-only)
+
+Adds seam and failure-classification diagnostics on top of the runtime-qualified v0.3.3 build. Pass/fail is unchanged: nothing new passes, qa_failed attempts stay failed and still need human review.
+
+- `auk_reliability/seam.py` (new): splice-join jump-peak and spectral-flux diagnostics, recorded per localized attempt. Uncalibrated; not a robotic/naturalness detector.
+- `auk_reliability/diagnostics.py` (new): outside-interval PCM byte re-verification plus transcript-disagreement classification. The `unedited_span` label requires word-timed proof that the mismatch is outside the cut; without timings the disagreement is labeled `unlocated` (uncertain), and a mismatch timed inside the cut is labeled `edited_span`.
+- `auk_reliability/qa.py`: retains transcriber word-timings as diagnostic metadata when the transcriber provides them; the gate itself is unchanged.
+- `tests/test_v034_diagnostics.py`: 44 tests. Full suite 266/266 (sandbox Python 3.10.12) plus a fresh-install proof (v0.3.0 base + overlay in a clean tree, module SHAs verified, 266/266).
+- Real-byte check on the run3 LOC-H1-T1.9 output (sha256 `2e71b6ae...`): outside-interval byte-exactness verified on the actual bytes; seam jump peaks 3e-05/0.00037, spectral-flux ratios 1.60/2.28 vs clip baseline 0.626. First real diagnostic observations, not calibration.
+
+v0.3.3 qualification evidence stands unchanged: NVDEL-01 L4 automatic QA PASS (output sha256 `7e09f9aa...`), human listening pending. Qwen2.5-Omni-3B conditioner remains non-commercial until a license is confirmed.
