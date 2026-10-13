@@ -278,34 +278,69 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
             # words are longer than the default cut, the cut grows into the
             # room tone left inside the interval (never into neighbor words,
             # never past the interval) before failing closed.
-            dw0, dw1 = gen_words[prefix], gen_words[m - suffix - 1]
-            d0, d1 = int(dw0['start'] * SAMPLE_RATE), int(dw1['end'] * SAMPLE_RATE)
-            word_frames = d1 - d0
-            if word_frames > cut_frames:
-                grow = word_frames - cut_frames
-                add = min(grow, min(hi_f, next_f) - cut1)
-                cut1 += add; grow -= add
-                add = min(grow, cut0 - max(lo_f, prev_f))
-                cut0 -= add; grow -= add
-                cut_frames = cut1 - cut0
-                if grow > 0:
-                    raise EditorError('transplant_duration_mismatch',
-                                      'Replacement words are longer than the source span inside the verified interval; widen the interval or use whole_clip scope.')
-            slack = cut_frames - word_frames
-            prev_g_end = int(gen_words[prefix - 1]['end'] * SAMPLE_RATE) if prefix else 0
-            next_g_start = int(gen_words[m - suffix]['start'] * SAMPLE_RATE) if m - suffix < m else len(generation_samples)
-            room_pre = d0 - prev_g_end
-            room_post = next_g_start - d1
-            if slack > room_pre + room_post:
+            # Fit search over span width: try the changed words alone first
+            # (unchanged behavior), then widen the span with trailing EQUAL
+            # words that sit fully inside the verified interval (multi-word
+            # donor context). Widening never crosses the interval, never
+            # changes the text (trailing words are token-identical), and
+            # keeps outside-interval PCM byte-exact; the included neighbor
+            # words are re-generated donor audio of the SAME words and the
+            # candidate still faces the unchanged full QA gate. The smallest
+            # fitting span wins; anything that cannot fit fails closed.
+            fitted = None
+            for extra in range(0, suffix + 1):
+                s1e = s1i + extra
+                e1 = m - suffix + extra
+                if s1e > len(source_words) or e1 > m:
+                    break
+                sw1 = source_words[s1e - 1]
+                if sw1['end'] > end + 0.05:
+                    break  # span would leave the interval; a longer one only gets worse
+                w1f_e = int(sw1['end'] * SAMPLE_RATE)
+                nxt = source_words[s1e]['start'] if s1e < len(source_words) else total / SAMPLE_RATE
+                next_f_e = int(nxt * SAMPLE_RATE)
+                cut0_e = max(w0f - int(pad_pre * SAMPLE_RATE), lo_f, prev_f)
+                cut1_e = min(w1f_e + int(pad_post * SAMPLE_RATE), hi_f, next_f_e)
+                if cut0_e > w0f or cut1_e < w1f_e or cut1_e <= cut0_e:
+                    break
+                cut_frames_e = cut1_e - cut0_e
+                dw0e, dw1e = gen_words[prefix], gen_words[e1 - 1]
+                d0, d1 = int(dw0e['start'] * SAMPLE_RATE), int(dw1e['end'] * SAMPLE_RATE)
+                word_frames = d1 - d0
+                if word_frames > cut_frames_e:
+                    grow = word_frames - cut_frames_e
+                    add = min(grow, min(hi_f, next_f_e) - cut1_e)
+                    cut1_e += add; grow -= add
+                    add = min(grow, cut0_e - max(lo_f, prev_f))
+                    cut0_e -= add; grow -= add
+                    cut_frames_e = cut1_e - cut0_e
+                    if grow > 0:
+                        continue  # try a longer span
+                slack = cut_frames_e - word_frames
+                prev_g_end = int(gen_words[prefix - 1]['end'] * SAMPLE_RATE) if prefix else 0
+                next_g_start = int(gen_words[e1]['start'] * SAMPLE_RATE) if e1 < m else len(generation_samples)
+                room_pre = d0 - prev_g_end
+                room_post = next_g_start - d1
+                if slack > room_pre + room_post:
+                    continue  # not enough donor room for this span; a longer one may differ
+                # Distribute slack as room-tone padding around the donor words.
+                # pad_pre is capped by slack so pad_post never goes negative:
+                # a negative pad_post would silently clip the donor word tail.
+                pad_pre_f = min(int(pad_pre * SAMPLE_RATE), room_pre, slack)
+                if slack - pad_pre_f > room_post:
+                    pad_pre_f = slack - room_post
+                pad_post_f = slack - pad_pre_f
+                p0 = d0 - pad_pre_f
+                fitted = (cut0_e, cut1_e, p0, extra,
+                          [round(p0 / SAMPLE_RATE, 3), round((p0 + cut_frames_e) / SAMPLE_RATE, 3)])
+                break
+            if fitted is None:
                 raise EditorError('transplant_duration_mismatch',
-                                  'Not enough donor room tone around the replacement words for a frame-exact fit; widen the interval or use whole_clip scope.')
-            pad_pre_f = min(int(pad_pre * SAMPLE_RATE), room_pre)
-            if slack - pad_pre_f > room_post:
-                pad_pre_f = slack - room_post
-            pad_post_f = slack - pad_pre_f
-            p0 = d0 - pad_pre_f
-            patch = generation_samples[p0:p0 + cut_frames].tolist()
-            g_span = [round(p0 / SAMPLE_RATE, 3), round((p0 + cut_frames) / SAMPLE_RATE, 3)]
+                                  'Replacement words are longer than the source span inside the verified interval, even allowing in-interval neighbor words to be re-generated; widen the interval or use whole_clip scope.')
+            cut0, cut1, p0, extra_words, g_span = fitted
+            patch = generation_samples[p0:p0 + (cut1 - cut0)].tolist()
+            span_strategy = 'changed_only' if extra_words == 0 else 'changed_plus_trailing_equal_words'
+            regen_words = ' '.join(source_tokens[len(source_tokens) - suffix:len(source_tokens) - suffix + extra_words])
         else:
             # Pure localized deletion: the removed words' span is replaced by
             # exactly the same number of frames of the generation's natural
@@ -319,6 +354,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
             off = (g1f - g0f - cut_frames) // 2
             patch = generation_samples[g0f + off:g0f + off + cut_frames].tolist()
             g_span = [round((g0f + off) / SAMPLE_RATE, 3), round((g0f + off + cut_frames) / SAMPLE_RATE, 3)]
+            span_strategy = 'deletion'
+            regen_words = ''
     else:
         # Pure localized insertion at the natural gap between the kept words.
         # The inserted donor words plus join padding replace an equal number
@@ -358,6 +395,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                               'Inserted words do not fit inside the verified interval at fixed duration; widen the interval or use whole_clip scope.')
         patch = generation_samples[int(g0 * SAMPLE_RATE):int(g0 * SAMPLE_RATE) + patch_frames].tolist()
         g_span = [round(g0, 3), round(g1, 3)]
+        span_strategy = 'insertion'
+        regen_words = ''
     if not patch:
         raise EditorError('transplant_span_ambiguous', 'Aligned patch is empty.')
     if not (0 <= cut0 <= cut1 <= total):
@@ -375,6 +414,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
             'source_interval_seconds': [round(start, 3), round(end, 3)],
             'source_cut_seconds': [round(cut0 / SAMPLE_RATE, 3), round(cut1 / SAMPLE_RATE, 3)],
             'changed_source_words': ' '.join(source_tokens[prefix:len(source_tokens) - suffix]),
+            'span_strategy': span_strategy,
+            'regenerated_neighbor_words': regen_words,
             'changed_edited_words': ' '.join(edited_tokens[prefix:m - suffix]),
             'pad_pre_seconds': pad_pre, 'pad_post_seconds': pad_post, 'crossfade_ms': crossfade_ms,
             'cut_clamped_to_interval': True,
