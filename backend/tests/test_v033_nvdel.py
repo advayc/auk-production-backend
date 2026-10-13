@@ -82,6 +82,13 @@ class NonverbalRemoveScopeTests(unittest.TestCase):
         self.assertEqual(plan['target_seconds'], 22.0)
         self.assertEqual(plan['instruction'], 'Remove the humming from the audio.')
 
+    def test_boundary_exact_25s_input_accepted_under_scope(self):
+        # The scoped cap is 25.0s inclusive: a request at exactly the app-tested
+        # bound plans normally (25.5s is rejected above).
+        plan = plan_request('voice_editor', 'nonverbal_remove', params(target_seconds=24.0), 25.0,
+                            scoped_limits(Limits(), 'nonverbal_remove'))
+        self.assertEqual(plan['target_seconds'], 24.0)
+
     def test_beyond_probe_envelope_fails_closed(self):
         # 25.5s input exceeds the evidence-bounded scope (probe verified 23.88s only).
         with self.assertRaises(EditorError):
