@@ -68,6 +68,57 @@ class BorrowedRoomTests(unittest.TestCase):
             [('the',.10,.40),('good',.40,.54),('team',.54,.80),('on',.80,1.14),('night',1.14,1.50)])
         self.assertEqual(info['span_strategy'],'changed_only_borrowed_room')
         self.assertEqual(info['regenerated_neighbor_words'],'')
+
+    def _max_abs(self, raw_bytes):
+        import array as _arr
+        a=_arr.array('h'); a.frombytes(raw_bytes)
+        return max((abs(x) for x in a), default=0)
+    def test_tiled_room_boundary_integrity(self):
+        # 100ms verified head room; slack requires ~3s of room -> tiling with
+        # internal crossfades. Room interiors must contain ONLY room-level
+        # samples (no donor speech leaks through the tiling).
+        info=self._run(self.gen,'the good team on night',
+            [('the',.10,.40),('good',.40,.60),('team',.60,.86),('on',.86,1.20),('night',1.20,1.56)])
+        self.assertEqual(info['span_strategy'],'changed_only_borrowed_room')
+        _,ob=_frames(self.root/'bout.wav'); _,gb=_frames(self.gen)
+        cut0=int(info['source_cut_seconds'][0]*24000);cut1=int(info['source_cut_seconds'][1]*24000)
+        ds=int(.40*24000)*2;de=int(.60*24000)*2;wf=de-ds
+        pre=((cut1-cut0)*2-wf)//2
+        # donor word region byte-exact
+        self.assertEqual(ob[cut0*2+pre:cut0*2+pre+wf],gb[ds:de])
+        # room interiors (outside the external-crossfade edges) stay at room level
+        xf_b=600*2
+        self.assertLessEqual(self._max_abs(ob[cut0*2+xf_b:cut0*2+pre]),8)
+        self.assertLessEqual(self._max_abs(ob[cut0*2+pre+wf:cut1*2-xf_b]),8)
+    def test_longest_room_run_is_selected(self):
+        # head run 0.10s at floor 8, tail run 0.30s at floor 24: the longest
+        # run (tail) must be the one tiled into the patch.
+        import array as _arr, wave as _w
+        n=round(1.9*24000); vals=[]
+        for i in range(n):
+            t=i/24000
+            a=8 if t<0.10 else (24 if t>=1.60 else 6000)
+            vals.append(int(a*math.sin(i*.091)))
+        with _w.open(str(self.root/'bgen3.wav'),'wb') as f:
+            f.setnchannels(1);f.setsampwidth(2);f.setframerate(24000)
+            f.writeframes(_arr.array('h',vals).tobytes())
+        info=self._run(self.root/'bgen3.wav','the good team on night',
+            [('the',.10,.40),('good',.40,.60),('team',.60,.86),('on',.86,1.20),('night',1.20,1.56)])
+        self.assertEqual(info['span_strategy'],'changed_only_borrowed_room')
+        _,ob=_frames(self.root/'bout.wav')
+        cut0=int(info['source_cut_seconds'][0]*24000);cut1=int(info['source_cut_seconds'][1]*24000)
+        ds=int(.40*24000)*2;de=int(.60*24000)*2;wf=de-ds
+        pre=((cut1-cut0)*2-wf)//2
+        head_max=self._max_abs(ob[cut0*2+1200:cut0*2+pre])
+        self.assertGreater(head_max,8)   # not the head run
+        self.assertLessEqual(head_max,24)  # exactly the tail run's level
+    def test_slack_too_small_for_crossfades_refuses(self):
+        # word fits lengthwise at extra=0 but leaves < xf of room per side,
+        # and wider spans fail on length: must fail closed, never clip words.
+        with self.assertRaises(EditorError) as ctx:
+            self._run(self.gen,'the stronger team on night',
+                [('the',.10,.40),('stronger',.40,.82),('team',.82,1.20),('on',1.20,1.44),('night',1.44,1.80)])
+        self.assertEqual(ctx.exception.code,'transplant_duration_mismatch')
     def test_natural_room_still_preferred_over_borrowed(self):
         gen2=tone(self.root/'bgen3.wav',3.0,freq_step=.091,quiet_head=.5,quiet_tail=.5)
         info=self._run(gen2,'the stronger team on night',
