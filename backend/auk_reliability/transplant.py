@@ -66,6 +66,96 @@ def _word_tokens(observed: dict) -> list[dict]:
     return out
 
 
+
+def _borrowed_room_fit(source_words, gen_words, generation_samples,
+                       prefix, suffix, s1i, m, start, end,
+                       lo_f, hi_f, prev_f, w0f, pad_pre, pad_post, crossfade):
+    """EXPERIMENTAL (unqualified, opt-in): fit a packed donor whose words are
+    shorter than the in-interval cut but lack surrounding natural room tone.
+
+    Assembles patch = verified_room(pre) + donor words + verified_room(post).
+    The donor word region is copied byte-exact (never faded, never clipped);
+    crossfades sit inside the room segments only. Room must be VERIFIED
+    low-energy donor audio (before the first / after the last donor word,
+    rms <= 5% of donor speech rms); it is tiled with internal crossfades when
+    shorter than needed. Refuses (returns None) when the span does not fit
+    lengthwise, when slack is too small to keep external crossfades out of
+    the words, or when no verified room exists."""
+    import numpy as _np
+    SR = SAMPLE_RATE
+    gen = _np.asarray(generation_samples, dtype=_np.int32)
+    xf = int(crossfade)
+    first_w = gen_words[prefix]
+    # donor speech rms across the full word span of the generation
+    g_all0 = int(gen_words[0]['start'] * SR); g_all1 = int(gen_words[-1]['end'] * SR)
+    speech = gen[g_all0:g_all1]
+    if len(speech) == 0:
+        return None
+    speech_rms = float(_np.sqrt((speech ** 2).mean()))
+    if speech_rms <= 0:
+        return None
+    # Verified room = the longest contiguous low-energy run in the donor
+    # (25ms windows at <= 5% of donor speech rms, never digital silence).
+    # Energy-profiled, not word-timing-based: ASR word starts often absorb
+    # the true pre-speech room (donor B: 125ms head room inside "word" 0.0).
+    win = int(0.025 * SR)
+    if len(gen) < win:
+        return None
+    thresh = 0.05 * speech_rms
+    prof = [float(_np.sqrt((gen[i:i + win] ** 2).mean())) for i in range(0, len(gen) - win, win)]
+    runs = []
+    cur = None
+    for i, r in enumerate(prof):
+        if 0 < r <= thresh:
+            if cur is None:
+                cur = i
+        else:
+            if cur is not None:
+                runs.append((cur * win, i * win)); cur = None
+    if cur is not None:
+        runs.append((cur * win, len(prof) * win))
+    runs = [(a, b) for a, b in runs if b - a >= xf]
+    if not runs:
+        return None  # no verified room: refuse
+    a, b = max(runs, key=lambda ab: ab[1] - ab[0])
+    room_src = gen[a:b]
+    def _room(n):
+        out = room_src.copy()
+        while len(out) < n + xf:
+            t = _np.linspace(0, _np.pi, xf); ca = (_np.cos(t) + 1) / 2
+            blend = (out[-xf:] * ca + room_src[:xf] * (1 - ca)).astype(_np.int32)
+            out = _np.concatenate([out[:-xf], blend, room_src[xf:]])
+        return out[:n]
+    for extra in range(0, suffix + 1):
+        s1e = s1i + extra
+        e1 = m - suffix + extra
+        if s1e > len(source_words) or e1 > m:
+            break
+        sw1 = source_words[s1e - 1]
+        if sw1['end'] > end + 0.05:
+            break
+        w1f_e = int(sw1['end'] * SR)
+        nxt = source_words[s1e]['start'] if s1e < len(source_words) else None
+        next_f_e = int(nxt * SR) if nxt is not None else None
+        cut0_e = max(w0f - int(pad_pre * SR), lo_f, prev_f)
+        cut1_e = min(w1f_e + int(pad_post * SR), hi_f, next_f_e) if next_f_e is not None else min(w1f_e + int(pad_post * SR), hi_f)
+        if cut1_e <= cut0_e:
+            break
+        cut_frames_e = cut1_e - cut0_e
+        d0 = int(gen_words[prefix]['start'] * SR); d1 = int(gen_words[e1 - 1]['end'] * SR)
+        word_frames = d1 - d0
+        if word_frames > cut_frames_e:
+            continue  # length still fails; borrowed room cannot fix that
+        slack = cut_frames_e - word_frames
+        pre = slack // 2; post = slack - pre
+        if pre < xf or post < xf:
+            return None  # external crossfades would touch word audio: refuse
+        patch = _np.concatenate([_room(pre), gen[d0:d1], _room(post)]).tolist()
+        return {'cut0': cut0_e, 'cut1': cut1_e, 'extra': extra, 'patch': patch,
+                'g_span': [round(d0 / SR, 3), round(d1 / SR, 3)]}
+    return None
+
+
 def _find_unique_span(tokens: list[str], phrase: list[str], label: str) -> tuple[int, int]:
     n = len(phrase)
     hits = [i for i in range(len(tokens) - n + 1) if tokens[i:i + n] == phrase]
@@ -190,7 +280,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                          source_text: str, edited_text: str, output: Path, *,
                          pad_pre: float = DEFAULT_PAD_PRE_SECONDS,
                          pad_post: float = DEFAULT_PAD_POST_SECONDS,
-                         crossfade_ms: int = DEFAULT_CROSSFADE_MS) -> dict:
+                         crossfade_ms: int = DEFAULT_CROSSFADE_MS,
+                         allow_borrowed_room: bool = False) -> dict:
     """Localized edit with a full-context donor.
 
     The generation is produced from the WHOLE clip (speaker context intact);
@@ -334,12 +425,29 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                 fitted = (cut0_e, cut1_e, p0, extra,
                           [round(p0 / SAMPLE_RATE, 3), round((p0 + cut_frames_e) / SAMPLE_RATE, 3)])
                 break
+            if fitted is None and allow_borrowed_room:
+                # EXPERIMENTAL (unqualified): borrowed-room assembly for packed
+                # donors whose words fit lengthwise but carry no natural room
+                # tone. Word audio is never faded or clipped; padding is
+                # VERIFIED low-energy donor room (head/tail), tiled with
+                # internal crossfades when short; external crossfades land
+                # inside room only. Refuses when no verified room exists.
+                fitted = _borrowed_room_fit(
+                    source_words, gen_words, generation_samples,
+                    prefix, suffix, s1i, m, start, end,
+                    lo_f, hi_f, prev_f, w0f, pad_pre, pad_post, crossfade)
             if fitted is None:
                 raise EditorError('transplant_duration_mismatch',
                                   'Replacement words are longer than the source span inside the verified interval, even allowing in-interval neighbor words to be re-generated; widen the interval or use whole_clip scope.')
-            cut0, cut1, p0, extra_words, g_span = fitted
-            patch = generation_samples[p0:p0 + (cut1 - cut0)].tolist()
-            span_strategy = 'changed_only' if extra_words == 0 else 'changed_plus_trailing_equal_words'
+            borrowed = isinstance(fitted, dict)
+            if borrowed:
+                cut0, cut1, extra_words, g_span = fitted['cut0'], fitted['cut1'], fitted['extra'], fitted['g_span']
+                patch = fitted['patch']
+            else:
+                cut0, cut1, p0, extra_words, g_span = fitted
+                patch = generation_samples[p0:p0 + (cut1 - cut0)].tolist()
+            span_strategy = (('changed_only' if extra_words == 0 else 'changed_plus_trailing_equal_words')
+                             + ('_borrowed_room' if borrowed else ''))
             regen_words = ' '.join(source_tokens[len(source_tokens) - suffix:len(source_tokens) - suffix + extra_words])
         else:
             # Pure localized deletion: the removed words' span is replaced by
