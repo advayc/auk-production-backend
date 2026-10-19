@@ -64,6 +64,12 @@ Transcript delete is implemented but has no verified demo clip yet.
 
 ## Demo WAVs
 
+[Open the local audio review gallery](demos/audio_review/index.html) to listen to
+the WAVs with side-by-side players and keep private review notes in your browser.
+The gallery currently includes the existing insert, replace, and humming-removal
+examples. Use [the audio export helper](demos/export_showcase_audio.py) to add
+the generated 90-case batch after a real Colab run.
+
 Lossless originals of the humming, insert and replace clips, plus the other listening-approved inserts:
 
 - ["really" after "i managed"](demos/INS1_really_after_I_managed.wav)

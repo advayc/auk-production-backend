@@ -69,6 +69,18 @@ players. Failed requests keep diagnostic artifacts and never get an approved
 output substituted. This is a small showcase, not the 1,000-request acceptance
 benchmark; its acceptance gate always remains false.
 
+After generation, copy the run folder and frozen `cases.json` into a checkout of
+this repository, then run:
+
+```sh
+python demos/export_showcase_audio.py /path/to/run /path/to/cases.json
+```
+
+This copies each available source interval and QA-passing result WAV into
+`demos/audio_review/assets/` and updates the gallery data. Open
+`demos/audio_review/index.html` directly in a browser to listen, compare, and
+keep local review notes. The gallery never marks a result as reviewed by itself.
+
 For an interrupted batch, restore the same source files, `cases.json`, requests,
 and run directory and set `RESUME_SHOWCASE=True`. The existing acceptance
 harness verifies runtime/configuration and artifact hashes before resuming.

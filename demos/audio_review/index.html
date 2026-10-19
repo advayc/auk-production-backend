@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AuK audio review</title>
+  <style>
+    :root { color-scheme: light; font: 16px/1.5 system-ui, sans-serif; background: #f4f5f7; color: #17202a; }
+    body { max-width: 1060px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { margin-bottom: 4px; font-size: 2rem; }
+    .intro, .note { color: #52606d; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+    input, select, button, textarea { font: inherit; }
+    input, select { border: 1px solid #c8d0d8; border-radius: 8px; padding: 9px 12px; background: white; }
+    input[type=search] { flex: 1; min-width: 220px; }
+    .group { margin: 30px 0; }
+    .group h2 { border-bottom: 1px solid #d7dce1; padding-bottom: 8px; }
+    .card { background: white; border: 1px solid #dce1e6; border-radius: 12px; padding: 18px; margin: 12px 0; box-shadow: 0 2px 8px #17202a0a; }
+    .card h3 { margin: 0 0 4px; }
+    .meta { color: #52606d; font-size: .92rem; }
+    .players { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 16px; margin-top: 14px; }
+    .players p { margin: 0 0 6px; font-weight: 650; }
+    audio { width: 100%; }
+    .review { display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+    textarea { display:block; width:min(100%,520px); min-height:56px; border:1px solid #c8d0d8; border-radius:8px; padding:8px; }
+    .status { font-size:.84rem; border-radius:999px; padding:3px 9px; background:#e8edf2; }
+    .empty { padding: 24px; background:white; border-radius:12px; color:#52606d; }
+    @media (prefers-color-scheme: dark) { :root { color-scheme: dark; background:#111820; color:#edf2f7; } .card,.empty,input,select,textarea { background:#1b2630; color:#edf2f7; border-color:#35424e; } .intro,.note,.meta { color:#b2c0cc; } .group h2 { border-color:#35424e; } }
+  </style>
+</head>
+<body>
+  <h1>AuK audio review</h1>
+  <p class="intro">Listen to each source and edited result, mark your review, and leave notes. Review marks stay in this browser. They do not change backend QA or publish a review.</p>
+  <p class="note" id="count"></p>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Filter by operation, case, or text">
+    <select id="operation"><option value="">All operations</option></select>
+    <select id="review-filter"><option value="">All review states</option><option>Pending</option><option>Sounds good</option><option>Needs work</option></select>
+  </div>
+  <main id="content"></main>
+  <script src="review_data.js"></script>
+  <script>
+    const items = window.AUK_AUDIO_REVIEW || [];
+    const content = document.querySelector('#content');
+    const operation = document.querySelector('#operation');
+    const search = document.querySelector('#search');
+    const reviewFilter = document.querySelector('#review-filter');
+    const key = 'auk-audio-review-v1';
+    let reviews = {};
+    try { reviews = JSON.parse(localStorage.getItem(key) || '{}'); } catch (_) {}
+    for (const value of [...new Set(items.map(x => x.operation).filter(Boolean))].sort()) {
+      const option = document.createElement('option'); option.value = value; option.textContent = value; operation.append(option);
+    }
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function save(id, field, value) {
+      reviews[id] ||= {}; reviews[id][field] = value; localStorage.setItem(key, JSON.stringify(reviews));
+    }
+    function draw() {
+      const q = search.value.toLowerCase(); const op = operation.value; const state = reviewFilter.value;
+      const shown = items.filter(x => {
+        const review = reviews[x.id]?.state || 'Pending';
+        return (!op || x.operation === op) && (!state || review === state) &&
+          (!q || JSON.stringify(x).toLowerCase().includes(q));
+      });
+      document.querySelector('#count').textContent = `${shown.length} of ${items.length} audio cases`;
+      content.replaceChildren();
+      const groups = new Map();
+      for (const item of shown) { const group = item.operation || 'Existing demos'; (groups.get(group) || groups.set(group, []).get(group)).push(item); }
+      if (!shown.length) { content.innerHTML = '<div class="empty">No audio cases match. Generated outputs appear here after the real Colab batch has been exported into this folder.</div>'; return; }
+      for (const [name, rows] of groups) {
+        const section = document.createElement('section'); section.className = 'group';
+        section.innerHTML = `<h2>${esc(name)}</h2>`;
+        for (const item of rows) {
+          const card = document.createElement('article'); card.className = 'card';
+          const status = reviews[item.id]?.state || 'Pending';
+          const before = item.before ? `<div><p>Before</p><audio controls preload="none" src="${esc(item.before)}"></audio></div>` : '';
+          const after = item.after ? `<div><p>After</p><audio controls preload="none" src="${esc(item.after)}"></audio></div>` : '<div class="meta">No generated output is available for this case.</div>';
+          card.innerHTML = `<h3>${esc(item.title || item.id)}</h3><div class="meta">${esc(item.id)}${item.request ? ` · ${esc(item.request)}` : ''}</div><div class="players">${before}${after}</div><div class="review"><span class="status">${esc(status)}</span><select aria-label="Review state"><option${status==='Pending'?' selected':''}>Pending</option><option${status==='Sounds good'?' selected':''}>Sounds good</option><option${status==='Needs work'?' selected':''}>Needs work</option></select></div><textarea aria-label="Review notes" placeholder="Listening notes">${esc(reviews[item.id]?.notes || '')}</textarea>`;
+          const select = card.querySelector('select'); select.addEventListener('change', () => { save(item.id, 'state', select.value); draw(); });
+          const notes = card.querySelector('textarea'); notes.addEventListener('input', () => save(item.id, 'notes', notes.value));
+          section.append(card);
+        }
+        content.append(section);
+      }
+    }
+    search.addEventListener('input', draw); operation.addEventListener('change', draw); reviewFilter.addEventListener('change', draw); draw();
+  </script>
+</body>
+</html>
