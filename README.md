@@ -6,7 +6,7 @@ One shared backend for AI voice editing and transcript editing: a single `edit_a
 
 **Humming removal** - tested end to end on the real runtime; automatic checks passed (final human listening check pending):
 
-- [Original](demos/NVDEL01_original.wav) (hum around 12.5s) / [Backend output](demos/NVDEL01_output_backend.wav)
+- [Original](demos/10-NVDEL01_original.wav) (hum around 12.5s) / [Backend output](demos/NVDEL01_output_backend.wav)
 
 **Inserts** - a word added mid-sentence; all four outputs approved by listening:
 
@@ -21,7 +21,7 @@ One shared backend for AI voice editing and transcript editing: a single `edit_a
 
 ## Status
 
-Done and tested: the editing backend, humming removal, inserts, and the word replacement above.
+Implemented and tested: the editing backend, humming removal, inserts, and the word replacement above.
 Still open: broader localized-replace reliability (the v0.3.5/v0.3.6 fixes are experimental and off by default) and the remaining benchmarks. Not production-ready.
 
 ## Licensing
