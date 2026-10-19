@@ -2,27 +2,73 @@
 
 One shared backend for AI voice editing and transcript editing: a single `edit_audio(input, mode, operation, parameters)` interface with automatic output checks, bounded retries, and full attempt logging. 291 code tests passing (`cd backend && python -m unittest discover`).
 
-## Audio demos
+## Demo players
 
-**Humming removal** - tested end to end on the real runtime; automatic checks passed (final human listening check pending):
+Voice editor - outputs approved by listening:
 
-- [Original](demos/10-NVDEL01_original.wav) (hum around 12.5s) / [Backend output](demos/NVDEL01_output_backend.wav)
+Emotion (calm):
 
-**Inserts** - a word added mid-sentence; all four outputs approved by listening:
+https://github.com/user-attachments/assets/6ecd95f1-9053-4961-b010-b7d854435151
+
+Whisper:
+
+https://github.com/user-attachments/assets/4222c092-3e2f-4a99-8fca-22edcd3d0c8b
+
+Custom (bored/monotone):
+
+https://github.com/user-attachments/assets/fcf3671c-7c9a-426c-8cea-d51ea8520f74
+
+Speed (1.5x):
+
+https://github.com/user-attachments/assets/9c2db0c2-f16c-4259-9944-bae354e3d172
+
+Voice (deeper delivery):
+
+https://github.com/user-attachments/assets/d8c59d7a-d3c3-40e6-9dd1-ddf72449e957
+
+Humming removal - tested end to end on the real runtime; automatic checks passed (final human listening check pending):
+
+Original (hum around 12.5s):
+
+https://github.com/user-attachments/assets/b5149dc1-c56b-4006-806c-02a0074bf707
+
+Backend output:
+
+https://github.com/user-attachments/assets/7d1a2b41-08a2-4bc2-b532-27d634242596
+
+Transcript editor:
+
+Insert - "really" after "i managed" (approved by listening):
+
+https://github.com/user-attachments/assets/4c072330-a5d3-4885-af13-e415b552c6eb
+
+Word replace - "better" becomes "stronger" (sound approved by listening; automatic transcript check flagged "they/there" outside the edited span):
+
+Before:
+
+https://github.com/user-attachments/assets/1c058fde-8229-4cf8-9936-4a8195d2087b
+
+After:
+
+https://github.com/user-attachments/assets/de8733a3-2d58-4616-b87a-31de54e4b989
+
+Transcript delete is implemented but has no verified demo clip yet.
+
+## Demo WAVs
+
+Lossless originals of the humming, insert and replace clips, plus the other listening-approved inserts:
 
 - ["really" after "i managed"](demos/INS1_really_after_I_managed.wav)
 - ["really" after "you"](demos/INS3_really_after_you.wav)
 - ["really" after "it is"](demos/INS4_really_after_it_is.wav)
 - ["truly" after "accepting"](demos/INS2_truly_after_accepting.wav)
-
-**Word replacement** - "better" replaced with "stronger"; sound approved by listening (automatic transcript check flagged "they/there" outside the edited span):
-
-- [Original](demos/LOC_before.wav) / [Edited](demos/LOC_after_better_to_stronger.wav)
+- [Humming original](demos/10-NVDEL01_original.wav) / [backend output](demos/NVDEL01_output_backend.wav)
+- [Replace original](demos/LOC_before.wav) / [edited](demos/LOC_after_better_to_stronger.wav)
 
 ## Status
 
 Implemented and tested: the editing backend, humming removal, inserts, and the word replacement above.
-Still open: broader localized-replace reliability (the v0.3.5/v0.3.6 fixes are experimental and off by default) and the remaining benchmarks. Not production-ready.
+Still open: broader localized-replace reliability (the v0.3.5/v0.3.6 fixes are experimental and off by default), a verified transcript-delete demo, and the remaining benchmarks. Not production-ready.
 
 ## Licensing
 
