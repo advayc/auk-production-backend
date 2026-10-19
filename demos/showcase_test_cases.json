@@ -1,0 +1,1779 @@
+{
+  "kind": "automated_test_recipes",
+  "simulation": true,
+  "case_count": 90,
+  "audio_generation_status": "pending",
+  "note": "Tone fixtures and canned ASR/speaker scores exercise code contracts. These transcripts describe test fixtures, not verified human recordings. This is not a reviewed audio-generation manifest.",
+  "cases": [
+    {
+      "id": "voice_editor/emotion/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_01",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "calm"
+      },
+      "expected_text": "They were the better team on the night",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to calm. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_02",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "happy"
+      },
+      "expected_text": "They were the better team on the night according to everyone",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to happy. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_03",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "sad"
+      },
+      "expected_text": "They were the better team on the night in our opinion",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to sad. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_04",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "angry"
+      },
+      "expected_text": "They were the better team on the night despite the rain",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to angry. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_05",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "fearful"
+      },
+      "expected_text": "They were the better team on the night as we expected",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to fearful. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_06",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "surprised"
+      },
+      "expected_text": "They were the better team on the night by a wide margin",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to surprised. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_07",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "disgusted"
+      },
+      "expected_text": "They were the better team on the night after all",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to disgusted. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_08",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "excited"
+      },
+      "expected_text": "They were the better team on the night without a doubt",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to excited. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_09",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "calm"
+      },
+      "expected_text": "They were the better team on the night against their rivals",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to calm. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/emotion/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_emotion_10",
+      "mode": "voice_editor",
+      "operation": "emotion",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "emotion": "happy"
+      },
+      "expected_text": "They were the better team on the night this season",
+      "target_seconds": 5.0,
+      "instruction": "Change the emotion to happy. Retain the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_01",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "warm and low"
+      },
+      "expected_text": "They were the better team on the night",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"warm and low\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_02",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "bright and airy"
+      },
+      "expected_text": "They were the better team on the night according to everyone",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"bright and airy\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_03",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "raspy"
+      },
+      "expected_text": "They were the better team on the night in our opinion",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"raspy\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_04",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "smooth and resonant"
+      },
+      "expected_text": "They were the better team on the night despite the rain",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"smooth and resonant\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_05",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "soft and breathy"
+      },
+      "expected_text": "They were the better team on the night as we expected",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"soft and breathy\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_06",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "crisp and clear"
+      },
+      "expected_text": "They were the better team on the night by a wide margin",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"crisp and clear\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_07",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "deep and rounded"
+      },
+      "expected_text": "They were the better team on the night after all",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"deep and rounded\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_08",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "light and youthful"
+      },
+      "expected_text": "They were the better team on the night without a doubt",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"light and youthful\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_09",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "rich and full"
+      },
+      "expected_text": "They were the better team on the night against their rivals",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"rich and full\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/voice_characteristics/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_voice_characteristics_10",
+      "mode": "voice_editor",
+      "operation": "voice_characteristics",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "description": "thin and nasal"
+      },
+      "expected_text": "They were the better team on the night this season",
+      "target_seconds": 5.0,
+      "instruction": "Keep the words unchanged. Change the voice character to \"thin and nasal\".",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_01",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_02",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night according to everyone",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_03",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night in our opinion",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_04",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night despite the rain",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_05",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night as we expected",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_06",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night by a wide margin",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_07",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night after all",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_08",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night without a doubt",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_09",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night against their rivals",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/whisper/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_whisper_10",
+      "mode": "voice_editor",
+      "operation": "whisper",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42
+      },
+      "expected_text": "They were the better team on the night this season",
+      "target_seconds": 5.0,
+      "instruction": "Speak in a soft whisper, retaining the words and speaker identity.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_01",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 0.5
+      },
+      "expected_text": "They were the better team on the night",
+      "target_seconds": 10.0,
+      "instruction": "Adjust the speech speed to 0.5x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_02",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 0.6
+      },
+      "expected_text": "They were the better team on the night according to everyone",
+      "target_seconds": 8.34,
+      "instruction": "Adjust the speech speed to 0.6x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_03",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 0.75
+      },
+      "expected_text": "They were the better team on the night in our opinion",
+      "target_seconds": 6.68,
+      "instruction": "Adjust the speech speed to 0.75x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_04",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 0.8
+      },
+      "expected_text": "They were the better team on the night despite the rain",
+      "target_seconds": 6.26,
+      "instruction": "Adjust the speech speed to 0.8x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_05",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 0.9
+      },
+      "expected_text": "They were the better team on the night as we expected",
+      "target_seconds": 5.56,
+      "instruction": "Adjust the speech speed to 0.9x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_06",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 1.1
+      },
+      "expected_text": "They were the better team on the night by a wide margin",
+      "target_seconds": 4.56,
+      "instruction": "Adjust the speech speed to 1.1x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_07",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 1.25
+      },
+      "expected_text": "They were the better team on the night after all",
+      "target_seconds": 4.0,
+      "instruction": "Adjust the speech speed to 1.25x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_08",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 1.5
+      },
+      "expected_text": "They were the better team on the night without a doubt",
+      "target_seconds": 3.34,
+      "instruction": "Adjust the speech speed to 1.5x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_09",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 1.75
+      },
+      "expected_text": "They were the better team on the night against their rivals",
+      "target_seconds": 2.86,
+      "instruction": "Adjust the speech speed to 1.75x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/speed/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_speed_10",
+      "mode": "voice_editor",
+      "operation": "speed",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "speed_factor": 2.0
+      },
+      "expected_text": "They were the better team on the night this season",
+      "target_seconds": 2.5,
+      "instruction": "Adjust the speech speed to 2x.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_01",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound confident. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night",
+      "target_seconds": 5.0,
+      "instruction": "Sound confident. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_02",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound bored and monotone. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night according to everyone",
+      "target_seconds": 5.0,
+      "instruction": "Sound bored and monotone. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_03",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound gentle. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night in our opinion",
+      "target_seconds": 5.0,
+      "instruction": "Sound gentle. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_04",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound energetic. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night despite the rain",
+      "target_seconds": 5.0,
+      "instruction": "Sound energetic. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_05",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound hesitant. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night as we expected",
+      "target_seconds": 5.0,
+      "instruction": "Sound hesitant. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_06",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound reassuring. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night by a wide margin",
+      "target_seconds": 5.0,
+      "instruction": "Sound reassuring. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_07",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound formal. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night after all",
+      "target_seconds": 5.0,
+      "instruction": "Sound formal. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_08",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound conversational. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night without a doubt",
+      "target_seconds": 5.0,
+      "instruction": "Sound conversational. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_09",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound dramatic. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night against their rivals",
+      "target_seconds": 5.0,
+      "instruction": "Sound dramatic. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/custom/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_custom_10",
+      "mode": "voice_editor",
+      "operation": "custom",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "instruction": "Sound understated. Keep every word unchanged.",
+        "semantic_contract": {
+          "preserve_transcript": true
+        }
+      },
+      "expected_text": "They were the better team on the night this season",
+      "target_seconds": 5.0,
+      "instruction": "Sound understated. Keep every word unchanged.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_01",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.0
+      },
+      "expected_text": "They were the better team on the night",
+      "target_seconds": 3.0,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_02",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.1
+      },
+      "expected_text": "They were the better team on the night according to everyone",
+      "target_seconds": 3.1,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_03",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.2
+      },
+      "expected_text": "They were the better team on the night in our opinion",
+      "target_seconds": 3.2,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_04",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.3
+      },
+      "expected_text": "They were the better team on the night despite the rain",
+      "target_seconds": 3.3,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_05",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.4
+      },
+      "expected_text": "They were the better team on the night as we expected",
+      "target_seconds": 3.4,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_06",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.5
+      },
+      "expected_text": "They were the better team on the night by a wide margin",
+      "target_seconds": 3.5,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_07",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.6
+      },
+      "expected_text": "They were the better team on the night after all",
+      "target_seconds": 3.6,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_08",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.7
+      },
+      "expected_text": "They were the better team on the night without a doubt",
+      "target_seconds": 3.7,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_09",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.8
+      },
+      "expected_text": "They were the better team on the night against their rivals",
+      "target_seconds": 3.8,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "voice_editor/nonverbal_remove/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_voice_editor_nonverbal_remove_10",
+      "mode": "voice_editor",
+      "operation": "nonverbal_remove",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "sound": "humming",
+        "target_seconds": 3.9
+      },
+      "expected_text": "They were the better team on the night this season",
+      "target_seconds": 3.9,
+      "instruction": "Remove the humming from the audio.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_01",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night",
+        "original_text": "better",
+        "replacement_text": "stronger",
+        "edited_segment_text": "They were the stronger team on the night"
+      },
+      "expected_text": "They were the stronger team on the night",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'better' with 'stronger'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_02",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night according to everyone",
+        "original_text": "better",
+        "replacement_text": "weaker",
+        "edited_segment_text": "They were the weaker team on the night according to everyone"
+      },
+      "expected_text": "They were the weaker team on the night according to everyone",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'better' with 'weaker'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_03",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night in our opinion",
+        "original_text": "team",
+        "replacement_text": "side",
+        "edited_segment_text": "They were the better side on the night in our opinion"
+      },
+      "expected_text": "They were the better side on the night in our opinion",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'team' with 'side'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_04",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night despite the rain",
+        "original_text": "night",
+        "replacement_text": "day",
+        "edited_segment_text": "They were the better team on the day despite the rain"
+      },
+      "expected_text": "They were the better team on the day despite the rain",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'night' with 'day'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_05",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night as we expected",
+        "original_text": "the better",
+        "replacement_text": "a stronger",
+        "edited_segment_text": "They were a stronger team on the night as we expected"
+      },
+      "expected_text": "They were a stronger team on the night as we expected",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'the better' with 'a stronger'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_06",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night by a wide margin",
+        "original_text": "better team",
+        "replacement_text": "stronger side",
+        "edited_segment_text": "They were the stronger side on the night by a wide margin"
+      },
+      "expected_text": "They were the stronger side on the night by a wide margin",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'better team' with 'stronger side'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_07",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night after all",
+        "original_text": "on the night",
+        "replacement_text": "in the game",
+        "edited_segment_text": "They were the better team in the game after all"
+      },
+      "expected_text": "They were the better team in the game after all",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'on the night' with 'in the game'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_08",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night without a doubt",
+        "original_text": "They were",
+        "replacement_text": "We were",
+        "edited_segment_text": "We were the better team on the night without a doubt"
+      },
+      "expected_text": "We were the better team on the night without a doubt",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'They were' with 'We were'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_09",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night against their rivals",
+        "original_text": "They were",
+        "replacement_text": "They are",
+        "edited_segment_text": "They are the better team on the night against their rivals"
+      },
+      "expected_text": "They are the better team on the night against their rivals",
+      "target_seconds": 5.0,
+      "instruction": "Replace 'They were' with 'They are'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/replace/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_replace_10",
+      "mode": "transcript_editor",
+      "operation": "replace",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night this season",
+        "original_text": "the better team",
+        "replacement_text": "a much stronger side",
+        "edited_segment_text": "They were a much stronger side on the night this season"
+      },
+      "expected_text": "They were a much stronger side on the night this season",
+      "target_seconds": 5.5,
+      "instruction": "Replace 'the better team' with 'a much stronger side'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_01",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night",
+        "text": "really",
+        "anchor": "were",
+        "position": "after",
+        "edited_segment_text": "They were really the better team on the night"
+      },
+      "expected_text": "They were really the better team on the night",
+      "target_seconds": 5.64,
+      "instruction": "Replace 'were' with 'were really'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_02",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night according to everyone",
+        "text": "clearly",
+        "anchor": "were",
+        "position": "after",
+        "edited_segment_text": "They were clearly the better team on the night according to everyone"
+      },
+      "expected_text": "They were clearly the better team on the night according to everyone",
+      "target_seconds": 5.46,
+      "instruction": "Replace 'were' with 'were clearly'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_03",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night in our opinion",
+        "text": "much",
+        "anchor": "better",
+        "position": "before",
+        "edited_segment_text": "They were the much better team on the night in our opinion"
+      },
+      "expected_text": "They were the much better team on the night in our opinion",
+      "target_seconds": 5.46,
+      "instruction": "Replace 'better' with 'much better'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_04",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night despite the rain",
+        "text": "football",
+        "anchor": "team",
+        "position": "before",
+        "edited_segment_text": "They were the better football team on the night despite the rain"
+      },
+      "expected_text": "They were the better football team on the night despite the rain",
+      "target_seconds": 5.46,
+      "instruction": "Replace 'team' with 'football team'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_05",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night as we expected",
+        "text": "last",
+        "anchor": "night",
+        "position": "before",
+        "edited_segment_text": "They were the better team on the last night as we expected"
+      },
+      "expected_text": "They were the better team on the last night as we expected",
+      "target_seconds": 5.46,
+      "instruction": "Replace 'night' with 'last night'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_06",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night by a wide margin",
+        "text": "certainly",
+        "anchor": "They",
+        "position": "after",
+        "edited_segment_text": "They certainly were the better team on the night by a wide margin"
+      },
+      "expected_text": "They certainly were the better team on the night by a wide margin",
+      "target_seconds": 5.42,
+      "instruction": "Replace 'They' with 'They certainly'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_07",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night after all",
+        "text": "indeed",
+        "anchor": "team",
+        "position": "after",
+        "edited_segment_text": "They were the better team indeed on the night after all"
+      },
+      "expected_text": "They were the better team indeed on the night after all",
+      "target_seconds": 5.5,
+      "instruction": "Replace 'team' with 'team indeed'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_08",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night without a doubt",
+        "text": "by far",
+        "anchor": "the better",
+        "position": "before",
+        "edited_segment_text": "They were by far the better team on the night without a doubt"
+      },
+      "expected_text": "They were by far the better team on the night without a doubt",
+      "target_seconds": 5.92,
+      "instruction": "Replace 'the better' with 'by far the better'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_09",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night against their rivals",
+        "text": "without doubt",
+        "anchor": "were",
+        "position": "after",
+        "edited_segment_text": "They were without doubt the better team on the night against their rivals"
+      },
+      "expected_text": "They were without doubt the better team on the night against their rivals",
+      "target_seconds": 5.92,
+      "instruction": "Replace 'were' with 'were without doubt'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/insert/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_insert_10",
+      "mode": "transcript_editor",
+      "operation": "insert",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night this season",
+        "text": "overall",
+        "anchor": "night",
+        "position": "after",
+        "edited_segment_text": "They were the better team on the night overall this season"
+      },
+      "expected_text": "They were the better team on the night overall this season",
+      "target_seconds": 5.5,
+      "instruction": "Replace 'night' with 'night overall'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/01",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_01",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night",
+        "text": "They",
+        "edited_segment_text": "were the better team on the night"
+      },
+      "expected_text": "were the better team on the night",
+      "target_seconds": 4.38,
+      "instruction": "Replace 'They were' with 'were'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/02",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_02",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night according to everyone",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night according to everyone",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night according to everyone",
+        "text": "were",
+        "edited_segment_text": "They the better team on the night according to everyone"
+      },
+      "expected_text": "They the better team on the night according to everyone",
+      "target_seconds": 4.56,
+      "instruction": "Replace 'were the' with 'the'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/03",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_03",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night in our opinion",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night in our opinion",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night in our opinion",
+        "text": "the better",
+        "edited_segment_text": "They were team on the night in our opinion"
+      },
+      "expected_text": "They were team on the night in our opinion",
+      "target_seconds": 4.1,
+      "instruction": "Replace 'the better team' with 'team'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/04",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_04",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night despite the rain",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night despite the rain",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night despite the rain",
+        "text": "better",
+        "edited_segment_text": "They were the team on the night despite the rain"
+      },
+      "expected_text": "They were the team on the night despite the rain",
+      "target_seconds": 4.56,
+      "instruction": "Replace 'better team' with 'team'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/05",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_05",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night as we expected",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night as we expected",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night as we expected",
+        "text": "team",
+        "edited_segment_text": "They were the better on the night as we expected"
+      },
+      "expected_text": "They were the better on the night as we expected",
+      "target_seconds": 4.56,
+      "instruction": "Replace 'team on' with 'on'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/06",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_06",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night by a wide margin",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night by a wide margin",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night by a wide margin",
+        "text": "on the night",
+        "edited_segment_text": "They were the better team by a wide margin"
+      },
+      "expected_text": "They were the better team by a wide margin",
+      "target_seconds": 3.76,
+      "instruction": "Replace 'on the night by' with 'by'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/07",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_07",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night after all",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night after all",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night after all",
+        "text": "on",
+        "edited_segment_text": "They were the better team the night after all"
+      },
+      "expected_text": "They were the better team the night after all",
+      "target_seconds": 4.5,
+      "instruction": "Replace 'on the' with 'the'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/08",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_08",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night without a doubt",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night without a doubt",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night without a doubt",
+        "text": "the night",
+        "edited_segment_text": "They were the better team on without a doubt"
+      },
+      "expected_text": "They were the better team on without a doubt",
+      "target_seconds": 4.1,
+      "instruction": "Replace 'the night without' with 'without'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/09",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_09",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night against their rivals",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night against their rivals",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night against their rivals",
+        "text": "They were",
+        "edited_segment_text": "the better team on the night against their rivals"
+      },
+      "expected_text": "the better team on the night against their rivals",
+      "target_seconds": 4.1,
+      "instruction": "Replace 'They were the' with 'the'.",
+      "human_review_required": true
+    },
+    {
+      "id": "transcript_editor/delete/10",
+      "test": "test_showcase_modes.ShowcaseOperationTests.test_transcript_editor_delete_10",
+      "mode": "transcript_editor",
+      "operation": "delete",
+      "source_text": "They were the better team on the night this season",
+      "input_seconds": 5.0,
+      "parameters": {
+        "source_text": "They were the better team on the night this season",
+        "rights_confirmed": true,
+        "seed": 42,
+        "segment_scope": "whole_clip",
+        "segment_text": "They were the better team on the night this season",
+        "text": "the better team",
+        "edited_segment_text": "They were on the night this season"
+      },
+      "expected_text": "They were on the night this season",
+      "target_seconds": 3.5,
+      "instruction": "Replace 'the better team on' with 'on'.",
+      "human_review_required": true
+    }
+  ]
+}

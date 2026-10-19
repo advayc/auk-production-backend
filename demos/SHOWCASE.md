@@ -1,5 +1,8 @@
 # One-shot showcase batch
 
+[Browse all ten cases for every operation](TEST_CASES.md), including exact test
+requests, expected outputs, duration targets, and commands to run them.
+
 The showcase covers ten cases for each operation, using the normal backend and
 unchanged QA gates. Each case gets one model attempt. Failed cases stay in the
 report; automatic checks never replace human listening.

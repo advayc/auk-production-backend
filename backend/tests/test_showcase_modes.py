@@ -36,6 +36,44 @@ DELETES = ['They', 'were', 'the better', 'better', 'team', 'on the night',
            'on', 'the night', 'They were', 'the better team']
 
 
+def scenario_parameters(mode, op, index):
+    # Each index has different checked source content, also exercising content
+    # QA with different expected transcripts rather than just different seeds.
+    context = ['', ' according to everyone', ' in our opinion', ' despite the rain',
+               ' as we expected', ' by a wide margin', ' after all',
+               ' without a doubt', ' against their rivals', ' this season'][index]
+    source = 'They were the better team on the night' + context
+    p = {'source_text': source, 'rights_confirmed': True, 'seed': 42}
+    expected = source
+    if op == 'emotion':
+        p['emotion'] = EMOTIONS[index]
+    elif op == 'voice_characteristics':
+        p['description'] = VOICES[index]
+    elif op == 'speed':
+        p['speed_factor'] = SPEEDS[index]
+    elif op == 'custom':
+        p.update(instruction=f'Sound {CUSTOM[index]}. Keep every word unchanged.',
+                 semantic_contract={'preserve_transcript': True})
+    elif op == 'nonverbal_remove':
+        p.update(sound='humming', target_seconds=3 + index * .1)
+    elif mode == 'transcript_editor':
+        p.update(segment_scope='whole_clip', segment_text=source)
+        if op == 'replace':
+            old, new = REPLACEMENTS[index]
+            p.update(original_text=old, replacement_text=new)
+            expected = source.replace(old, new, 1)
+        elif op == 'insert':
+            text, anchor, position = INSERTS[index]
+            p.update(text=text, anchor=anchor, position=position)
+            replacement = text + ' ' + anchor if position == 'before' else anchor + ' ' + text
+            expected = source.replace(anchor, replacement, 1)
+        else:
+            p['text'] = DELETES[index]
+            expected = ' '.join(source.replace(p['text'], '', 1).split())
+        p['edited_segment_text'] = expected
+    return source, p, expected
+
+
 class ShowcaseOperationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -50,40 +88,7 @@ class ShowcaseOperationTests(unittest.TestCase):
         self.temp.cleanup()
 
     def scenario(self, mode, op, index):
-        # Each index has different checked source content, also exercising content
-        # QA with different expected transcripts rather than just different seeds.
-        context = ['', ' according to everyone', ' in our opinion', ' despite the rain',
-                   ' as we expected', ' by a wide margin', ' after all',
-                   ' without a doubt', ' against their rivals', ' this season'][index]
-        source = 'They were the better team on the night' + context
-        p = {'source_text': source, 'rights_confirmed': True, 'seed': 42}
-        expected = source
-        if op == 'emotion':
-            p['emotion'] = EMOTIONS[index]
-        elif op == 'voice_characteristics':
-            p['description'] = VOICES[index]
-        elif op == 'speed':
-            p['speed_factor'] = SPEEDS[index]
-        elif op == 'custom':
-            p.update(instruction=f'Sound {CUSTOM[index]}. Keep every word unchanged.',
-                     semantic_contract={'preserve_transcript': True})
-        elif op == 'nonverbal_remove':
-            p.update(sound='humming', target_seconds=3 + index * .1)
-        elif mode == 'transcript_editor':
-            p.update(segment_scope='whole_clip', segment_text=source)
-            if op == 'replace':
-                old, new = REPLACEMENTS[index]
-                p.update(original_text=old, replacement_text=new)
-                expected = source.replace(old, new, 1)
-            elif op == 'insert':
-                text, anchor, position = INSERTS[index]
-                p.update(text=text, anchor=anchor, position=position)
-                replacement = text + ' ' + anchor if position == 'before' else anchor + ' ' + text
-                expected = source.replace(anchor, replacement, 1)
-            else:
-                p['text'] = DELETES[index]
-                expected = ' '.join(source.replace(p['text'], '', 1).split())
-            p['edited_segment_text'] = expected
+        source, p, expected = scenario_parameters(mode, op, index)
         self.worker.gate = SemanticQAGate(
             lambda path: source if Path(path).name == 'input.wav' else expected,
             # Changing voice characteristics must not require a matching identity.

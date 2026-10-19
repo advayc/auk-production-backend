@@ -1,5 +1,15 @@
 # Showcase CPU validation — 2026-10-19
 
+Ubuntu / Python 3.11 / NumPy 2.2.6: **393 tests passed, no skips**, in
+103.088 seconds on commit `603d93f`. [Verified GitHub Actions run](https://github.com/advayc/auk-production-backend/actions/runs/39309582098).
+
+The presentation index exports the same request builder used by the tests.
+After extracting that builder, all 102 affected scenario and runner tests passed
+again locally (46.068 seconds), and the generated Markdown/JSON catalog passed
+its consistency check. CI now also checks catalog consistency.
+
+## Local macOS run
+
 393 tests discovered: 392 passed, one skipped on macOS (Python 3.11.15,
 NumPy 1.26.4, FFmpeg/FFprobe available). Runtime: 116.494 seconds.
 
