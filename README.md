@@ -1,6 +1,12 @@
 # AuK voice editing backend
 
-One shared backend for AI voice editing and transcript editing: a single `edit_audio(input, mode, operation, parameters)` interface with automatic output checks, bounded retries, and full attempt logging. 291 code tests passing (`cd backend && python -m unittest discover`).
+One shared backend for AI voice editing and transcript editing: a single `edit_audio(input, mode, operation, parameters)` interface with automatic output checks, bounded retries, and full attempt logging. Run the CPU regression suite with `PYTHONPATH=backend python -m unittest discover -s backend/tests -v` (Linux, Python 3.11, FFmpeg, NumPy).
+
+## Showcase tests
+
+[90 operation scenarios and a one-shot audio batch](demos/SHOWCASE.md): ten code tests for each of the nine operations, plus twelve batch-runner tests. Coverage includes all supported emotions, ten voice descriptions, ten speed factors, ten custom delivery styles, humming-removal targets, and varied transcript insert/replace/delete edits. Code tests use simulated inference; real demos require Colab generation and human listening. The batch runner selects ten reviewed cases per operation, records every failure, checkpoints progress, and displays before/after players.
+
+[Latest local CPU validation](backend/reports/SHOWCASE_CPU_RESULTS.md): 392 passed, one Linux-only test skipped on macOS (393 total). Ubuntu CI runs the full suite.
 
 ## Demo players
 
