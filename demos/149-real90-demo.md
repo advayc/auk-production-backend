@@ -1,9 +1,5 @@
 # AuK real90 demo
 
-Real one-shot batch: 90 editing cases across nine operations, one model attempt each (seed 42, base_f32 profile).
-
-<strong>57 of 90 cases passed the automatic checks</strong> (exact transcript match via faster-whisper-small; speaker cosine &ge; 0.75 via spkrec-ecapa-voxceleb). <strong>Automatic checks are not listening review</strong> - human listening review is still pending. The other 33 cases did not pass and are being repaired; they are not shown. The Whisper section (7 passing cases) is being added as uploads complete.
-
 ## Transcript replace (7)
 
 ### 1. Replace 'sold out' with 'available'.
