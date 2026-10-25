@@ -62,7 +62,8 @@ footer{border-top:1px solid var(--line);margin:34px 0 60px;padding-top:18px;font
 footer p{margin:8px 0}
 footer details{margin:10px 0}
 footer summary{cursor:pointer;font-weight:600;color:var(--ink);font-size:13.5px}
-.cov{width:100%;border-collapse:collapse;margin:10px 0;background:var(--card);border:1px solid var(--line);font-size:13px}
+.covwrap{overflow-x:auto}
+.cov{width:100%;min-width:520px;border-collapse:collapse;margin:10px 0;background:var(--card);border:1px solid var(--line);font-size:13px}
 .cov th,.cov td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left}
 .cov th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
 .cov tr.zero td{color:var(--red)}
@@ -717,7 +718,7 @@ a{color:var(--green)}
   <p>Approval binds to the exact heard take, never to the case or the method. Evaluation-only. Review fields persist in this browser (localStorage) and export as JSON.</p>
   <p>Audio in this portable file is losslessly compressed (FLAC); decoded PCM is bit-identical to the canonical wav files whose SHA-256 values are shown (the two listener-approved takes keep their original wav bytes).</p>
   <details><summary>Operation coverage and provenance</summary>
-    <table class="cov"><tr><th>Operation</th><th>Approved</th><th>QA-pass candidates</th><th>QA-fail</th><th>Missing</th><th>Examples</th></tr><tr><td>replace</td><td>2</td><td>9</td><td>5</td><td>3</td><td>19</td></tr><tr><td>insert</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>delete</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>emotion</td><td>0</td><td>2</td><td>0</td><td>0</td><td>2</td></tr><tr><td>voice_characteristics</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>whisper</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr><tr><td>speed</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>custom</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td></tr><tr class="zero"><td>nonverbal_remove</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></table>
+    <div class="covwrap"><table class="cov"><tr><th>Operation</th><th>Approved</th><th>QA-pass candidates</th><th>QA-fail</th><th>Missing</th><th>Examples</th></tr><tr><td>replace</td><td>2</td><td>9</td><td>5</td><td>3</td><td>19</td></tr><tr><td>insert</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>delete</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>emotion</td><td>0</td><td>2</td><td>0</td><td>0</td><td>2</td></tr><tr><td>voice_characteristics</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>whisper</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr><tr><td>speed</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>custom</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td></tr><tr class="zero"><td>nonverbal_remove</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></table></div>
     <p><b>Provenance.</b> Generation runs: retry3-20261024T215516Z (7 cases), longvm-20261024T2148Z, long2r-20261024T2136Z, long4r-20261025T060203Z (4 cases W1-W4), long10 (long-02..04 audio unrecovered), w2v5-20261025T115626Z (7 multimode cases on GPU; 8th case w2-insert-01 stopped before generation on a segment alignment error).</p>
     <p><b>Quality estimate.</b> The per-output score is DNSMOS (a learned objective speech-quality estimator, scale 1-5, mean over fixed windows). It rates signal and background quality; it does not hear edit intent, naturalness, or word choice, and it is not a listening verdict.</p>
   </details>
