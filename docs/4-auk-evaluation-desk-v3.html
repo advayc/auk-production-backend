@@ -809,7 +809,7 @@ document.querySelectorAll('.playchain').forEach(b=>b.addEventListener('click',()
   const figs=card.querySelectorAll('figure');
   const a1=figs[0].querySelector('audio'), a2=figs[1].querySelector('audio');
   figs.forEach(f=>{const a=f.querySelector('audio');a.pause();a.currentTime=0;const e=f.querySelector('.audioerr');if(e)e.style.display='none';});
-  const err=f=>()=>{const e=f.querySelector('.audioerr');if(e)e.style.display='block';b.innerHTML='&#9654; Play before &rarr; after';};
+  const err=f=>()=>{const e=f.querySelector('.audioerr');if(e){e.textContent='Playback could not start in this browser; use the player controls directly.';e.style.display='block';}b.innerHTML='&#9654; Play before &rarr; after';};
   a1.play().then(()=>{
     b.textContent='Playing before...';
     a1.onended=()=>{a2.play().then(()=>{
