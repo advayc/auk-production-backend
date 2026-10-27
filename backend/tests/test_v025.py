@@ -54,6 +54,52 @@ class V025(unittest.TestCase):
   with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':good},lambda p:'they were the squad on the night')
   # expected==observed variant is a no-op alias and rejected
   with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':[{'position':4,'expected':'team','observed':'team'}]},lambda p:asr_says)
+ def test_output_asr_variants_position_scoped(self):
+  from auk_reliability.qa import SemanticQAGate
+  plan={'expected_transcript':'They were the better team on the night','identity_required':False}
+  asr_says='they were the better squad on the night'  # ASR misspelling class: 'team' heard as 'squad'
+  good=[{'position':4,'expected':'team','observed':'squad','note':'doc'}]
+  gate=SemanticQAGate(lambda p:asr_says)
+  passed=gate.check('s','o',{**plan,'output_asr_variants':good})
+  self.assertTrue(passed['automatic_pass'])
+  self.assertEqual(passed['checks']['transcript']['applied_asr_variants'][0]['position'],4)
+  self.assertEqual(passed['checks']['transcript']['expected'],plan['expected_transcript'])  # expected text immutable
+  self.assertEqual(passed['checks']['transcript']['observed'],asr_says)  # raw decode kept for diagnostics
+  # strict default: same ASR mismatch without declared variant still fails
+  self.assertFalse(gate.check('s','o',plan)['automatic_pass'])
+  # wrong documented position rejected
+  self.assertFalse(gate.check('s','o',{**plan,'output_asr_variants':[{'position':3,'expected':'team','observed':'squad'}]})['automatic_pass'])
+  # variant slot mismatch vs actual ASR rejected
+  self.assertFalse(gate.check('s','o',{**plan,'output_asr_variants':[{'position':4,'expected':'team','observed':'club'}]})['automatic_pass'])
+  # other word changes rejected even with a valid variant declared
+  self.assertFalse(SemanticQAGate(lambda p:'they were the better squad on that night').check('s','o',{**plan,'output_asr_variants':good})['automatic_pass'])
+  # insertion rejected (length mismatch)
+  self.assertFalse(SemanticQAGate(lambda p:'they were the better squad team on the night').check('s','o',{**plan,'output_asr_variants':good})['automatic_pass'])
+  # deletion rejected (length mismatch)
+  self.assertFalse(SemanticQAGate(lambda p:'they were the squad on the night').check('s','o',{**plan,'output_asr_variants':good})['automatic_pass'])
+  # expected==observed variant is a no-op alias and rejected
+  self.assertFalse(gate.check('s','o',{**plan,'output_asr_variants':[{'position':4,'expected':'team','observed':'team'}]})['automatic_pass'])
+ def test_output_asr_variants_plan_validation(self):
+  ok={**BASE,'alignment_verified':True,'output_asr_variants':[{'position':4,'expected':'team','observed':'squad'}]}
+  plan=plan_request('transcript_editor','replace',ok,3.0,Limits())
+  self.assertEqual(plan['output_asr_variants'][0]['observed'],'squad')
+  self.assertNotIn('output_asr_variants',plan_request('transcript_editor','replace',{**BASE,'alignment_verified':True},3.0,Limits()))
+  for bad in ('notalist',[{'position':'4','expected':'team','observed':'squad'}],[{'position':4,'expected':'team'}],[{'position':4,'expected':'team','observed':'team'}],['squad']):
+   with self.assertRaises(EditorError):plan_request('transcript_editor','replace',{**BASE,'alignment_verified':True,'output_asr_variants':bad},3.0,Limits())
+ def test_generation_options_validation_and_payload(self):
+  from auk_reliability.core import LocalAuKServer
+  B2={'source_text':'They were the better team on the night.','rights_confirmed':True,'seed':42}
+  good={'num_inference_steps':64,'guidance_scale':3.0}
+  plan=plan_request('voice_editor','emotion',{**B2,'emotion':'excited','generation_options':good},3.0,Limits())
+  self.assertEqual(plan['generation_options'],good)
+  self.assertNotIn('generation_options',plan_request('voice_editor','emotion',{**B2,'emotion':'excited'},3.0,Limits()))
+  for bad in ('x',{'num_inference_steps':0},{'num_inference_steps':129},{'num_inference_steps':4.5},{'guidance_scale':-1},{'guidance_scale':21},{'guidance_scale':True},{'temperature':0.5}):
+   with self.assertRaises(EditorError):plan_request('voice_editor','emotion',{**B2,'emotion':'excited','generation_options':bad},3.0,Limits())
+  ad=LocalAuKServer.__new__(LocalAuKServer);ad.model_id="m"
+  payload=ad._request_payload('in.wav',{'instruction':'i','seed':42,'target_seconds':3.0,'generation_options':good})
+  self.assertEqual(payload['request']['options'],{'duration_sec':3.0,'num_inference_steps':64,'guidance_scale':3.0})
+  payload=ad._request_payload('in.wav',{'instruction':'i','seed':42,'target_seconds':3.0})
+  self.assertEqual(payload['request']['options'],{'duration_sec':3.0})  # strict default unchanged
  def test_no_scope_still_needs_human_alignment(self):
   with self.assertRaises(EditorError):verify_alignment('x.wav',dict(BASE),lambda p:BASE['segment_text'])
  def test_whole_clip_csv_is_separate_copy_and_reports_problems(self):
