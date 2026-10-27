@@ -1,3 +1,15 @@
+CPU_TEST_RESULTS L4 (SM89) prebuilt capability port 2026-10-27T14:20:00Z (fresh clone @ abdf651 + this change, sandbox Python 3.10.12, unittest in three module groups under a per-invocation time cap)
+Ran 405 tests in 137.4s aggregate (108 + 116 + 181)
+
+OK
+
+Change under test:
+- core.setup_runtime t4_prebuilt now accepts compute capabilities in PREBUILT_CAPABILITIES ({'7.5','8.9'}), matching the checksum-pinned release archive's SM75+SM89 binaries; other GPUs keep fail-closed wrong_gpu with the source_build path. The guard runs before any download.
+- runner.py applies the same capability set instead of a T4-only reject.
+- 3 new tests (PrebuiltCapabilityTests): capability set exact, unsupported GPU rejected pre-download (no network), SM89 accepted by the guard (download stubbed).
+- Production evidence for SM89: bounded L4 Colab runs through 2026-10-27 (e.g. w2v6-20261027T133113Z) ran on the pinned archive, log line 'Downloading checksum-pinned prebuilt runtime (SM75/SM89 archive; on-VM qualification pending)...', sm89 asserted.
+- Suite count 402 -> 405 (3 added); all other behavior unchanged.
+
 CPU_TEST_RESULTS v0.3.0 transplant candidate (localized fixed-duration scope fix) 2026-10-18T10:00:00Z (unittest discover, sandbox Python 3.10.12)
 Ran 175 tests in 38.278s
 

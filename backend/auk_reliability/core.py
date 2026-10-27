@@ -38,6 +38,17 @@ RUNTIME_COMMIT_PREFIX = '795c45f'
 RUNTIME_ASSET = 'audio-v0.9.0-bin-ubuntu-x64-cuda12.8-colab.tar.gz'
 RUNTIME_SHA256 = 'c9ed906f918246669c324f0d31f1b7dd80cbe003c35cf8a54932f333b57ca3f6'
 RUNTIME_URL = f'https://github.com/0xShug0/audio.cpp/releases/download/{RUNTIME_TAG}/{RUNTIME_ASSET}'
+
+# GPU compute capabilities the checksum-pinned release archive may serve: the
+# v0.9.0 release workflow builds RUNTIME_ASSET with
+# -DCMAKE_CUDA_ARCHITECTURES=75;80;86;89;90, and the exact pinned bytes
+# (RUNTIME_SHA256) embed SASS for sm_75/80/86/89/90. That verifies artifact
+# architecture only; runtime qualification (ldd, --help, acceptance) still
+# happens on the attached VM. Only the capabilities this project supports are
+# accepted (T4 and L4); anything else stays on the explicit source_build path.
+# The archive bundles no shared libraries: CUDA userland (cudart/cublas/cufft/
+# nccl) is provisioned separately.
+PREBUILT_CAPABILITIES = frozenset({'7.5', '8.9'})
 PROFILE_FILES = {
     'base_f32': ('base', 'auk-base-f32.gguf'),
     'flash_f16': ('flash', 'auk-flash-f16.gguf'),
@@ -881,8 +892,8 @@ def setup_runtime(root: Path, *, mode: str, gpu: dict) -> tuple[Path, dict]:
     target = root / 'runtime-package'
     lock_path = target / 'runtime.lock.json'
     if mode not in {'t4_prebuilt', 'source_build'}: raise EditorError('bad_setup_mode', 'Select t4_prebuilt or source_build.')
-    if mode == 't4_prebuilt' and gpu['compute_capability'] != '7.5':
-        raise EditorError('wrong_gpu', 'This prebuilt targets T4/SM75. Select a T4, or choose source_build explicitly for the attached GPU.')
+    if mode == 't4_prebuilt' and gpu['compute_capability'] not in PREBUILT_CAPABILITIES:
+        raise EditorError('wrong_gpu', 'The pinned prebuilt archive carries SM75/SM89 binaries. Select a T4 or L4, or choose source_build explicitly for the attached GPU.')
     if lock_path.is_file():
         lock = json.loads(lock_path.read_text())
         binary = Path(lock['binary'])
@@ -894,7 +905,7 @@ def setup_runtime(root: Path, *, mode: str, gpu: dict) -> tuple[Path, dict]:
     target.mkdir(parents=True, exist_ok=True)
     if mode == 't4_prebuilt':
         archive = root / RUNTIME_ASSET
-        print('Downloading checksum-pinned T4 runtime...')
+        print('Downloading checksum-pinned prebuilt runtime (SM75/SM89 archive; on-VM qualification pending)...')
         download_file(RUNTIME_URL, archive, expected_sha256=RUNTIME_SHA256, max_seconds=300)
         unpacked = target / 'unpacked'
         if unpacked.exists(): shutil.rmtree(unpacked)

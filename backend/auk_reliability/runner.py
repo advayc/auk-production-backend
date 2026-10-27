@@ -1,7 +1,7 @@
 """Standalone prepared-runtime entry point; never requires Colab notebook globals."""
 import json, subprocess, sys, site, os
 from pathlib import Path
-from .core import Limits,gpu_details,setup_runtime,setup_models,setup_asr,LocalAuKServer
+from .core import Limits,gpu_details,setup_runtime,setup_models,setup_asr,LocalAuKServer,PREBUILT_CAPABILITIES
 from .colab import setup_optional_speaker_qa
 from .qa import SemanticQAGate
 from .worker import ReliabilityWorker
@@ -13,7 +13,7 @@ def run_config(config_path, *, resume=False):
  if config.get('run_generation') is not True:raise ValueError('Explicit run_generation=true required in config')
  if config.get('commercial_use') and config.get('commercial_license_confirmed') is not True:raise ValueError('Commercial clearance required')
  root=Path(config['work_dir']);root.mkdir(parents=True,exist_ok=True);gpu=gpu_details()
- if gpu['compute_capability']!='7.5':raise ValueError('This release targets T4 only')
+ if gpu['compute_capability'] not in PREBUILT_CAPABILITIES:raise ValueError('The pinned prebuilt archive carries SM75/SM89 binaries (T4/L4). Choose the explicit source_build path for other GPUs.')
  subprocess.run([sys.executable,'-m','pip','install','nvidia-cublas-cu12==12.8.4.1','nvidia-cuda-runtime-cu12==12.8.90','nvidia-cufft-cu12==11.3.3.83'],check=True)
  dirs=[str(Path(p)/'nvidia'/c/'lib') for p in site.getsitepackages()+[site.getusersitepackages()] for c in ('cublas','cuda_runtime','cufft') if (Path(p)/'nvidia'/c/'lib').is_dir()]
  os.environ['LD_LIBRARY_PATH']=':'.join(dirs+[os.environ.get('LD_LIBRARY_PATH','')])
