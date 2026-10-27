@@ -1,4 +1,5 @@
 """Explicit application policy, not a claim about the model's capabilities."""
+import re
 from .core import EditorError, EditSpec, build_plan, _quote_words
 OPERATIONS = {
  'voice_editor': ('emotion','voice_characteristics','whisper','speed','custom','nonverbal_remove'),
@@ -62,12 +63,28 @@ def plan_request(mode, operation, p, duration, limits):
   style=p.get('instruction_style','replace_prompt')
   if style=='explicit_insert' and operation!='insert':
    raise EditorError('unsupported_instruction_style','instruction_style=explicit_insert applies to insert operations only.')
+  def _norm(t):
+   # Unicode-safe: keep letters/digits in any script plus apostrophes, map other punctuation to space.
+   return ' '.join(''.join(ch if (ch.isalnum() or ch in "'\u2019") else ' ' for ch in t.lower()).split())
+  full_segment_replace=(operation=='replace' and style=='replace_prompt'
+   and _norm(old) and _norm(old)==_norm(before))
+  if full_segment_replace and _norm(old)==_norm(replacement):
+   raise EditorError('invalid_replacement','Provide different nonempty old and new words.')
   if style=='replace_prompt':
    # v0.2.5: upstream/take-home phrasing "Replace 'old' with 'new'." (same words QA applies).
    # v0.2.6: insert and delete are expressed in the same supported form over a minimal span (confirmed on GPU
    # Oct 16: the free-form "Regenerate this speech as" prompt left the source unchanged; the Replace phrasing
    # produces the words but needs the v0.2.7 duration scaling below to fit them naturally).
-   if operation=='replace': span=(old,replacement)
+   # v0.2.9 (bounded-validated 27 Oct 2026, run w2v6-20261027T150204Z): a replacement spanning the entire
+   # segment no longer uses the Replace phrasing. At that scope the instruction quotes the whole old text and
+   # the whole new text while the source audio speaks the old text; the Oct 20 whole-sentence test (7 cases)
+   # produced old/new blended wording in 6 of 7 outputs. The vendor zero-shot TTS template ("Say the
+   # following with the same voice: ..." - AuK cookbook 1.1) eliminates that text blending: 12/12 attempts
+   # (4 cases x 3 seeds) decoded the exact target transcript (WER 0.0). Speaker identity at whole-sentence
+   # scope still fails the strict 0.75 gate under both phrasings (12/12 below threshold, 0.567-0.728), so
+   # the gate and the review_required/no-output boundary are unchanged. Span edits keep Replace.
+   if operation=='replace' and full_segment_replace: span=None
+   elif operation=='replace': span=(old,replacement)
    elif operation=='insert': span=(anchor,(text+' '+anchor) if position=='before' else (anchor+' '+text))
    else:
     words=before.split(); target=text.split(); n=len(target)
@@ -97,6 +114,10 @@ def plan_request(mode, operation, p, duration, limits):
   elif span is not None:
    spec=EditSpec(operation='replace_words',old_words=span[0],new_words=span[1],
      source_transcript=before,expected_transcript=expected,seed=p.get('seed',42),target_seconds=scaled)
+  elif full_segment_replace:
+   spec=EditSpec(operation='custom',
+    instruction=f"Say the following with the same voice: {_quote_words(replacement)}",
+    source_transcript=before,expected_transcript=expected,seed=p.get('seed',42),target_seconds=scaled)
   else:
    spec=EditSpec(operation='custom',instruction=f'Regenerate this speech as: {expected}. Preserve speaker identity and naturalness.',
     source_transcript=before,expected_transcript=expected,seed=p.get('seed',42),target_seconds=scaled)

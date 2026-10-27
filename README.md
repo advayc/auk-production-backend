@@ -82,7 +82,8 @@ Lossless originals of the humming, insert and replace clips, plus the other list
 ## Status
 
 Implemented and tested: the editing backend, humming removal, inserts, and the word replacement above.
-Still open: broader localized-replace reliability (the v0.3.5/v0.3.6 fixes are experimental and off by default), a verified transcript-delete demo, and the remaining benchmarks. Not production-ready.
+Supported replacement scope: localized span replacement (a word or short phrase inside a segment) is the demonstrated path above. A replacement spanning the entire segment diverts to the vendor zero-shot TTS template (v0.2.9): bounded validation on L4 (27 Oct 2026, run w2v6-20261027T150204Z, 4 cases x 3 seeds) decoded the exact target transcript in 12/12 attempts (WER 0.0), but speaker identity still failed the strict 0.75 similarity gate in 12/12 attempts (0.567-0.728) under both the template and the Replace phrasing, so those runs correctly produced no output (review_required). Scope precisely: these four tested full-sentence cases failed speaker QA under two phrasings; whole-clip generation is not generally unsupported (the whole-clip insert demo passed the same gate).
+Still open: speaker fidelity at whole-sentence scope, broader localized-replace reliability (the v0.3.5/v0.3.6 fixes are experimental and off by default), a verified transcript-delete demo, and the remaining benchmarks. Not production-ready.
 
 ## Licensing
 

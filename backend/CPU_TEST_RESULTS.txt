@@ -1,3 +1,16 @@
+CPU_TEST_RESULTS v0.2.9 full-segment replace port 2026-10-27T15:40:00Z (working tree @ afa48cf + this change, sandbox Python 3.10.12, unittest in three module groups under a per-invocation time cap)
+Ran 410 tests (122 + 210 + 78)
+
+OK
+
+Change under test:
+- policy.plan_request: a replace whose old text spans the entire segment (normalized Unicode-safe comparison) now plans operation=custom with the vendor zero-shot TTS template ("Say the following with the same voice: ...") instead of the Replace phrasing, which blended old/new wording in 6 of 7 Oct 20 whole-sentence outputs. Ported from the production overlay validated on L4 (run w2v6-20261027T150204Z: 12/12 exact target transcripts, WER 0.0).
+- Same-scope no-op replacement (old == new after normalization) fails closed invalid_replacement.
+- Partial-span replace, insert, delete, and regenerate style unchanged.
+- Speaker identity at whole-sentence scope still fails the 0.75 gate (0.567-0.728); the strict gate and review_required/no-output boundary are unchanged.
+- 5 new tests (FullSegmentReplace): template divert, punctuation-normalized detection, span regression, invalid_replacement guard, regenerate style unaffected.
+- Suite count 405 -> 410 (5 added); all other behavior unchanged.
+
 CPU_TEST_RESULTS L4 (SM89) prebuilt capability port 2026-10-27T14:20:00Z (fresh clone @ abdf651 + this change, sandbox Python 3.10.12, unittest in three module groups under a per-invocation time cap)
 Ran 405 tests in 137.4s aggregate (108 + 116 + 181)
 
