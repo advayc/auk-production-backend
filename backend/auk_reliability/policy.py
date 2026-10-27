@@ -108,6 +108,21 @@ def plan_request(mode, operation, p, duration, limits):
     raise EditorError('unsupported_contract','Custom v0.2 supports only preserve_transcript=True and requires quality review.')
   plan=build_plan(spec,duration,limits)
   plan['expected_transcript']=source
+ oav=p.get('output_asr_variants')
+ if oav is not None:
+  if (not isinstance(oav,list)
+      or any(not isinstance(v,dict) or not isinstance(v.get('position'),int)
+             or not isinstance(v.get('expected'),str) or not isinstance(v.get('observed'),str)
+             or v.get('expected')==v.get('observed') for v in oav)):
+   raise EditorError('invalid_asr_variants','output_asr_variants must be a case-scoped list of {position:int, expected:str, observed:str} entries.')
+  plan['output_asr_variants']=oav
+ go=p.get('generation_options')
+ if go is not None:
+  if (not isinstance(go,dict) or any(k not in ('num_inference_steps','guidance_scale') for k in go)
+      or ('num_inference_steps' in go and (not isinstance(go['num_inference_steps'],int) or not 1<=go['num_inference_steps']<=128))
+      or ('guidance_scale' in go and (not isinstance(go['guidance_scale'],(int,float)) or isinstance(go['guidance_scale'],bool) or not 0.0<=go['guidance_scale']<=20.0))):
+   raise EditorError('invalid_generation_options','generation_options must be a case-scoped dict with num_inference_steps (int 1-128) and/or guidance_scale (number 0-20).')
+  plan['generation_options']=go
  plan['mode']=mode;plan['public_operation']=operation
  plan['identity_required']=operation!='voice_characteristics'
  plan['quality_review_required']=True
