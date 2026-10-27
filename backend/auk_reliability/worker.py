@@ -103,6 +103,9 @@ class ReliabilityWorker:
    raw=ad/'raw.wav';out=ad/'output.wav'
    try:
     response,timing=self.adapter.run(profile,gen_input,active_plan);record['model_timing']=timing
+    # Runtime evidence: keep every non-audio response field (e.g. effective option echoes,
+    # rtf/wall_ms) for the attempt record; audio bytes are captured separately below.
+    record['server_response_meta']={k:(v if isinstance(v,(str,int,float,bool,type(None))) else str(v)[:500]) for k,v in response.items() if k!='audio'} if isinstance(response,dict) else None
     atomic_bytes(raw,decode_response(response,self.limits));record['artifact_paths'].append(str(raw))
     checks=validate_output(raw,active_plan['target_seconds'],limits)
     if checks['signal']['near_full_scale_fraction']>.005:raise EditorError('clipped_output','Clipping exceeds application QA threshold.')
