@@ -35,6 +35,25 @@ class V025(unittest.TestCase):
   verify_alignment('x.wav',ok,lambda p:'they were the better team on the night')
   with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_text':'They were the better team.'},lambda p:'they were the better team')
   with self.assertRaises(EditorError):verify_alignment('x.wav',ok,lambda p:'they were the best team on the night')  # ASR mismatch still fails
+ def test_segment_asr_variants_position_scoped(self):
+  ok={**BASE,'segment_scope':'whole_clip'}
+  asr_says='they were the better squad on the night'  # ASR misspelling class: 'team' heard as 'squad'
+  good=[{'position':4,'expected':'team','observed':'squad'}]
+  verify_alignment('x.wav',{**ok,'segment_asr_variants':good},lambda p:asr_says)  # documented slot passes
+  # strict default: same ASR mismatch without declared variant still fails
+  with self.assertRaises(EditorError):verify_alignment('x.wav',ok,lambda p:asr_says)
+  # wrong documented position rejected
+  with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':[{'position':3,'expected':'team','observed':'squad'}]},lambda p:asr_says)
+  # variant slot mismatch vs actual ASR rejected
+  with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':good},lambda p:'they were the better club on the night')
+  # other word changes rejected even with a valid variant declared
+  with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':good},lambda p:'they were the better squad on that night')
+  # insertion rejected (length mismatch)
+  with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':good},lambda p:'they were the better squad team on the night')
+  # deletion rejected (length mismatch)
+  with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':good},lambda p:'they were the squad on the night')
+  # expected==observed variant is a no-op alias and rejected
+  with self.assertRaises(EditorError):verify_alignment('x.wav',{**ok,'segment_asr_variants':[{'position':4,'expected':'team','observed':'team'}]},lambda p:asr_says)
  def test_no_scope_still_needs_human_alignment(self):
   with self.assertRaises(EditorError):verify_alignment('x.wav',dict(BASE),lambda p:BASE['segment_text'])
  def test_whole_clip_csv_is_separate_copy_and_reports_problems(self):
