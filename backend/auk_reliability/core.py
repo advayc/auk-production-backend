@@ -546,14 +546,22 @@ class LocalAuKServer:
             self.stop()
             raise
 
+    def _request_payload(self, input_path: Path, plan: dict) -> dict:
+        options = {'duration_sec': plan['target_seconds']}
+        # Case-scoped generation option overrides (validated in plan_request): explicit
+        # per-case escapes such as higher num_inference_steps/guidance_scale for text-
+        # fidelity failures. Strict default: absent means server profile defaults.
+        options.update(plan.get('generation_options') or {})
+        return {'model': self.model_id, 'request': {
+            'audio': str(Path(input_path).resolve()), 'text': plan['instruction'],
+            'seed': plan['seed'], 'options': options}}
+
     def run(self, profile: str, input_path: Path, plan: dict) -> tuple[dict, dict]:
         started = time.monotonic()
         self.start(profile)
         startup_seconds = time.monotonic() - started
         cold = not self.has_run
-        payload = {'model': self.model_id, 'request': {
-            'audio': str(Path(input_path).resolve()), 'text': plan['instruction'],
-            'seed': plan['seed'], 'options': {'duration_sec': plan['target_seconds']}}}
+        payload = self._request_payload(input_path, plan)
         proc, ticks = self.process, self.start_ticks
         expired = threading.Event()
         effective_timeout = self.limits.inference_timeout
