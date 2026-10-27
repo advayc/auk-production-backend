@@ -1,7 +1,7 @@
 """Fixed-duration segment replacement. No whole-recording model regeneration."""
 import wave, math, array, sys
 from pathlib import Path
-from .core import EditorError, command, probe_audio, compare_transcript
+from .core import EditorError, command, probe_audio, compare_transcript, normalized_tokens
 
 def normalize_recording(source, output, limits):
  meta=probe_audio(source,limits)
@@ -23,6 +23,22 @@ def verify_alignment(source_segment, parameters, transcriber):
  if transcriber is None: raise EditorError('alignment_qa_unavailable','Segment edits require source ASR checking.')
  observed=transcriber(source_segment);text=observed.get('text','') if isinstance(observed,dict) else observed
  if compare_transcript(parameters['segment_text'],text)['error_rate']>0:
+  # Case-scoped documented ASR variants: explicit token+position exceptions for known ASR
+  # misspellings of faithful ground truth (e.g. rare proper nouns). Never a fuzzy/global alias:
+  # every other token must match exactly, lengths must be equal, and each declared variant must
+  # match its documented slot or the gate still fails. segment_text is never modified.
+  variants=parameters.get('segment_asr_variants') or []
+  expected=normalized_tokens(parameters['segment_text']);observed_tokens=normalized_tokens(text)
+  if variants and len(expected)==len(observed_tokens):
+   fixed=list(observed_tokens)
+   for v in variants:
+    pos=v.get('position')
+    if not (isinstance(pos,int) and 0<=pos<len(expected)
+            and expected[pos]==v.get('expected') and observed_tokens[pos]==v.get('observed')
+            and v.get('expected')!=v.get('observed')):
+     raise EditorError('segment_transcript_mismatch','Declared ASR variant does not match its documented token position. Review alignment.')
+    fixed[pos]=v['expected']
+   if fixed==expected:return
   raise EditorError('segment_transcript_mismatch','Selected segment does not exactly match normalized segment_text in ASR. Review alignment.')
 
 def splice(normalized, generated, output, start, end):
