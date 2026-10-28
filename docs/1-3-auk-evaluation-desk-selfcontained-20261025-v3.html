@@ -91,6 +91,16 @@ body.compact .card{padding:12px 22px}
   <p class="sub">Before-and-after examples of AI audio edits, grouped by the kind of change. Every pair plays right in the browser.</p>
 </header>
 <main>
+<section class="card project-status" aria-labelledby="project-status-heading" style="margin:0 0 28px;padding:20px 22px">
+  <h2 id="project-status-heading" style="font-size:18px;margin:0 0 10px">Status and limitations</h2>
+  <p style="margin:0 0 10px">Selected demos are ready to listen to. The backend is still in testing, not production-ready. Listening approval applies only to the examples marked approved.</p>
+  <details><summary style="cursor:pointer;min-height:44px;display:flex;align-items:center">Latest emotion study &middot; 28 Oct 2026</summary>
+    <p>1 of 3 new voice examples has been generated and assessed. Both versions kept all 7 words correct, but neither passed the voice check: original model 0.411878; pitch transfer 0.749993, below the unchanged 0.75 threshold.</p>
+    <p>Automatic results: original model 0/1 passed; pitch transfer 0/1 passed. The other 2 examples are not tested yet, not counted as failures. Excitement and naturalness still need listening review.</p>
+    <p style="margin-bottom:0">The new failed example is not added to this showcase. The two listening-approved pitch-transfer demos below are unchanged. These selected examples do not establish a general success rate. Broader testing and notebook integration remain in progress.</p>
+  </details>
+</section>
+
 <h2 class="section" id="op-replace">Replace words <span class="secn">(16)</span></h2>
 <div class="deck" data-op="replace"><article class="card " data-search="a1 replace-01 replace the show is sold out, like the others in the run. the show is available, like the others in the run. approved approved" data-idx="0" data-status="APPROVED" data-section="approved" data-op="replace">
   
