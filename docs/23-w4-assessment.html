@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link rel="stylesheet" href="87-auk-assessment-styles.css"><style>html, body { margin: 0; } html { background: transparent; } body { width: 100%; }</style><style>/* ../../downloads/auk-consolidated-checkpoint/src/style.css */
+.summary,
+.example {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--ds-hairline);
+}
+.summary p {
+  margin: 8px 0;
+}
+.example h3 {
+  overflow-wrap: anywhere;
+}
+.players {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 16px;
+  margin: 18px 0;
+}
+.audio-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+audio {
+  width: 100%;
+  max-width: 100%;
+  height: 42px;
+}
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.filters button {
+  font: inherit;
+  padding: 10px 12px;
+  min-height: 44px;
+  border: 1px solid var(--ds-hairline);
+  background: var(--ds-page);
+  color: var(--ds-ink);
+  border-radius: 4px;
+}
+.filters button[aria-pressed=true] {
+  background: var(--ds-raised);
+  font-weight: 600;
+}
+summary {
+  min-height: 44px;
+  cursor: pointer;
+  padding: 10px 0;
+  font-weight: 600;
+}
+details {
+  margin: 12px 0;
+}
+.take {
+  margin: 20px 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--ds-hairline);
+}
+p,
+span {
+  overflow-wrap: anywhere;
+}
+
+.summary,.example{padding:20px 0;border-bottom:1px solid var(--ds-hairline)}
+.summary p{margin:8px 0}.example h3{overflow-wrap:anywhere}.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:16px;margin:18px 0}.audio-label{display:flex;flex-direction:column;gap:6px;min-width:0}audio{width:100%;max-width:100%;height:42px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.filters button{font:inherit;padding:10px 12px;min-height:44px;border:1px solid var(--ds-hairline);background:var(--ds-page);color:var(--ds-ink);border-radius:4px}.filters button[aria-pressed=true]{background:var(--ds-raised);font-weight:600}summary{min-height:44px;cursor:pointer;padding:10px 0;font-weight:600}details{margin:12px 0}.take{margin:20px 0;padding-top:12px;border-top:1px solid var(--ds-hairline)}p,span{overflow-wrap:anywhere}
+</style><title>AuK W4 repair batch - 31 October 2026</title></head><body><main class="file-card" data-width="fluid"><header class="file-header"><h1 class="file-title">Humming removal: 10/10. Custom instructions: 8/10, with the 2 failures traced to the fixtures.</h1><p class="file-fact">W4 repair batch &middot; 31 October 2026</p><p class="file-intro">Fresh 10-case batches per category after two targeted backend fixes, same automatic gate as before (exact transcript + speaker match &ge; 0.75). Failures kept visible with their audio.</p></header><aside class="file-callout file-bar" data-tone="warning"><span class="file-strong">Assessment</span><span>Humming removal (nonverbal_remove) passes 10/10 on a fresh batch with the v036 surgical fixes. Custom instructions pass 8/10 with the v035 prosody-transplant fix; the 2 remaining failures (custom-01, custom-09) are fixture-acoustic defects: the degraded input audio is machine-ambiguous against the official transcript, so the exact-match gate cannot pass without being relaxed. Automatic passes are not sound-quality scores; listening review remains the owner&rsquo;s call.</span></aside>
+<section class="file-group"><h2 class="file-group-heading">What the scores mean</h2><p class="file-p">Word pass means normalized ASR words exactly match the target (WER 0). Speaker pass means similarity at least 0.75. A request passes if a tested take passes both. Humming removal is deterministic (one take per case). Custom instructions allow up to 3 seed retries per run. Batches are fresh 10-case VCTK held-out sets run end-to-end with the fix in place; v034 baselines are shown for comparison, not pooled.</p></section>
+<section class="file-group"><h2 class="file-group-heading">Rates vs the 90% target</h2><table><thead><tr><th>Category</th><th>v034 baseline (fresh batch)</th><th>Fixed version (fresh batch)</th><th>Target</th></tr></thead><tbody>
+<tr><td>Humming removal (nonverbal_remove)</td><td>9/10</td><td>10/10 with v036 &mdash; 100% (single take per case)</td><td class="pass">MET</td></tr>
+<tr><td>Custom instructions</td><td>6/10 (first-pass 3/10)</td><td>8/10 with v035 (first-pass 7/10)</td><td class="fail">80% - below</td></tr>
+</tbody></table></section>
+<section class="file-group"><h2 class="file-group-heading">The two backend fixes</h2><ul class="file-bullets">
+<li><strong>v035 (custom):</strong> the style-scope prosody transplant guard read the wrong plan field, so the transplant never engaged and raw vendor output was used - the W3 speaker-identity-collapse path. The guard now reads plan.expected_transcript; the transplant engages on every style-scope case. Commit eb9788d.</li>
+<li><strong>v036 (humming):</strong> (a) ASR word spans under-cover final syllable tails by ~0.2s, so surgical hum excision clipped the last syllable (&ldquo;Crystal.&rdquo; &rarr; &ldquo;Chris&rdquo;); excision now ends 0.25s after the word end, capped at the next word start. (b) comb_notch overlap-add zero-pad fixes the zeroed clip tail and full-scale end click present in all v034 outputs. Commits 7f183de, 39a8e67.</li>
+<li>Both fixes run under the pinned runner (module SHA-256 checks). GitHub push of the three commits is pending - the sandbox has no credentials and the web upload flow cannot replace existing files. Patches are in the private Drive folder.</li>
+</ul></section>
+<section class="file-group"><h2 class="file-group-heading">Humming removal - fresh batch with v036 (run w4-nvdel-fix1)</h2><table><thead><tr><th>Case</th><th>Instruction</th><th>Takes</th><th>Gate detail</th><th>Verdict</th><th>Output</th></tr></thead><tbody>
+<tr><td>w4-nvdel-01</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.93</td><td class="pass">PASS</td><td><audio controls preload="none" src="13-w4-nvdel-01.mp3"></audio> <a href="13-w4-nvdel-01.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-02</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.96</td><td class="pass">PASS</td><td><audio controls preload="none" src="14-w4-nvdel-02.mp3"></audio> <a href="14-w4-nvdel-02.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-03</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.90</td><td class="pass">PASS</td><td><audio controls preload="none" src="15-w4-nvdel-03.mp3"></audio> <a href="15-w4-nvdel-03.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-04</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.98</td><td class="pass">PASS</td><td><audio controls preload="none" src="16-w4-nvdel-04.mp3"></audio> <a href="16-w4-nvdel-04.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-05</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.97</td><td class="pass">PASS</td><td><audio controls preload="none" src="17-w4-nvdel-05.mp3"></audio> <a href="17-w4-nvdel-05.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-06</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.90</td><td class="pass">PASS</td><td><audio controls preload="none" src="18-w4-nvdel-06.mp3"></audio> <a href="18-w4-nvdel-06.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-07</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.94</td><td class="pass">PASS</td><td><audio controls preload="none" src="19-w4-nvdel-07.mp3"></audio> <a href="19-w4-nvdel-07.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-08</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.93</td><td class="pass">PASS</td><td><audio controls preload="none" src="20-w4-nvdel-08.mp3"></audio> <a href="20-w4-nvdel-08.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-09</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.96</td><td class="pass">PASS</td><td><audio controls preload="none" src="21-w4-nvdel-09.mp3"></audio> <a href="21-w4-nvdel-09.mp3">mp3</a></td></tr>
+<tr><td>w4-nvdel-10</td><td>Remove non-speech sounds (humming).</td><td>1</td><td>tr ok, spk 0.92</td><td class="pass">PASS</td><td><audio controls preload="none" src="22-w4-nvdel-10.mp3"></audio> <a href="22-w4-nvdel-10.mp3">mp3</a></td></tr>
+</tbody></table></section>
+<section class="file-group"><h2 class="file-group-heading">Custom instructions - fresh batch with v035 (run w4-custom-fix1)</h2><table><thead><tr><th>Case</th><th>Instruction</th><th>Takes</th><th>Gate detail</th><th>Verdict</th><th>Output</th></tr></thead><tbody>
+<tr><td>w4-custom-01</td><td>Keep every word but sound more confident.</td><td>3+3 seeds</td><td>tr FAIL, spk 0.74 - fixture audio ambiguous (see note)</td><td class="fail">FAIL</td><td><audio controls preload="none" src="3-w4-custom-01.mp3"></audio> <a href="3-w4-custom-01.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-02</td><td>Keep every word but sound more confident.</td><td>1</td><td>tr ok, spk 0.80</td><td class="pass">PASS</td><td><audio controls preload="none" src="4-w4-custom-02.mp3"></audio> <a href="4-w4-custom-02.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-03</td><td>Keep every word but sound more confident.</td><td>1</td><td>tr ok, spk 0.82</td><td class="pass">PASS</td><td><audio controls preload="none" src="5-w4-custom-03.mp3"></audio> <a href="5-w4-custom-03.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-04</td><td>Keep every word but sound more confident.</td><td>2</td><td>tr ok, spk 0.78</td><td class="pass">PASS</td><td><audio controls preload="none" src="6-w4-custom-04.mp3"></audio> <a href="6-w4-custom-04.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-05</td><td>Keep every word but sound more confident.</td><td>1</td><td>tr ok, spk 0.87</td><td class="pass">PASS</td><td><audio controls preload="none" src="7-w4-custom-05.mp3"></audio> <a href="7-w4-custom-05.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-06</td><td>Make it sound like a calm, warm documentary narration. Keep every word unchanged.</td><td>1</td><td>tr ok, spk 0.85</td><td class="pass">PASS</td><td><audio controls preload="none" src="8-w4-custom-06.mp3"></audio> <a href="8-w4-custom-06.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-07</td><td>Make it sound like a calm, warm documentary narration. Keep every word unchanged.</td><td>1</td><td>tr ok, spk 0.82</td><td class="pass">PASS</td><td><audio controls preload="none" src="9-w4-custom-07.mp3"></audio> <a href="9-w4-custom-07.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-08</td><td>Make it sound like a calm, warm documentary narration. Keep every word unchanged.</td><td>1</td><td>tr ok, spk 0.77</td><td class="pass">PASS</td><td><audio controls preload="none" src="10-w4-custom-08.mp3"></audio> <a href="10-w4-custom-08.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-09</td><td>Make it sound like a calm, warm documentary narration. Keep every word unchanged.</td><td>3+3 seeds</td><td>tr FAIL, spk 0.78 - fixture audio ambiguous (see note)</td><td class="fail">FAIL</td><td><audio controls preload="none" src="11-w4-custom-09.mp3"></audio> <a href="11-w4-custom-09.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-10</td><td>Make it sound like a calm, warm documentary narration. Keep every word unchanged.</td><td>1</td><td>tr ok, spk 0.85</td><td class="pass">PASS</td><td><audio controls preload="none" src="12-w4-custom-10.mp3"></audio> <a href="12-w4-custom-10.mp3">mp3</a></td></tr>
+</tbody></table></section>
+<section class="file-group"><h2 class="file-group-heading">Why custom-01 and custom-09 fail: the fixtures, not the pipeline</h2><p class="file-p">Both inputs are degraded corpus variants. custom-01 (vctk-p293_035-mic2) carries added noise at 25 dB SNR; custom-09 (vctk-p351_030-mic2) carries simulated room reverb. Production-equivalent ASR (faster-whisper small, beam 3) transcribes the <em>input audio itself</em> as &ldquo;There is a lot of heroin in the boat.&rdquo; (official transcript: &ldquo;&hellip;heroin about.&rdquo;) and &ldquo;&hellip;Bill Gates of the theatre.&rdquo; (official: &ldquo;&hellip;of theatre.&rdquo;), word-timestamp confirmed. The pipeline preserves the input content faithfully - verified word-for-word through the v035 transplant - across 6 generation seeds per case. The exact-match gate against the official corpus transcript is unsatisfiable on these two fixtures without relaxing the gate, which was kept off the table. The remaining lever is fixture acoustics or human listening adjudication.</p></section>
+<section class="file-group"><h2 class="file-group-heading">Evidence and reproducibility</h2><ul class="file-bullets">
+<li>Runs: w4-batch (v034 baseline), w4-custom-fix1 (v035), w4-custom-fix2 (seed-retry 48-50 of custom-01/09, 0/2), w4-nvdel-fix1 (v036). Artifacts and ledgers: private Drive folder auk-w4-live.</li>
+<li>Runner bounded7-w4.py sha c477b1453de65398d73b3eb4fed0b7beacebb05950da6d0e844ae453e5a80a55; package v5 zip sha 01b04f7e4f8af7d7d44dc7e53f6257723084e2555d2ebcfdf86fa4cfd2ed377a; nvdel_surgical.py (patched) sha 4e09ed30ade57f4754271ad14d956b98314867c2423a43e577e05a7fc641d27b; worker.py (patched) sha 920acd3b72a5624492115801e642eb12afdbe1233899fede41b03fdacf3c23a4.</li>
+<li>Ops: Colab reclaimed the L4 runtime 4 times during W4; resume-idempotent runs plus per-case Drive sync lost no results.</li>
+</ul></section>
+</main></body></html>
