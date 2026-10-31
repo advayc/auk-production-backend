@@ -2,13 +2,15 @@ from __future__ import annotations
 import dataclasses, time, uuid, threading, math, wave, fcntl
 from pathlib import Path
 from .core import (Limits, EditorError, WallClockAbort, LocalAuKServer, atomic_json, atomic_bytes, sha256_file,
- scoped_limits, probe_audio, prepare_audio, validate_output, decode_response, command, utc_now)
+ scoped_limits, probe_audio, prepare_audio, validate_output, decode_response, command, utc_now, normalized_tokens)
 from .policy import plan_request, RETRYABLE, PROFILES
 from .qa import SemanticQAGate
 from .segment import normalize_recording, verify_alignment, splice
 from .transplant import insert_transplant, localized_transplant
 from .diagnostics import outside_interval_pcm_exact, classify_transcript_disagreement
 from .seam import seam_report
+from .nvdel_surgical import remove_nonverbal
+from .stylefix import prosody_transplant
 
 @dataclasses.dataclass
 class Result:
@@ -91,6 +93,39 @@ class ReliabilityWorker:
    gen_input=full;active_plan=plan_full
   else:
    gen_input=prepared;active_plan=plan
+  if operation=='nonverbal_remove' and not localized and self.gate.transcriber is not None:
+   # Surgical tonal-hum removal (v034): DSP on the source - free hum excised, overlap hum
+   # comb-notched - with no speech resynthesis (vendor regeneration garbles words, W3 3/17).
+   # Falls back to the vendor path when no tonal hum is detected in the clip.
+   try:
+    _obs=self.gate.transcriber(prepared)
+    _words=(_obs.get('words') if isinstance(_obs,dict) else None) or []
+    _spans=[(float(w.get('start',0)),float(w.get('end',0))) for w in _words if isinstance(w,dict)]
+    _surg_path=folder/'surgical.wav'
+    _surg=remove_nonverbal(prepared,_surg_path,_spans)
+   except Exception as _surg_exc:
+    _surg={'hum_detected':False,'error':getattr(_surg_exc,'code',type(_surg_exc).__name__)}
+   if _surg.get('hum_detected'):
+    began=time.monotonic()
+    record={'attempt':1,'seed':plan['seed'],'model_profile':profile,'runtime_profile':self.runtime_profile,
+      'started_at':utc_now(),'technical_success':True,'automatic_qa_pass':False,'failure_reason':None,
+      'artifact_paths':[str(_surg_path)],'plan':dict(plan),'selected':False,'surgical':_surg,
+      'mechanism':'dsp_excise_comb_notch_no_resynthesis','requested_target_seconds':plan['target_seconds']}
+    try:
+     validate_output(_surg_path,_surg['out_duration'],limits)
+     qa=self.gate.check(prepared,_surg_path,plan);record['qa']=qa
+     qa_pass=qa['automatic_pass'];record['automatic_qa_pass']=qa_pass
+     if qa_pass:record['selected']=True
+     else:record['failure_reason']='qa_unverified' if qa['unverified'] else 'qa_failed'
+    except Exception as exc:
+     record['technical_success']=False;record['failure_reason']=getattr(exc,'code',type(exc).__name__)
+     record['error_detail']=str(exc)[:1800];qa_pass=False
+    record['latency_seconds']=time.monotonic()-began
+    ad=folder/'attempt-01';ad.mkdir(exist_ok=True)
+    atomic_json(ad/'attempt.json',record);atomic_json(folder/'attempts.json',[record])
+    result=Result(rid,'qa_pass_review_pending' if qa_pass else 'review_required',True,qa_pass,None,
+     str(_surg_path) if qa_pass else None,record['failure_reason'],profile,time.monotonic()-request_started,[record],str(folder))
+    atomic_json(folder/'result.json',dataclasses.asdict(result));return result
   for number in range(1,self.max_attempts+1):
    if self.deadline is not None and time.monotonic()>=self.deadline:
     raise WallClockAbort(f'Wall-clock budget exhausted before attempt {number} of request {rid}.')
@@ -122,12 +157,29 @@ class ReliabilityWorker:
       _seam_bounds=record['splice'].get('source_cut_seconds',[float(start),float(end)])
       record['seam']=seam_report(final,_seam_bounds)
      except Exception as seam_exc:record['seam_error']=getattr(seam_exc,'code',type(seam_exc).__name__)
-    else:final=out
+    else:
+     final=out
+     if operation=='custom':
+      # Style-scope custom edits (expected transcript == source transcript): the vendor
+      # re-synthesizes the voice on style instructions (W3 3/17), so keep only its prosody:
+      # resynthesize the SOURCE with the styled generation's smoothed median-normalized F0
+      # (WORLD transplant, offline-validated 2026-10-28). Content-changing custom
+      # instructions stay on the vendor output.
+      _src_txt=str(p.get('source_text',''));_exp_txt=str(p.get('expected_text',''))
+      if _src_txt.strip() and normalized_tokens(_src_txt)==normalized_tokens(_exp_txt):
+       try:
+        styled=ad/'styled.wav'
+        record['prosody_transplant']=prosody_transplant(prepared,out,styled)
+        record['artifact_paths'].append(str(styled));final=styled
+       except Exception as _pt_exc:
+        record['prosody_transplant_error']=getattr(_pt_exc,'code',type(_pt_exc).__name__)
+      else:
+       record['prosody_transplant']={'skipped':'expected transcript differs from source; vendor output kept for content-changing custom instruction'}
     record['technical_success']=True;technical=True
     if localized:
      qa=self.gate.check(full,final,active_plan);record['qa']=qa
     else:
-     qa=self.gate.check(prepared,out,plan);record['qa']=qa
+     qa=self.gate.check(prepared,final,plan);record['qa']=qa
     qa_pass=qa['automatic_pass'];record['automatic_qa_pass']=qa_pass
     if qa_pass:selected=str(final);record['selected']=True;reason=None
     else:
