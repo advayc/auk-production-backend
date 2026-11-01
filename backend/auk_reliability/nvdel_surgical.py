@@ -184,14 +184,19 @@ def comb_notch(y: np.ndarray, hum_f0: float, depth=0.9, deep_low=(2, 0.95), spre
             for b in range(c-sp, c+sp+1): bins[b] = d
     att = np.array(sorted(bins))
     if not len(att): return y, 0
-    acc = np.zeros(len(y)); wsum = np.zeros(len(y))
-    for i in range(n):
+    # zero-pad so the final samples are interior to the overlap-add (4x COLA):
+    # without it the last partial frame leaves the tail unwritten (zeros) and
+    # the taper division amplifies edge noise into an end-of-clip click.
+    yp = np.concatenate([y, np.zeros(FFINE)])
+    n_pad = 1 + max(0, (len(yp) - FFINE) // HFINE)
+    acc = np.zeros(len(yp)); wsum = np.zeros(len(yp))
+    for i in range(n_pad):
         st = i*HFINE
-        S = np.fft.rfft(y[st:st+FFINE] * win)
+        S = np.fft.rfft(yp[st:st+FFINE] * win)
         for b in att: S[b] *= (1.0 - bins[b])
         acc[st:st+FFINE] += np.fft.irfft(S) * win
         wsum[st:st+FFINE] += win**2
-    return acc / np.maximum(wsum, 1e-8), len(att)
+    return (acc / np.maximum(wsum, 1e-8))[:len(y)], len(att)
 
 def remove_nonverbal(in_path, out_path, word_spans) -> dict:
     """word_spans: [(start_s, end_s)] of speech words from ASR word timestamps."""
@@ -199,9 +204,16 @@ def remove_nonverbal(in_path, out_path, word_spans) -> dict:
     n_frames = 1 + max(0, (len(x) - FRAME)//HOP)
     rms, f0, per, lowfrac = _frame_features(x)
     floor = np.percentile(rms, 20) * 0.5
+    # ASR word-end timestamps systematically under-cover final syllable tails
+    # (the "-al" of "Crystal" ran ~0.2s past its stamped word end in w4-nvdel-07);
+    # an unmasked tail reads as periodic low-band "hum" and gets excised,
+    # clipping the word. Guard each word end, capped at the next word's start,
+    # so excision never eats a speech tail. Removal must preserve speech.
+    TAIL_GUARD_S = 0.25
     wmask = np.zeros(n_frames, bool)
-    for (a, b) in word_spans:
-        wmask[max(0, int(a*SR/HOP)):min(n_frames, int(b*SR/HOP))] = True
+    for i, (a, b) in enumerate(word_spans):
+        nxt = word_spans[i+1][0] if i + 1 < len(word_spans) else float('inf')
+        wmask[max(0, int(a*SR/HOP)):min(n_frames, int(min(b + TAIL_GUARD_S, nxt)*SR/HOP))] = True
     hum_f0 = estimate_hum_f0(x, word_spans)
     if hum_f0 > 0:
         # periodic frames pinned to the hum's constant F0, or strongly periodic

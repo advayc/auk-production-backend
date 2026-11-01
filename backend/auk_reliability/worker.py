@@ -165,7 +165,7 @@ class ReliabilityWorker:
       # resynthesize the SOURCE with the styled generation's smoothed median-normalized F0
       # (WORLD transplant, offline-validated 2026-10-28). Content-changing custom
       # instructions stay on the vendor output.
-      _src_txt=str(p.get('source_text',''));_exp_txt=str(p.get('expected_text',''))
+      _src_txt=str(p.get('source_text',''));_exp_txt=str(p.get('expected_text') or plan.get('expected_transcript',''))
       if _src_txt.strip() and normalized_tokens(_src_txt)==normalized_tokens(_exp_txt):
        try:
         styled=ad/'styled.wav'
