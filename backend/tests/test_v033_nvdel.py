@@ -100,17 +100,31 @@ class NonverbalRemoveScopeTests(unittest.TestCase):
 class NonverbalRemoveE2ETests(test_backend.BackendTests):
     def test_nvdel01_sized_request_passes_normal_path(self):
         # 23.88s input (NVDEL-01 fixture size) end to end: scoped preparation, plan,
-        # generation, output validation and QA. The fixture adapter honors target_seconds.
-        src = test_backend.wav(self.root/'nvdel.wav', 23.88)
+        # surgical removal, output validation and QA. v034: the normal path for
+        # nonverbal_remove with a transcriber-equipped gate is the surgical DSP
+        # path (hum excision + comb notch), not vendor regeneration, so the
+        # fixture is speech-like with a steady synthetic hum and the stubbed ASR
+        # supplies word spans. A pure tone reads as 100% hum and is rejected as
+        # invalid_argument; the old sine fixture asserted the pre-v034 vendor path.
+        words = [(0.3 + i * 1.85, 1.0 + i * 1.85) for i in range(12)]
+        src = test_backend.speech_hum_wav(self.root/'nvdel.wav', 23.88, words)
+        self.gate.transcriber = lambda p: {'text': 'hello world',
+            'words': [{'start': a, 'end': b} for a, b in words]}
         r = self.worker.edit_audio(src, 'voice_editor', 'nonverbal_remove',
             {'rights_confirmed': True, 'source_text': 'hello world', 'seed': 42,
              'sound': 'humming', 'target_seconds': 22.0})
         self.assertTrue(r.technical_success)
         self.assertTrue(r.automatic_qa_pass)
-        plan = self.adapter.calls[0][1]
+        self.assertEqual(len(self.adapter.calls), 0)  # surgical path, no vendor call
+        attempt = r.attempts[0]
+        plan = attempt['plan']
         self.assertEqual(plan['instruction'], 'Remove the humming from the audio.')
         self.assertEqual(plan['target_seconds'], 22.0)
         self.assertEqual(plan['expected_transcript'], 'hello world')
+        self.assertEqual(attempt['mechanism'], 'dsp_excise_comb_notch_no_resynthesis')
+        self.assertTrue(attempt['surgical']['hum_detected'])
+        self.assertGreater(attempt['surgical']['removed_free_seconds'], 0.0)
+        self.assertLess(attempt['surgical']['out_duration'], attempt['surgical']['in_duration'])
 
     def test_other_ops_keep_default_caps(self):
         # The same 23.88s input is still rejected for every non-NVDEL operation.

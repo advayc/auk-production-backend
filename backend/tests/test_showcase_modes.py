@@ -11,7 +11,7 @@ import wave
 
 from auk_reliability.qa import SemanticQAGate
 from auk_reliability.worker import ReliabilityWorker
-from test_backend import Adapter, wav
+from test_backend import Adapter, speech_hum_wav, wav
 
 
 EMOTIONS = ['calm', 'happy', 'sad', 'angry', 'fearful', 'surprised',
@@ -74,11 +74,22 @@ def scenario_parameters(mode, op, index):
     return source, p, expected
 
 
+# v034: nonverbal_remove is served by the surgical DSP path (hum detection,
+# free-hum excision, comb notch) whenever the gate exposes a transcriber - not
+# by vendor regeneration. The old pure-tone fixture reads as 100% hum (the comb
+# detector's noise floor is defeated by an empty spectrum) and is rejected as
+# invalid_argument, so these scenarios use a speech-like carrier with a steady
+# synthetic hum, matching the W4 fixture recipe (real speech + synthetic hum).
+# Word spans are supplied through the stubbed transcriber's ASR dict shape.
+NVDEL_WORDS = [(0.3, 0.9), (1.3, 2.0), (2.4, 3.1), (3.5, 4.2)]
+
+
 class ShowcaseOperationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
         self.source = wav(self.root / 'source.wav', 5)
+        self.nvdel_source = speech_hum_wav(self.root / 'nvdel_source.wav', 5, NVDEL_WORDS)
         self.adapter = Adapter()
         self.worker = ReliabilityWorker(self.adapter, self.root / 'requests',
                                         runtime_profile={'simulation': True}, max_attempts=1)
@@ -89,24 +100,53 @@ class ShowcaseOperationTests(unittest.TestCase):
 
     def scenario(self, mode, op, index):
         source, p, expected = scenario_parameters(mode, op, index)
+        nvdel = op == 'nonverbal_remove'
+
+        def transcribe(path, _source=source, _expected=expected):
+            if Path(path).name == 'input.wav':
+                if nvdel:
+                    # ASR dict shape: word timestamps let the surgical path
+                    # protect speech and excise only the free hum between words.
+                    return {'text': _source,
+                            'words': [{'start': a, 'end': b} for a, b in NVDEL_WORDS]}
+                return _source
+            return _expected
+
         self.worker.gate = SemanticQAGate(
-            lambda path: source if Path(path).name == 'input.wav' else expected,
+            transcribe,
             # Changing voice characteristics must not require a matching identity.
             None if op == 'voice_characteristics' else lambda a, b: .95)
-        result = self.worker.edit_audio(self.source, mode, op, p)
+        result = self.worker.edit_audio(
+            self.nvdel_source if nvdel else self.source, mode, op, p)
         self.assertTrue(result.technical_success, result.reason)
         self.assertTrue(result.automatic_qa_pass, result.reason)
         self.assertIsNone(result.semantic_success)
         self.assertEqual(result.outcome, 'qa_pass_review_pending')
         self.assertEqual(len(result.attempts), 1)
-        plan = self.adapter.calls[0][1]
+        if nvdel:
+            # Surgical path: no vendor call; the attempt carries the DSP record.
+            self.assertEqual(len(self.adapter.calls), 0)
+            plan = result.attempts[0]['plan']
+            surgical = result.attempts[0]['surgical']
+            self.assertEqual(result.attempts[0]['mechanism'],
+                             'dsp_excise_comb_notch_no_resynthesis')
+            self.assertTrue(surgical['hum_detected'])
+            self.assertGreater(surgical['removed_free_seconds'], 0.0)
+            self.assertLess(surgical['out_duration'], surgical['in_duration'])
+        else:
+            plan = self.adapter.calls[0][1]
         self.assertEqual(plan['expected_transcript'], expected)
         self.assertEqual(plan['public_operation'], op)
         self.assertEqual(plan['identity_required'], op != 'voice_characteristics')
         self.assertTrue(plan['quality_review_required'])
         with wave.open(result.output_path) as output:
             self.assertEqual(output.getframerate(), 24000)
-            self.assertEqual(output.getnframes(), round(plan['target_seconds'] * 24000))
+            if nvdel:
+                # Surgical output keeps the speech; its duration is the input
+                # minus the excised free hum, not the requested target_seconds.
+                self.assertEqual(output.getnframes(), round(surgical['out_duration'] * 24000))
+            else:
+                self.assertEqual(output.getnframes(), round(plan['target_seconds'] * 24000))
         saved = json.loads((Path(result.request_dir) / 'result.json').read_text())
         self.assertEqual(saved['output_path'], result.output_path)
         self.assertIsNone(saved['semantic_success'])

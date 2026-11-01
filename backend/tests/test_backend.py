@@ -12,6 +12,39 @@ def wav(path,seconds=1):
  a=array.array('h',(int(6000*math.sin(i*.057)) for i in range(round(seconds*24000))))
  with wave.open(str(path),'wb') as f:f.setnchannels(1);f.setsampwidth(2);f.setframerate(24000);f.writeframes(a.tobytes())
  return path
+
+def speech_hum_wav(path, seconds, words, hum_f0=180.0):
+ # Speech-like fixture for the v034 surgical nonverbal path: voiced words with
+ # time-varying pitch (speech harmonics wander, so they never read as a steady
+ # hum comb) over a constant multi-harmonic hum - the same recipe as the W4
+ # fixtures (real speech + synthetic hum). Word spans come from the stubbed ASR.
+ # A pure tone defeats the comb detector's noise floor and reads as 100% hum, so
+ # the old sine fixture is rejected as invalid_argument by the surgical path.
+ import numpy as np
+ sr = 24000
+ n = round(seconds * sr)
+ t = np.arange(n) / sr
+ y = np.zeros(n)
+ for wi, (a, b) in enumerate(words):
+  seg = t[int(a * sr):int(b * sr)]
+  if not len(seg): continue
+  f0 = (110.0 + 12.0 * (wi % 5)) + 25.0 * np.sin(2 * np.pi * 3.0 * seg)
+  phase = 2 * np.pi * np.cumsum(f0) / sr
+  v = sum(np.sin(phase * (h + 1)) / (h + 1) for h in range(6))
+  env = np.ones(len(seg)); k = min(int(0.03 * sr), len(seg) // 2)
+  if k: env[:k] = np.linspace(0, 1, k); env[-k:] = np.linspace(1, 0, k)
+  y[int(a * sr):int(b * sr)] = v * env * 0.45
+ # Steady hum with enough upper harmonics for the comb detector (>= 2 required).
+ for h, amp in ((1, .10), (2, .05), (3, .03), (4, .02)):
+  y += amp * np.sin(2 * np.pi * hum_f0 * h * t)
+ rng = np.random.default_rng(7)
+ y += rng.normal(0, .004, n)  # broadband floor so off-peak FFT bins are real
+ y *= .7 / max(np.max(np.abs(y)), 1e-9)
+ pcm = (y * 32767).astype(np.int16)
+ with wave.open(str(path), 'wb') as f:
+  f.setnchannels(1); f.setsampwidth(2); f.setframerate(sr); f.writeframes(pcm.tobytes())
+ return path
+
 class Adapter:
  def __init__(self):self.calls=[];self.stops=0;self.fail=0;self.silent=False
  def run(self,profile,input_audio,plan):
