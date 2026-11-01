@@ -72,6 +72,15 @@ class BackendTests(unittest.TestCase):
   with self.assertRaises(EditorError):self.worker.edit_audio(self.source,'voice_editor','custom',{**self.p,'instruction':'calm'})
  def test_voice_change_does_not_demand_same_identity(self):
   self.worker.gate=SemanticQAGate(lambda p:'hello world');r=self.worker.edit_audio(self.source,'voice_editor','voice_characteristics',{**self.p,'description':'warm'});self.assertTrue(r.automatic_qa_pass)
+ def test_nonverbal_remove_without_word_timestamps_falls_back_to_vendor_path(self):
+  # Regression guard: when ASR returns text-only (no word timings), surgical
+  # nonverbal removal must skip and use the normal vendor generation path.
+  self.worker.gate=SemanticQAGate(lambda p:'hello world',lambda a,b:.9)
+  r=self.worker.edit_audio(self.source,'voice_editor','nonverbal_remove',
+   {**self.p,'sound':'humming','target_seconds':2.5})
+  self.assertTrue(r.technical_success);self.assertTrue(r.automatic_qa_pass)
+  self.assertEqual(len(self.adapter.calls),1)
+  self.assertNotIn('surgical',r.attempts[0])
  def test_segment_outside_pcm_unchanged(self):
   # Localized edits run the full-context transplant: generation comes from the
   # whole clip (speaker context), the changed phrase is spliced into the

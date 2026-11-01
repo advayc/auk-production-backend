@@ -102,7 +102,10 @@ class ReliabilityWorker:
     _words=(_obs.get('words') if isinstance(_obs,dict) else None) or []
     _spans=[(float(w.get('start',0)),float(w.get('end',0))) for w in _words if isinstance(w,dict)]
     _surg_path=folder/'surgical.wav'
-    _surg=remove_nonverbal(prepared,_surg_path,_spans)
+    if _spans:
+     _surg=remove_nonverbal(prepared,_surg_path,_spans)
+    else:
+     _surg={'hum_detected':False,'skipped':'missing_word_timestamps'}
    except Exception as _surg_exc:
     _surg={'hum_detected':False,'error':getattr(_surg_exc,'code',type(_surg_exc).__name__)}
    if _surg.get('hum_detected'):
