@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link rel="stylesheet" href="87-auk-assessment-styles.css"><style>html, body { margin: 0; } html { background: transparent; } body { width: 100%; }</style><style>/* ../../downloads/auk-consolidated-checkpoint/src/style.css */
+.summary,
+.example {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--ds-hairline);
+}
+.summary p {
+  margin: 8px 0;
+}
+.example h3 {
+  overflow-wrap: anywhere;
+}
+.players {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 16px;
+  margin: 18px 0;
+}
+.audio-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+audio {
+  width: 100%;
+  max-width: 100%;
+  height: 42px;
+}
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.filters button {
+  font: inherit;
+  padding: 10px 12px;
+  min-height: 44px;
+  border: 1px solid var(--ds-hairline);
+  background: var(--ds-page);
+  color: var(--ds-ink);
+  border-radius: 4px;
+}
+.filters button[aria-pressed=true] {
+  background: var(--ds-raised);
+  font-weight: 600;
+}
+summary {
+  min-height: 44px;
+  cursor: pointer;
+  padding: 10px 0;
+  font-weight: 600;
+}
+details {
+  margin: 12px 0;
+}
+.take {
+  margin: 20px 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--ds-hairline);
+}
+p,
+span {
+  overflow-wrap: anywhere;
+}
+
+.summary,.example{padding:20px 0;border-bottom:1px solid var(--ds-hairline)}
+.summary p{margin:8px 0}.example h3{overflow-wrap:anywhere}.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:16px;margin:18px 0}.audio-label{display:flex;flex-direction:column;gap:6px;min-width:0}audio{width:100%;max-width:100%;height:42px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.filters button{font:inherit;padding:10px 12px;min-height:44px;border:1px solid var(--ds-hairline);background:var(--ds-page);color:var(--ds-ink);border-radius:4px}.filters button[aria-pressed=true]{background:var(--ds-raised);font-weight:600}summary{min-height:44px;cursor:pointer;padding:10px 0;font-weight:600}details{margin:12px 0}.take{margin:20px 0;padding-top:12px;border-top:1px solid var(--ds-hairline)}p,span{overflow-wrap:anywhere}
+</style><title>AuK W4 fixture swap - 31 October 2026</title></head><body><main class="file-card" data-width="fluid"><header class="file-header"><h1 class="file-title">Fixture swap: both replacement cases pass first try.</h1><p class="file-fact">W4 fixture-swap addendum &middot; 31 October 2026</p><p class="file-intro">The two failing custom cases from the W4 repair batch were rerun with clean replacement fixtures (no added noise, no simulated reverb), same instructions as the originals, same v035 transplant path, same automatic gate (exact transcript + speaker match &ge; 0.75).</p></header><aside class="file-callout file-bar" data-tone="warning"><span class="file-strong">Assessment</span><span>Both replacement cases pass the automatic gate on the first attempt (1 seed each): exact transcript match and speaker similarity 0.82 / 0.88 against the 0.75 cutoff. The original w4-custom-01 and w4-custom-09 stay in the record on the main W4 page with fixture-defect attribution. Automatic passes are not sound-quality scores; listening review remains the owner&rsquo;s call.</span></aside>
+<section class="file-group"><h2 class="file-group-heading">Why the fixtures were swapped</h2><p class="file-p">The two original failures traced to the fixtures, not the pipeline. Testing the raw clean versions of the same utterances (before any added noise or reverb) showed they fail the same fixture-QA check with the same mishearings (&ldquo;heroin in the boat&rdquo;, &ldquo;of the theatre&rdquo;): both are Northern Irish speakers whose pronunciation defeats the pinned ASR against the official transcript. A same-utterance replacement was unwinnable, so new clean utterances were chosen from the corpus&rsquo;s fully clean subset (original recordings, no added noise, no added room simulation). Both candidates pass fixture-QA: production-equivalent ASR (faster-whisper small, beam 3) transcribes each input word-for-word against its official transcript. Neither clip collides with any existing W4 case fixture. The gate itself was never relaxed.</p></section>
+<section class="file-group"><h2 class="file-group-heading">Replacement results (run w4-custom-fix3, seed 42)</h2><table><thead><tr><th>Case</th><th>Instruction</th><th>Takes</th><th>Gate detail</th><th>Verdict</th><th>Output</th></tr></thead><tbody>
+<tr><td>w4-custom-01r<br/>(replaces custom-01)</td><td>Keep every word but sound more confident.</td><td>1 (first pass)</td><td>tr PASS (exact), spk 0.82</td><td class="pass">PASS</td><td><audio controls preload="none" src="1-w4-custom-01r.mp3"></audio> <a href="1-w4-custom-01r.mp3">mp3</a></td></tr>
+<tr><td>w4-custom-09r<br/>(replaces custom-09)</td><td>Make it sound like a calm, warm documentary narration. Keep every word unchanged.</td><td>1 (first pass)</td><td>tr PASS (exact), spk 0.88</td><td class="pass">PASS</td><td><audio controls preload="none" src="2-w4-custom-09r.mp3"></audio> <a href="2-w4-custom-09r.mp3">mp3</a></td></tr>
+</tbody></table></section>
+<section class="file-group"><h2 class="file-group-heading">Run record</h2><ul class="file-bullets">
+<li>Replacement sources: vctk-p376_030-mic1 (&ldquo;I&rsquo;ve got to be pleased with that.&rdquo;) for 01r; vctk-p298_027-mic2 (&ldquo;This was the classical period of Beethoven.&rdquo;) for 09r. Different utterances from every existing W4 fixture.</li>
+<li>Code path identical to the W4 custom batch: v035 prosody-transplant worker patch over pinned commit b731c6f; v036 surgical-nvdel modules also applied (runner sha-pins all seven backend modules; one staging attempt failed the pin gate before any generation spend and was fixed, recorded in the run log).</li>
+<li>Ledger rows: outcome qa_pass_review_pending for both cases; attempts_run 1; output sha256 523151a8&hellip; (01r), a09f8b8d&hellip; (09r); full per-case artifacts and ledger archived privately (Drive auk-w4-live/w4-custom-fix3).</li>
+<li>Originals and their failing audio: <a href="23-w4-assessment.html">W4 repair batch page</a> (custom-01, custom-09, marked as fixture-acoustic defects).</li>
+</ul></section></main></body></html>
