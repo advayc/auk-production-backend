@@ -14,15 +14,20 @@ class V025(unittest.TestCase):
   plan=plan_request('transcript_editor','replace',{**BASE,'alignment_verified':True},3.0,Limits())
   self.assertEqual(plan['instruction'],"Replace 'better' with 'stronger'.")
   self.assertEqual(plan['expected_transcript'],'They were the stronger team on the night.')
- def test_insert_and_delete_use_supported_replace_prompt(self):
+ def test_insert_uses_supported_replace_prompt(self):
   B={**BASE,'alignment_verified':True}
   ins=plan_request('transcript_editor','insert',{**B,'text':'really','anchor':'better','position':'before','edited_segment_text':'They were the really better team on the night.'},3.0,Limits())
   self.assertEqual(ins['instruction'],"Replace 'better' with 'really better'.")
   self.assertEqual(ins['expected_transcript'],'They were the really better team on the night.')
+ def test_deletes_use_verbatim_tts_prompt_v040(self):
+  # v0.4.0: deletes retired the Replace-span form (0/12 on the failing W4 cases,
+  # probe 2026-11-01) for the verbatim post-delete TTS template (9/12 same cases);
+  # the worker's DSP boundary trim is the primary path, this is the vendor fallback.
+  B={**BASE,'alignment_verified':True}
   dele=plan_request('transcript_editor','delete',{**B,'text':'better','edited_segment_text':'They were the team on the night.'},3.0,Limits())
-  self.assertEqual(dele['instruction'],"Replace 'better team' with 'team'.")
+  self.assertEqual(dele['instruction'],"Say the following with the same voice: 'They were the team on the night.'")
   last=plan_request('transcript_editor','delete',{**B,'text':'night.','edited_segment_text':'They were the better team on the'},3.0,Limits())
-  self.assertEqual(last['instruction'],"Replace 'the night.' with 'the'.")
+  self.assertEqual(last['instruction'],"Say the following with the same voice: 'They were the better team on the.'".replace('the.','the'))
   old=plan_request('transcript_editor','insert',{**B,'text':'really','anchor':'better','position':'before','instruction_style':'regenerate','edited_segment_text':'They were the really better team on the night.'},3.0,Limits())
   self.assertTrue(old['instruction'].startswith('Regenerate this speech as:'))
   with self.assertRaises(EditorError):plan_request('transcript_editor','insert',{**B,'text':'really','anchor':'better','position':'before','edited_segment_text':'They were the better team on the night.'},3.0,Limits())

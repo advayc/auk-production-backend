@@ -87,11 +87,15 @@ def plan_request(mode, operation, p, duration, limits):
    elif operation=='replace': span=(old,replacement)
    elif operation=='insert': span=(anchor,(text+' '+anchor) if position=='before' else (anchor+' '+text))
    else:
-    words=before.split(); target=text.split(); n=len(target)
-    idx=[i for i in range(len(words)-n+1) if words[i:i+n]==target]
-    if len(idx)==1 and len(words)>n:
-     i=idx[0]
-     span=(' '.join(words[i:i+n+1]),words[i+n]) if i+n<len(words) else (' '.join(words[i-1:i+n]),words[i-1])
+    # v0.4.0 (bounded phrasing probe 2026-11-01, run b2: 5 delete cases x 4 phrasings x 3
+    # seeds, direct model-server calls): the Replace-span delete form went 0/12 on the four
+    # failing cases - the model regenerates the whole utterance and its language prior
+    # reinstates deleted leading words on lowercase/ambiguous onsets. The vendor zero-shot
+    # TTS template with the verbatim post-delete transcript went 9/12 on the same cases, so
+    # deletes no longer use the Replace form; span stays None and the verbatim branch below
+    # builds the instruction. The worker's DSP boundary trim is the primary delete path;
+    # this instruction is the fallback for interior deletes and trim misses.
+    span=None
   # v0.2.7 (whole_clip scope only): scale the output duration by the word-count change. A fixed
   # source-length target forces added words into the same time budget (Oct 16 insert smoke on
   # p326_028: seed 42 blended 'really believed' into 'relieved', seed 44 dropped 'really', seed 43
@@ -110,6 +114,10 @@ def plan_request(mode, operation, p, duration, limits):
    pos='before' if position=='before' else 'after'
    spec=EditSpec(operation='custom',
      instruction=f"Insert {_quote_words(text)} immediately {pos} {_quote_words(anchor)}. Keep every other word, the word order, and the speaker voice unchanged.",
+     source_transcript=before,expected_transcript=expected,seed=p.get('seed',42),target_seconds=scaled)
+  elif operation=='delete':
+   spec=EditSpec(operation='custom',
+     instruction=f"Say the following with the same voice: {_quote_words(expected)}",
      source_transcript=before,expected_transcript=expected,seed=p.get('seed',42),target_seconds=scaled)
   elif span is not None:
    spec=EditSpec(operation='replace_words',old_words=span[0],new_words=span[1],

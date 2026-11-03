@@ -10,6 +10,7 @@ from .transplant import insert_transplant, localized_transplant
 from .diagnostics import outside_interval_pcm_exact, classify_transcript_disagreement
 from .seam import seam_report
 from .nvdel_surgical import remove_nonverbal
+from .trimdelete import boundary_estimate, candidate_cuts, trim_delete
 from .stylefix import prosody_transplant
 
 @dataclasses.dataclass
@@ -126,6 +127,47 @@ class ReliabilityWorker:
     result=Result(rid,'qa_pass_review_pending' if qa_pass else 'review_required',True,qa_pass,None,
      str(_surg_path) if qa_pass else None,record['failure_reason'],profile,time.monotonic()-request_started,[record],str(folder))
     atomic_json(folder/'result.json',dataclasses.asdict(result));return result
+  if mode=='transcript_editor' and operation=='delete' and whole_clip and self.gate.transcriber is not None:
+   # Boundary-delete DSP trim (v0.4.0, see trimdelete.py): candidate cuts around the ASR
+   # boundary, each gated by the standard transcript+speaker checks, first pass selected.
+   # No model call, no resynthesis. Falls through to the vendor verbatim path when the
+   # delete is mid-segment or no candidate passes; the evaluation is recorded either way.
+   try:
+    _obs=self.gate.transcriber(prepared)
+    _words=(_obs.get('words') if isinstance(_obs,dict) else None) or []
+    _est=boundary_estimate(_words,p.get('segment_text',''),p.get('text',''))
+   except Exception:
+    _est=None
+   if _est is not None:
+    began=time.monotonic()
+    record={'attempt':1,'seed':plan['seed'],'model_profile':profile,'runtime_profile':self.runtime_profile,
+      'started_at':utc_now(),'technical_success':True,'automatic_qa_pass':False,'failure_reason':None,
+      'artifact_paths':[],'plan':dict(plan),'selected':False,
+      'mechanism':'dsp_boundary_trim_candidate_selection',
+      'trim':{'direction':_est['direction'],'estimate_seconds':_est['estimate'],'candidates':[]}}
+    _selected=None
+    for _ci,_cut in enumerate(candidate_cuts(_est['direction'],_est['estimate'],meta['duration_seconds'])):
+     _cand=folder/('trim-candidate-%02d.wav'%_ci)
+     try:
+      _ti=trim_delete(prepared,_cand,_cut,_est['direction'])
+      validate_output(_cand,_ti['out_duration'],limits)
+      _cqa=self.gate.check(prepared,_cand,plan)
+      _ce={'cut_seconds':_cut,'qa_pass':_cqa['automatic_pass'],'qa':_cqa}
+      record['trim']['candidates'].append(_ce);record['artifact_paths'].append(str(_cand))
+      if _cqa['automatic_pass']:
+       _selected=str(_cand);_ce['selected']=True;break
+     except Exception as _cand_exc:
+      record['trim']['candidates'].append({'cut_seconds':_cut,'error':getattr(_cand_exc,'code',type(_cand_exc).__name__)})
+    record['latency_seconds']=time.monotonic()-began
+    if _selected is not None:
+     record['selected']=True;record['automatic_qa_pass']=True
+     ad=folder/'attempt-01';ad.mkdir(exist_ok=True)
+     atomic_json(ad/'attempt.json',record);atomic_json(folder/'attempts.json',[record])
+     result=Result(rid,'qa_pass_review_pending',True,True,None,_selected,None,profile,time.monotonic()-request_started,[record],str(folder))
+     atomic_json(folder/'result.json',dataclasses.asdict(result));return result
+    # No candidate passed: keep the evaluation on record and fall through to the vendor path.
+    record['failure_reason']='trim_no_candidate_passed'
+    atomic_json(folder/'trim-delete.json',record)
   for number in range(1,self.max_attempts+1):
    if self.deadline is not None and time.monotonic()>=self.deadline:
     raise WallClockAbort(f'Wall-clock budget exhausted before attempt {number} of request {rid}.')
