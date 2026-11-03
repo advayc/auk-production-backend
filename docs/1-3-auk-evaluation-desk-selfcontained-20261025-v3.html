@@ -145,4 +145,20 @@ body.compact .card{padding:12px 22px}
 </table>
 <p>14 failing case(s) omitted from this showcase; see the full record on the <a href="1-auk-assessment-20261028.html">assessment page</a>.</p>
 </section>
+<section id="w4-delete-record"><h2>W4 delete re-run (boundary trim + candidate selection, backend v0.4.0) - 3 Nov 2026</h2>
+<h3>Delete words - 10/10 passing, all first-pass</h3>
+<table><tr><th>Case</th><th>Instruction</th><th>Result</th><th>Audio</th></tr>
+<tr><td>w4-span-delete-01</td><td>Replace 'IT IS the' with 'the'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="109-delete-01-after.mp3"></audio> <a href="109-delete-01-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-02</td><td>Replace 'The important thing' with 'thing'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="111-delete-02-after.mp3"></audio> <a href="111-delete-02-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-03</td><td>Replace 'Now the show' with 'show'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="113-delete-03-after.mp3"></audio> <a href="113-delete-03-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-04</td><td>Replace 'But it was' with 'was'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="115-delete-04-after.mp3"></audio> <a href="115-delete-04-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-05</td><td>Replace 'It is not' with 'not'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="117-delete-05-after.mp3"></audio> <a href="117-delete-05-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-06</td><td>Replace 'I am not' with 'not'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="119-delete-06-after.mp3"></audio> <a href="119-delete-06-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-07</td><td>Replace 'The likelihood is' with 'is'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="121-delete-07-after.mp3"></audio> <a href="121-delete-07-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-08</td><td>Replace 'They have the' with 'the'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="123-delete-08-after.mp3"></audio> <a href="123-delete-08-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-09</td><td>Replace 'He added, We' with 'We'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="125-delete-09-after.mp3"></audio> <a href="125-delete-09-after.mp3">mp3</a></td></tr>
+<tr><td>w4-span-delete-10</td><td>Replace 'He scored one' with 'one'.</td><td class="pass">PASS</td><td><audio controls preload="none" src="127-delete-10-after.mp3"></audio> <a href="127-delete-10-after.mp3">mp3</a></td></tr>
+</table>
+<p>Deletes now cut around the deleted span directly (ASR-estimated boundary, up to 8 candidate trims, QA gate selects the first passing candidate) instead of regenerating the section; transcript exact on every selected take, speaker match 0.870-0.976 (cutoff 0.75). The previous span-regeneration run reached 6/10 after bounded repair. Before/after pairs and the full record are on the <a href="23-w4-assessment.html">assessment page</a>.</p>
+</section>
 </body></html>
