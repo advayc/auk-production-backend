@@ -66,12 +66,6 @@ class SuiteScopeTests(test_backend.BackendTests):
         super().setUp()
         self.manifest = enhancer_manifest(self.root, self.source)
 
-    def run_suite(self, env):
-        with mock.patch.dict(os.environ, env, clear=False):
-            os.environ.pop(ENHANCER_ACCEPTANCE_ENV, None) if ENHANCER_ACCEPTANCE_ENV not in env else None
-            configure_acceptance_suite(self.worker, self.manifest, self.root / 'suite')
-            return run_acceptance_suite(acceptance=False)
-
     def test_flag_off_excludes_enhancer_end_to_end(self):
         env = {k: v for k, v in os.environ.items() if k != ENHANCER_ACCEPTANCE_ENV}
         with mock.patch.dict(os.environ, env, clear=True):
