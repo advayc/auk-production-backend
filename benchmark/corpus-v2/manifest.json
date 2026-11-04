@@ -1,0 +1,287 @@
+{
+ "seed": 20261103,
+ "sr_default": 48000,
+ "version": "benchmark-v2",
+ "clips": [
+  {
+   "file": "bench-clean-studio-01.wav",
+   "category": "clean-studio",
+   "recipe": "untouched clean source p292_029-mic2",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.482,
+   "gate_notes": "bypass or near-identity expected; no timbre change"
+  },
+  {
+   "file": "bench-clean-studio-02.wav",
+   "category": "clean-studio",
+   "recipe": "untouched clean source p293_027-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 4.491,
+   "gate_notes": "bypass or near-identity expected; no timbre change"
+  },
+  {
+   "file": "bench-wind-10db-01.wav",
+   "category": "wind",
+   "recipe": "wind-10db: wind noise at 10.0dB SNR (measured 10.00) on p312_036-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.321,
+   "gate_notes": "words must survive; measured_snr=10.00. "
+  },
+  {
+   "file": "bench-wind-10db-02.wav",
+   "category": "wind",
+   "recipe": "wind-10db: wind noise at 10.0dB SNR (measured 10.00) on p317_025-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 2.567,
+   "gate_notes": "words must survive; measured_snr=10.00. "
+  },
+  {
+   "file": "bench-traffic-8db-01.wav",
+   "category": "traffic",
+   "recipe": "traffic-8db: traffic noise at 8.0dB SNR (measured 8.00) on p317_025-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 2.567,
+   "gate_notes": "words must survive; measured_snr=8.00. "
+  },
+  {
+   "file": "bench-traffic-8db-02.wav",
+   "category": "traffic",
+   "recipe": "traffic-8db: traffic noise at 8.0dB SNR (measured 8.00) on p351_031-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.128,
+   "gate_notes": "words must survive; measured_snr=8.00. "
+  },
+  {
+   "file": "bench-crowd-cafe-10db-01.wav",
+   "category": "crowd",
+   "recipe": "crowd-cafe-10db: crowd noise at 10.0dB SNR (measured 10.00) on p304_030-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.398,
+   "gate_notes": "words must survive; measured_snr=10.00. "
+  },
+  {
+   "file": "bench-crowd-cafe-10db-02.wav",
+   "category": "crowd",
+   "recipe": "crowd-cafe-10db: crowd noise at 10.0dB SNR (measured 10.00) on p307_025-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.455,
+   "gate_notes": "words must survive; measured_snr=10.00. "
+  },
+  {
+   "file": "bench-reverb-t60-08-01.wav",
+   "category": "reverb",
+   "recipe": "T60=0.8s synthetic RIR on p304_030-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.398,
+   "gate_notes": "dereverb without metallic tail or word loss"
+  },
+  {
+   "file": "bench-reverb-t60-08-02.wav",
+   "category": "reverb",
+   "recipe": "T60=0.8s synthetic RIR on p307_025-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.455,
+   "gate_notes": "dereverb without metallic tail or word loss"
+  },
+  {
+   "file": "bench-reverb-noise-hard-01.wav",
+   "category": "reverb+noise",
+   "recipe": "T60=0.6s + babble 7.5dB (measured 7.50) on p312_036-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.321,
+   "gate_notes": "hardest case; no chopped consonants"
+  },
+  {
+   "file": "bench-reverb-noise-hard-02.wav",
+   "category": "reverb+noise",
+   "recipe": "T60=0.6s + babble 7.5dB (measured 7.50) on p317_025-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 2.567,
+   "gate_notes": "hardest case; no chopped consonants"
+  },
+  {
+   "file": "bench-music-12db-01.wav",
+   "category": "music-under-dialogue",
+   "recipe": "music-12db: music-under-dialogue noise at 12.0dB SNR (measured 12.00) on p293_027-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 4.491,
+   "gate_notes": "words must survive; measured_snr=12.00. dialogue must stay intact; music bed may remain at reduced level per preserve_original_mix mode"
+  },
+  {
+   "file": "bench-music-12db-02.wav",
+   "category": "music-under-dialogue",
+   "recipe": "music-12db: music-under-dialogue noise at 12.0dB SNR (measured 12.00) on p300_028-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 5.059,
+   "gate_notes": "words must survive; measured_snr=12.00. dialogue must stay intact; music bed may remain at reduced level per preserve_original_mix mode"
+  },
+  {
+   "file": "bench-multi-speaker-01.wav",
+   "category": "multi-speaker",
+   "recipe": "p351_031-mic1 primary + p300_028-mic1 overlapping at -3dB, offset 0.35s",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 5.059,
+   "gate_notes": "both speakers words preserved; no speaker removal unless isolation requested"
+  },
+  {
+   "file": "bench-multi-speaker-02.wav",
+   "category": "multi-speaker",
+   "recipe": "p363_029-mic1 primary + p304_030-mic1 overlapping at -3dB, offset 0.35s",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.398,
+   "gate_notes": "both speakers words preserved; no speaker removal unless isolation requested"
+  },
+  {
+   "file": "bench-whisper-like-01.wav",
+   "category": "whisper-like",
+   "recipe": "spectral-shaped breathy/quiet render of p363_029-mic1 (no true whisper source available)",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.182,
+   "gate_notes": "speech must not be erased as noise; acceptable to keep low level"
+  },
+  {
+   "file": "bench-quiet-speech-01.wav",
+   "category": "quiet-speech",
+   "recipe": "p376_029-mic2 at -16dB",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 2.998,
+   "gate_notes": "gain up without noise pumping"
+  },
+  {
+   "file": "bench-clipped-01.wav",
+   "category": "clipped",
+   "recipe": "p292_029-mic2 gained 2x hard-clipped at 0.7",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.482,
+   "gate_notes": "declip reasonable; no added harshness; words intact"
+  },
+  {
+   "file": "bench-clipped-02.wav",
+   "category": "clipped",
+   "recipe": "p312_036-mic1 gained 2x hard-clipped at 0.7",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.321,
+   "gate_notes": "declip reasonable; no added harshness; words intact"
+  },
+  {
+   "file": "bench-low-volume-01.wav",
+   "category": "low-volume",
+   "recipe": "p293_027-mic1 at -20dB",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 4.491,
+   "gate_notes": "normalize to loudness target without pumping"
+  },
+  {
+   "file": "bench-silence-lead-trail-01.wav",
+   "category": "silence-lead-trail",
+   "recipe": "2s silence + p300_028-mic1 + 3s silence, -68dBFS floor",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 10.059,
+   "gate_notes": "silence stays silent (no hallucinated speech, no hiss swell); speech timing preserved"
+  },
+  {
+   "file": "bench-silence-only-01.wav",
+   "category": "silence-only",
+   "recipe": "5s of -68dBFS noise floor only",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 5.0,
+   "gate_notes": "output must be silence; no hallucination; no DC offset"
+  },
+  {
+   "file": "bench-short-2s-01.wav",
+   "category": "short",
+   "recipe": "first 2.0s of p304_030-mic1",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 2.0,
+   "gate_notes": "short-file path: no padding artifacts, no truncation"
+  },
+  {
+   "file": "bench-stereo-01.wav",
+   "category": "stereo",
+   "recipe": "decorrelated stereo noise (10dB) on p307_025-mic1, 12ms ITD image",
+   "sr": 48000,
+   "channels": 2,
+   "duration_s": 3.455,
+   "gate_notes": "stereo stays stereo; image stable; no phase collapse"
+  },
+  {
+   "file": "bench-stereo-02.wav",
+   "category": "stereo",
+   "recipe": "decorrelated stereo noise (10dB) on p317_025-mic1, 12ms ITD image",
+   "sr": 48000,
+   "channels": 2,
+   "duration_s": 2.567,
+   "gate_notes": "stereo stays stereo; image stable; no phase collapse"
+  },
+  {
+   "file": "bench-sr-44k-01.wav",
+   "category": "sample-rate-44.1k",
+   "recipe": "44.1kHz native + babble 10dB on p351_031-mic1",
+   "sr": 44100,
+   "channels": 1,
+   "duration_s": 3.128,
+   "gate_notes": "sample rate preserved unless destination conversion requested"
+  },
+  {
+   "file": "bench-codec-aac-96k-01.m4a",
+   "category": "codec-aac-96k",
+   "recipe": "babble 10dB on p363_029-mic1, encoded aac-96k",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.182,
+   "gate_notes": "decoder delay/encoder padding must not break sync; treat as lossy source"
+  },
+  {
+   "file": "bench-codec-mp3-128k-01.mp3",
+   "category": "codec-mp3-128k",
+   "recipe": "babble 10dB on p363_029-mic1, encoded mp3-128k",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 3.216,
+   "gate_notes": "decoder delay/encoder padding must not break sync; treat as lossy source"
+  },
+  {
+   "file": "bench-video-sync-01.mp4",
+   "category": "video-sync",
+   "recipe": "traffic 10dB on p376_029-mic2, H.264+AAC mp4, 2.998s",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 2.998,
+   "gate_notes": "audio-video sync preserved within one frame; output duration == input duration"
+  },
+  {
+   "file": "bench-long-5min-01.flac",
+   "category": "long-form",
+   "recipe": "60 utterances looped + babble 12dB, 300s (FLAC lossless of the 28MB WAV master; WAV exceeded the 25MB Drive upload cap)",
+   "sr": 48000,
+   "channels": 1,
+   "duration_s": 300.0,
+   "gate_notes": "chunk-consistency: no boundary clicks, no loudness drift, whole-file == chunked"
+  }
+ ],
+ "total_clips": 31
+}
