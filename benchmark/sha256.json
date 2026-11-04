@@ -1,4 +1,15 @@
 {
+ "adobe/README.md": "086b0fae647abd38cb08695f5260c2f33fca71b8165f17d4fa26ca882bd2e0b0",
+ "clean-vctk/vctk-p292_029-mic2.wav": "74dfacbeff247b029271ced9952012e63ab3218a870daea286e37ae31f77745f",
+ "clean-vctk/vctk-p293_027-mic1.wav": "9bf074ca473360f0bd1b854d75f3511c34261f5d24837001892f4e9a8659762b",
+ "clean-vctk/vctk-p300_028-mic1.wav": "d3b355c5721aae61dd5e66d725d293d9f7057e5e89af92001710771052ab3e87",
+ "clean-vctk/vctk-p304_030-mic1.wav": "e22854c90ae79971069e68620653eaf68121a11cbe7d99bf6f2c9b0f9dc9fe6d",
+ "clean-vctk/vctk-p307_025-mic1.wav": "dc4cea22fdc41c3ba070ba6a5c7b08dc3a798bec511aa21a809743ee8c46c593",
+ "clean-vctk/vctk-p312_036-mic1.wav": "181e9f1798c668a85024ea1e584d3fec04fdec08c41e3106a8679e88efe4ca6e",
+ "clean-vctk/vctk-p317_025-mic1.wav": "502a1859d46f48539fcc862b25f88941a9c22a24677e37b1b3cc0bae0878bb00",
+ "clean-vctk/vctk-p351_031-mic1.wav": "f39af41290672a840ee2c0f62af133a9aba61d357f7cdf2fe5278501d34edbbe",
+ "clean-vctk/vctk-p363_029-mic1.wav": "e6723719edf742b2ea0c457580bdbfe6a8eabf2ac767c06783b7c509092ac5cb",
+ "clean-vctk/vctk-p376_029-mic2.wav": "c322c8f4fc88845c8fe9b0a1b86cef36df5c0ba5fa54029338279962d3c32e74",
  "corpus-v2/bench-clean-studio-01.wav": "f794aeb156cdf979fee9282ca716260dbaf7a46491e7d9abe53c06ad784b509c",
  "corpus-v2/bench-clean-studio-02.wav": "ac342a4c7f98f9d66aa804b266f0bb8b0edef8e30256b4d859ece2d24672244e",
  "corpus-v2/bench-clipped-01.wav": "d938287510d4919848de37c3c6cb2a797f3f29944e011314015c7a4c79869554",
@@ -51,14 +62,5 @@
  "eval-v1/enh-eval-p363_029-mic1-reverb-noise-hard.wav": "39030014566901a034547dc610235e7762d9eca57754e639369eb7da37a78669",
  "eval-v1/enh-eval-p376_029-mic2-noisy-cafe-10db.wav": "51f9697b7e0c582d340e00c24d2106eda8c63731ee5577988560d2118f9f1535",
  "eval-v1/enh-eval-p376_029-mic2-reverb-noise-hard.wav": "b68d9e1c964c8172b8a8220aedca8cdeda3c0595400c836e1dcece1e2a37ac6e",
- "clean-vctk/vctk-p292_029-mic2.wav": "74dfacbeff247b029271ced9952012e63ab3218a870daea286e37ae31f77745f",
- "clean-vctk/vctk-p293_027-mic1.wav": "9bf074ca473360f0bd1b854d75f3511c34261f5d24837001892f4e9a8659762b",
- "clean-vctk/vctk-p300_028-mic1.wav": "d3b355c5721aae61dd5e66d725d293d9f7057e5e89af92001710771052ab3e87",
- "clean-vctk/vctk-p304_030-mic1.wav": "e22854c90ae79971069e68620653eaf68121a11cbe7d99bf6f2c9b0f9dc9fe6d",
- "clean-vctk/vctk-p307_025-mic1.wav": "dc4cea22fdc41c3ba070ba6a5c7b08dc3a798bec511aa21a809743ee8c46c593",
- "clean-vctk/vctk-p312_036-mic1.wav": "181e9f1798c668a85024ea1e584d3fec04fdec08c41e3106a8679e88efe4ca6e",
- "clean-vctk/vctk-p317_025-mic1.wav": "502a1859d46f48539fcc862b25f88941a9c22a24677e37b1b3cc0bae0878bb00",
- "clean-vctk/vctk-p351_031-mic1.wav": "f39af41290672a840ee2c0f62af133a9aba61d357f7cdf2fe5278501d34edbbe",
- "clean-vctk/vctk-p363_029-mic1.wav": "e6723719edf742b2ea0c457580bdbfe6a8eabf2ac767c06783b7c509092ac5cb",
- "clean-vctk/vctk-p376_029-mic2.wav": "c322c8f4fc88845c8fe9b0a1b86cef36df5c0ba5fa54029338279962d3c32e74"
+ "score_eval.py": "68eef7f186635b24d8866528d28944593072b114e8e30048b2547c0d6863a2f4"
 }
