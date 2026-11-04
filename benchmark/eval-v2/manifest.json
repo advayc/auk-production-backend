@@ -1,0 +1,217 @@
+{
+ "seed": 20261104,
+ "seed_derivation": "SEED + sha256(base|condition)[:4] little-endian",
+ "sr": 48000,
+ "conditions": {
+  "noisy-cafe-10db": {
+   "snr_db": 10.0,
+   "reverb_t60": null
+  },
+  "reverb-noise-hard": {
+   "snr_db": 7.5,
+   "reverb_t60": 0.6
+  }
+ },
+ "files": [
+  {
+   "file": "enh-eval-p226_006-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p226_006-mic1.wav",
+   "source_sha256": "3506b52f9a5179c5f04c622fddc01aa6f8f860a6f2046b5f0c8bafffacdf5253",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 6.546,
+   "transcript": "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow."
+  },
+  {
+   "file": "enh-eval-p226_006-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p226_006-mic1.wav",
+   "source_sha256": "3506b52f9a5179c5f04c622fddc01aa6f8f860a6f2046b5f0c8bafffacdf5253",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 6.546,
+   "transcript": "When the sunlight strikes raindrops in the air, they act as a prism and form a rainbow."
+  },
+  {
+   "file": "enh-eval-p228_018-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p228_018-mic1.wav",
+   "source_sha256": "6306f4c80b974f24076ae7a9fa5dfba5f83bb26c85c0b05039a84e808b86088d",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 5.626,
+   "transcript": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain."
+  },
+  {
+   "file": "enh-eval-p228_018-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p228_018-mic1.wav",
+   "source_sha256": "6306f4c80b974f24076ae7a9fa5dfba5f83bb26c85c0b05039a84e808b86088d",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 5.626,
+   "transcript": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain."
+  },
+  {
+   "file": "enh-eval-p232_024-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p232_024-mic1.wav",
+   "source_sha256": "bb961bcfbdfa6d09fd29fe31a41cba0e2e3787e3823e806bd7cc8f4c255e5ca6",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 5.884,
+   "transcript": "This is a very common type of bow, one showing mainly red and yellow, with little or no green or blue."
+  },
+  {
+   "file": "enh-eval-p232_024-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p232_024-mic1.wav",
+   "source_sha256": "bb961bcfbdfa6d09fd29fe31a41cba0e2e3787e3823e806bd7cc8f4c255e5ca6",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 5.884,
+   "transcript": "This is a very common type of bow, one showing mainly red and yellow, with little or no green or blue."
+  },
+  {
+   "file": "enh-eval-p237_011-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p237_011-mic1.wav",
+   "source_sha256": "b1a104dd20e7864f53c74c63dc91dcaad7f57eecd72afb6693a4fd0f6fe34d45",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 6.46,
+   "transcript": "When a man looks for something beyond his reach, his friends say he is looking for the pot of gold at the end of the rainbow."
+  },
+  {
+   "file": "enh-eval-p237_011-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p237_011-mic1.wav",
+   "source_sha256": "b1a104dd20e7864f53c74c63dc91dcaad7f57eecd72afb6693a4fd0f6fe34d45",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 6.46,
+   "transcript": "When a man looks for something beyond his reach, his friends say he is looking for the pot of gold at the end of the rainbow."
+  },
+  {
+   "file": "enh-eval-p240_015-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p240_015-mic1.wav",
+   "source_sha256": "bd89226863d3b55f80c0b7196d8b345675a5df0e7af9f2ce0ea712a37ea995b3",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 5.869,
+   "transcript": "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain."
+  },
+  {
+   "file": "enh-eval-p240_015-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p240_015-mic1.wav",
+   "source_sha256": "bd89226863d3b55f80c0b7196d8b345675a5df0e7af9f2ce0ea712a37ea995b3",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 5.869,
+   "transcript": "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain."
+  },
+  {
+   "file": "enh-eval-p248_012-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p248_012-mic1.wav",
+   "source_sha256": "5e2d7f2f2dec5072ef9a92dfbf797ad064bc7d58099f59f688695e601d57b79b",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 6.429,
+   "transcript": "Throughout the centuries people have explained the rainbow in various ways."
+  },
+  {
+   "file": "enh-eval-p248_012-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p248_012-mic1.wav",
+   "source_sha256": "5e2d7f2f2dec5072ef9a92dfbf797ad064bc7d58099f59f688695e601d57b79b",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 6.429,
+   "transcript": "Throughout the centuries people have explained the rainbow in various ways."
+  },
+  {
+   "file": "enh-eval-p254_018-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p254_018-mic1.wav",
+   "source_sha256": "2756c53c225b942f80b63fefae61c8c40ed754ef0e287e96910b07f3461e8951",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 5.758,
+   "transcript": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain."
+  },
+  {
+   "file": "enh-eval-p254_018-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p254_018-mic1.wav",
+   "source_sha256": "2756c53c225b942f80b63fefae61c8c40ed754ef0e287e96910b07f3461e8951",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 5.758,
+   "transcript": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain."
+  },
+  {
+   "file": "enh-eval-p261_015-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p261_015-mic1.wav",
+   "source_sha256": "0aa08985e71d4b0ad86d48c8caafef64b193a7f079806ebd5bf54b21c166669c",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 5.676,
+   "transcript": "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain."
+  },
+  {
+   "file": "enh-eval-p261_015-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p261_015-mic1.wav",
+   "source_sha256": "0aa08985e71d4b0ad86d48c8caafef64b193a7f079806ebd5bf54b21c166669c",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 5.676,
+   "transcript": "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain."
+  },
+  {
+   "file": "enh-eval-p267_018-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p267_018-mic1.wav",
+   "source_sha256": "d88c5d2025798aecb5e59cbbef9a87c96ab4398e64983d4c644e644799f408e9",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 5.678,
+   "transcript": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain."
+  },
+  {
+   "file": "enh-eval-p267_018-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p267_018-mic1.wav",
+   "source_sha256": "d88c5d2025798aecb5e59cbbef9a87c96ab4398e64983d4c644e644799f408e9",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 5.678,
+   "transcript": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain."
+  },
+  {
+   "file": "enh-eval-p272_005-mic1-noisy-cafe-10db.wav",
+   "source": "vctk-p272_005-mic1.wav",
+   "source_sha256": "9ed342dde2ca824939c8771dca6885aea10c6d1f7ad46cd09aa0bb514ce10d7e",
+   "condition": "noisy-cafe-10db",
+   "snr_db_target": 10.0,
+   "snr_db_achieved": 10.0,
+   "duration_s": 6.232,
+   "transcript": "She can scoop these things into three red bags, and we will go meet her Wednesday at the train station."
+  },
+  {
+   "file": "enh-eval-p272_005-mic1-reverb-noise-hard.wav",
+   "source": "vctk-p272_005-mic1.wav",
+   "source_sha256": "9ed342dde2ca824939c8771dca6885aea10c6d1f7ad46cd09aa0bb514ce10d7e",
+   "condition": "reverb-noise-hard",
+   "snr_db_target": 7.5,
+   "snr_db_achieved": 7.5,
+   "duration_s": 6.232,
+   "transcript": "She can scoop these things into three red bags, and we will go meet her Wednesday at the train station."
+  }
+ ]
+}
