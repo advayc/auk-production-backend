@@ -156,10 +156,16 @@ class Limits:
 # speaker cosine 0.9660. Runtime/vendor limits BEYOND this envelope are unverified; do
 # not raise without new probe evidence. Every other operation keeps the default caps.
 NVDEL_SCOPE = {'max_input_seconds': 25.0, 'max_output_seconds': 25.0, 'combined_seconds': 50.0}
+# voice_enhancer processes whole recordings (chunked internally at 12s with overlap;
+# see enhance.py). The per-file cap is the upload/duration policy, not a model limit:
+# the generative core only ever sees <=12s chunks, so no new runtime envelope is claimed.
+ENHANCER_SCOPE = {'max_input_seconds': 600.0, 'max_output_seconds': 600.0, 'combined_seconds': 1200.0}
 
 def scoped_limits(limits: Limits, operation: str) -> Limits:
     if operation == 'nonverbal_remove':
         return dataclasses.replace(limits, **NVDEL_SCOPE)
+    if operation in ('enhance', 'denoise', 'dereverb'):
+        return dataclasses.replace(limits, **ENHANCER_SCOPE)
     return limits
 
 

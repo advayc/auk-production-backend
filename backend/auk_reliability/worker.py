@@ -12,6 +12,7 @@ from .seam import seam_report
 from .nvdel_surgical import remove_nonverbal
 from .trimdelete import boundary_estimate, candidate_cuts, trim_delete
 from .stylefix import prosody_transplant
+from .enhance import run_voice_enhancer
 
 @dataclasses.dataclass
 class Result:
@@ -127,6 +128,13 @@ class ReliabilityWorker:
     result=Result(rid,'qa_pass_review_pending' if qa_pass else 'review_required',True,qa_pass,None,
      str(_surg_path) if qa_pass else None,record['failure_reason'],profile,time.monotonic()-request_started,[record],str(folder))
     atomic_json(folder/'result.json',dataclasses.asdict(result));return result
+  if mode=='voice_enhancer':
+   # Adaptive enhancement (v0.5.0, enhance.py): measured analysis decides bypass/light/full;
+   # generative cleanup runs in overlapped chunks with per-chunk length restore and a
+   # raised-cosine stitch, the result is blended against the dry source, mastered to the
+   # loudness target with true-peak limiting, restored sample-exact, then gated by the
+   # same immutable transcript + speaker checks as every other mode.
+   return run_voice_enhancer(self,source,folder,rid,plan,profile,p,limits,request_started)
   if mode=='transcript_editor' and operation=='delete' and whole_clip and self.gate.transcriber is not None:
    # Boundary-delete DSP trim (v0.4.0, see trimdelete.py): candidate cuts around the ASR
    # boundary, each gated by the standard transcript+speaker checks, first pass selected.
