@@ -55,7 +55,7 @@ dl.eval dt{color:#666}dl.eval dd{margin:0;font-weight:600}
 
 <div class="callout" style="background:var(--greenbg);border-color:#c3ddd0">
 <b>Verdict: the AuK generative enhancer (the v0.5.0 backend default, 16 steps / guidance 1.0 / sway -1.0) is the strongest option tested.</b>
-It beats every open-source model on both conditions on word accuracy, ties the server-default 32-step config (so the cheaper 16-step default stands), and its output spectrum tracks the clean reference. Only MossFormer2 clears the do-no-harm bar among the OSS models. Resemble's full enhance stage actively damages word accuracy and is disqualified.
+It beats every open-source model on both conditions on word accuracy, ties the server-default 32-step config (so the cheaper 16-step default stands), and its output spectrum tracks the clean reference. Only MossFormer2 clears the do-no-harm bar among the OSS models. Resemble's full enhance stage actively damages word accuracy and is disqualified. <em>Update same night: a 10-speaker held-out expansion (eval-v2 below) narrows the win - AuK still leads pooled over 40 clips (0.175 vs 0.205 WER) but the paired tests are not significant, and MossFormer2 edges AuK on the hard reverb condition for the new speakers.</em>
 </div>
 
 <h2 class="section">Word error rate (mean, lower is better)</h2>
@@ -70,6 +70,17 @@ It beats every open-source model on both conditions on word accuracy, ties the s
 <tr><td>Raw degraded input (no enhancement)</td><td>0.037</td><td>0.487</td><td><span class="badge a">0.262</span></td><td style="font-size:12.5px;color:var(--mut)">-</td></tr>
 </tbody></table></div>
 <p class="secblurb">Per-clip, AuK-16 vs the best OSS model of each clip: <b>5 wins, 13 ties, 2 losses</b>. On cafe noise both AuK configs recovered perfect ASR (0.000 WER) on all 10 clips. On the hard condition AuK roughly halves the input's WER (0.487 &rarr; 0.260); the best OSS (MossFormer2) reaches only 0.368.</p>
+
+<h2 class="section">Corpus expansion: eval-v2, 10 new held-out speakers (pooled n=40)</h2>
+<p>Same harness, same night (2026-11-03, fresh L4 runtime): 10 additional VCTK 0.92 speakers (p226, p228, p232, p237, p240, p248, p254, p261, p267, p272, all mic1), disjoint from eval-v1's ten and from every corpus-v2 source speaker, degraded with the identical DSP recipe by the deterministic <code>benchmark/gen_eval_set_v2.py</code> (sha256-derived per-clip seeds; the v1 generator used process-salted <code>hash()</code> and is not reproducible, so v1 outputs stay pinned as scored). All v2 assets are sha256-pinned in the repo (96 pins). Integrity re-checks this run: AuK eval-v1 0.1299 vs pinned 0.1300 PASS, input 0.2621 vs 0.2620 PASS, MossFormer2 eval-v1 re-scored 0.2025 vs pinned 0.2030 PASS.</p>
+<table>
+<tr><th>Model</th><th>Cafe 10 dB</th><th>Reverb+noise hard</th><th>Pooled (v2 only)</th></tr>
+<tr><td>AuK generative - 16/1.0/-1.0 (backend default)</td><td>0.010</td><td>0.431</td><td>0.220</td></tr>
+<tr><td>MossFormer2 SE 48K</td><td>0.038</td><td>0.377</td><td>0.207</td></tr>
+<tr><td>Raw degraded input (no enhancement)</td><td>0.047</td><td>0.633</td><td>0.340</td></tr>
+</table>
+<p>Pooled across all 40 clips (v1 + v2, per-clip paired): AuK <strong>0.175</strong>, MossFormer2 <strong>0.205</strong>, raw input 0.301. Per-condition pooled: cafe 0.005 (AuK) vs 0.038 (MossFormer2); reverb-hard 0.346 vs 0.372. Paired per-clip AuK vs MossFormer2: 12 wins, 20 ties, 8 losses; sign test p=0.50, Wilcoxon p=0.38.</p>
+<p><strong>Honest read:</strong> the decisive v1 win does <em>not</em> fully replicate on untouched speakers. AuK remains clearly stronger on cafe noise (0.005 vs 0.038 pooled) and its aligned ESTOI on the hard v2 clips is far better (0.555 vs 0.138 - it reconstructs word-accurate but not sample-aligned speech, which the intrusive metric only partially credits). But on the hard reverb+noise condition with new speakers, MossFormer2 edges AuK on WER (0.377 vs 0.431), and over the pooled 40 clips the AuK lead (0.175 vs 0.205) is not statistically significant. Both pipelines beat doing nothing by a wide margin (input 0.301). The v2 reverb-hard clips are also simply harder (input WER 0.633 vs v1's 0.487), so part of the gap is corpus difficulty. Next lever for the hard condition: the backend's mastering layer (realignment + dry/wet blend), which the raw-server outputs here do not use.</p>
 
 <h2 class="section">Aligned ESTOI spot check (speaker p363, cross-correlation aligned, extended, 48 kHz)</h2>
 <div class="card"><table class="rates"><thead><tr><th>Model</th><th>Cafe 10 dB</th><th>Reverb+noise hard</th></tr></thead><tbody>
