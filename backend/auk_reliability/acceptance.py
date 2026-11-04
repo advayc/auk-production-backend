@@ -3,13 +3,13 @@ import dataclasses, json, csv, math, time, collections, platform, sys, os
 from pathlib import Path
 from .core import atomic_json, sha256_file, command, WallClockAbort
 from .dataset import validate_dataset
-from .policy import OPERATIONS, PROFILES, selected_modes
+from .policy import OPERATIONS, PROFILES, selected_modes, acceptance_scope_modes, enhancer_acceptance_opt_in
 from .durable import balanced_cases, execution_signature, prepare_run, add_artifact_hashes
 _default_suite=None
 
 def configure_acceptance_suite(worker, manifest, output_dir, *, modes=None):
  global _default_suite
- _default_suite=(worker,manifest,output_dir,selected_modes(modes))
+ _default_suite=(worker,manifest,output_dir,acceptance_scope_modes(modes))
 
 def percentile(values,p):
  if not values:return None
@@ -48,6 +48,10 @@ def run_acceptance_suite(worker=None, manifest=None, output_dir=None, *, accepta
   if _default_suite is None:raise RuntimeError('Call configure_acceptance_suite(worker, manifest, output_dir) first.')
   worker,manifest,output_dir,configured_modes=_default_suite
   if modes is None:modes=configured_modes
+ # Explicit modes always win; a None default resolves through the enhancer
+ # opt-in flag (see policy.acceptance_scope_modes). The delivery contract
+ # (policy.ACTIVE_MODES) is not changed by the flag.
+ modes=acceptance_scope_modes(modes)
  audit=validate_dataset(manifest,acceptance=acceptance,modes=modes)
  if wall_clock_budget_seconds is not None:worker.set_deadline(wall_clock_budget_seconds)
  out=Path(output_dir)
@@ -91,7 +95,8 @@ def run_acceptance_suite(worker=None, manifest=None, output_dir=None, *, accepta
    if group:groups[m+'/'+op]=summarize(group)
  elapsed=sum(r['latency_seconds'] for r in rows);overall=summarize(rows)
  complete=len(rows)==len(audit['requests'])
- summary={'scope_modes':audit['scope_modes'],'excluded_request_count':audit['excluded_request_count'],'overall':overall,'by_operation':groups,'environment':env,'manifest_sha256':audit['manifest_sha256'],
+ summary={'scope_modes':audit['scope_modes'],'excluded_request_count':audit['excluded_request_count'],
+  'enhancer_acceptance_opt_in':enhancer_acceptance_opt_in(),'overall':overall,'by_operation':groups,'environment':env,'manifest_sha256':audit['manifest_sha256'],
   'elapsed_seconds':elapsed,'resume_supported':True,'complete':complete,'stopped_early':stopped_early,'gpu_cost_usd':elapsed/3600*rate if rate is not None else None,
   'cost_note':'Sum of measured request latencies using supplied hourly rate; excludes setup/downloads, reviews, idle time and checkpoint overhead. Unknown rate is not zero.',
   'technical_acceptance_pass':bool(complete and acceptance and len(rows)>=1000 and audit['distinct_sources']>=100 and not env['simulation'] and overall['technical_success_rate']>=.99),
@@ -112,7 +117,8 @@ def write_report(out,rows,summary):
  with (out/'requests.csv').open('w',newline='') as f:
   w=csv.DictWriter(f,fieldnames=columns,extrasaction='ignore');w.writeheader();w.writerows(rows)
  lines=['# AuK acceptance report', '', 'Scope: '+', '.join(summary.get('scope_modes', [])),
- 'Voice Enhancer: out of scope, owned by another engineer.',
+ ('Voice Enhancer: out of scope, owned by another engineer.' if 'voice_enhancer' not in summary.get('scope_modes', [])
+  else 'Voice Enhancer: measured in this run behind the acceptance opt-in flag; the delivery contract (ACTIVE_MODES) is unchanged.'),
  'Excluded requests: '+str(summary.get('excluded_request_count',0)), '', 'Status: '+summary['status'],
  'Technical gate: '+str(summary['technical_acceptance_pass']), 'Full quality gate: '+str(summary['acceptance_pass']), 'Observed perfect gate: '+str(summary.get('observed_perfect_pass',False)),
  '', '| Mode / operation | Requests | Technical | Auto QA | Semantic reviewed pass | P50 s | P95 s |',

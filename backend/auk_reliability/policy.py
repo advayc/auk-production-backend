@@ -1,5 +1,5 @@
 """Explicit application policy, not a claim about the model's capabilities."""
-import re
+import os, re
 from .core import EditorError, EditSpec, build_plan, _quote_words
 OPERATIONS = {
  'voice_editor': ('emotion','voice_characteristics','whisper','speed','custom','nonverbal_remove'),
@@ -16,6 +16,31 @@ def selected_modes(modes=None):
  if not modes or len(set(modes))!=len(modes) or any(m not in OPERATIONS for m in modes):
   raise ValueError('Select nonempty, unique supported modes')
  return modes
+
+# Acceptance-contract scope flag (v0.5.1). The delivery contract above stays
+# voice_editor + transcript_editor until the product owner flips ACTIVE_MODES.
+# The acceptance suite can already measure voice_enhancer alongside that
+# contract when AUK_ACCEPTANCE_VOICE_ENHANCER is set to a true value, so the
+# enhancer evidence is produced by the same gated path before the decision.
+# Explicit modes always win over the flag; the flag never edits ACTIVE_MODES.
+ENHANCER_ACCEPTANCE_ENV = 'AUK_ACCEPTANCE_VOICE_ENHANCER'
+_FLAG_TRUE = frozenset({'1', 'true', 'yes', 'on'})
+
+def enhancer_acceptance_opt_in(env=None):
+ env = os.environ if env is None else env
+ return env.get(ENHANCER_ACCEPTANCE_ENV, '').strip().lower() in _FLAG_TRUE
+
+def acceptance_scope_modes(modes=None, env=None):
+ """Modes the acceptance contract measures. Explicit modes always win.
+
+ Default scope is the delivery contract (ACTIVE_MODES). With the enhancer
+ opt-in flag set, the acceptance suite additionally measures voice_enhancer
+ operations through the same gated worker path. This is measurement scope,
+ not delivery scope: ACTIVE_MODES is unchanged either way.
+ """
+ if modes is not None: return selected_modes(modes)
+ if enhancer_acceptance_opt_in(env): return tuple(ACTIVE_MODES) + ('voice_enhancer',)
+ return ACTIVE_MODES
 
 PROFILES = ('base_f32','base_q8','flash_f16')
 RETRYABLE = frozenset({'inference_timeout','http_timeout','http_error','process_timeout',
