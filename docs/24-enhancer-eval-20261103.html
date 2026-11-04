@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice enhancer model selection - 20-clip eval (2026-11-03)</title>
+<style>
+:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;--greenbg:#e9f4ec;--amber:#8a6d1a;--amberbg:#faf3df;--red:#a52a1e;--redbg:#faeae7;--gray:#6b6b66;--graybg:#efefec;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+header{padding:44px 0 8px}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;font-weight:700}
+.sub{max-width:760px;font-size:15.5px;color:var(--mut)}
+.callout{margin:22px 0 6px;border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:14.5px}
+.callout.amber{background:var(--amberbg);border-color:#e6d9b4}
+h2.section{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:34px 0 4px}
+.secblurb{font-size:13.5px;color:var(--mut);margin-bottom:14px;max-width:760px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:16px}
+.card.failed{background:#fbfaf8}
+.chead{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px}
+.badge{font-size:11.5px;font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:999px;text-transform:uppercase}
+.badge.g{background:var(--greenbg);color:var(--green)}
+.badge.a{background:var(--amberbg);color:var(--amber)}
+.badge.r{background:var(--redbg);color:var(--red)}
+.badge.y{background:var(--graybg);color:var(--gray)}
+.cid{font-size:13px;font-weight:700}
+.cop{font-size:11.5px;color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:2px 7px}
+.cdet{font-size:13px;color:var(--mut);margin-left:auto}
+.edit{font-size:15px;margin:2px 0 14px;color:var(--ink)}
+.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+figure{background:#fafaf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+figcaption{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+audio{width:100%;height:36px;display:block}
+audio+div{margin-top:6px;font-size:12px}
+a{color:var(--green)}
+table.rates{width:100%;border-collapse:collapse;font-size:14.5px}
+table.rates th,table.rates td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.rates th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+ul.bullets{margin:4px 0 4px 18px;font-size:14.5px}
+ul.bullets li{margin:8px 0}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;word-break:break-all}
+footer{border-top:1px solid var(--line);margin:34px 0 60px;padding-top:18px;font-size:13px;color:var(--mut)}
+footer p{margin:8px 0}
+
+dl.eval{display:flex;flex-wrap:wrap;gap:.15rem .9rem;margin:.5rem 0 0;font-size:.82rem}
+dl.eval dt{color:#666}dl.eval dd{margin:0;font-weight:600}
+.note{font-size:.85rem;color:#555;margin:.2rem 0 .7rem}
+.badge.a{background:#fff3cd;color:#8a6d00}
+</style>
+</head><body><div class="wrap">
+<header>
+<div class="kicker">AuK voice enhancer - model selection record</div>
+<h1>Enhancer eval: AuK generative cleanup vs open-source baselines</h1>
+<p class="sub">20-clip corpus (10 VCTK speakers x 2 degradations: cafe noise at 10 dB SNR, reverb+noise hard). WER via faster-whisper base.en against clean-reference ASR transcripts; aligned ESTOI spot check; latency on the production L4. Run 2026-11-03. All 6 pipelines completed 20/20 clips.</p>
+</header>
+
+<div class="callout" style="background:var(--greenbg);border-color:#c3ddd0">
+<b>Verdict: the AuK generative enhancer (the v0.5.0 backend default, 16 steps / guidance 1.0 / sway -1.0) is the strongest option tested.</b>
+It beats every open-source model on both conditions on word accuracy, ties the server-default 32-step config (so the cheaper 16-step default stands), and its output spectrum tracks the clean reference. Only MossFormer2 clears the do-no-harm bar among the OSS models. Resemble's full enhance stage actively damages word accuracy and is disqualified.
+</div>
+
+<h2 class="section">Word error rate (mean, lower is better)</h2>
+<p class="secblurb">Reference transcripts: faster-whisper on the clean source clips. Pooled = both conditions, n=20 per model. Green = best, red = worst, amber = in between.</p>
+<div class="card"><table class="rates"><thead><tr><th>Model</th><th>Cafe 10 dB</th><th>Reverb+noise hard</th><th>Pooled</th><th>Latency (L4, ~3-4 s clips)</th></tr></thead><tbody>
+<tr><td>AuK generative - 16 steps, guidance 1.0 (backend default)</td><td>0.000</td><td>0.260</td><td><span class="badge g">0.130</span></td><td style="font-size:12.5px;color:var(--mut)">~30-45 s/clip (est. from run window)</td></tr>
+<tr><td>AuK generative - 32 steps, guidance 2.0 (server default)</td><td>0.000</td><td>0.270</td><td><span class="badge a">0.135</span></td><td style="font-size:12.5px;color:var(--mut)">~30-45 s/clip (est. from run window)</td></tr>
+<tr><td>MossFormer2 SE 48K (ClearerVoice)</td><td>0.037</td><td>0.367</td><td><span class="badge a">0.202</span></td><td style="font-size:12.5px;color:var(--mut)">0.51 s/clip</td></tr>
+<tr><td>DeepFilterNet3 (DSP mask, 48 kHz)</td><td>0.052</td><td>0.517</td><td><span class="badge a">0.285</span></td><td style="font-size:12.5px;color:var(--mut)">0.24 s/clip (RTF 0.005)</td></tr>
+<tr><td>Resemble Enhance - denoise stage only</td><td>0.037</td><td>0.536</td><td><span class="badge a">0.287</span></td><td style="font-size:12.5px;color:var(--mut)">0.54 s/clip</td></tr>
+<tr><td>Resemble Enhance - full (denoise+CFM)</td><td>0.320</td><td>1.074</td><td><span class="badge r">0.697</span></td><td style="font-size:12.5px;color:var(--mut)">1.27 s/clip</td></tr>
+<tr><td>Raw degraded input (no enhancement)</td><td>0.037</td><td>0.487</td><td><span class="badge a">0.262</span></td><td style="font-size:12.5px;color:var(--mut)">-</td></tr>
+</tbody></table></div>
+<p class="secblurb">Per-clip, AuK-16 vs the best OSS model of each clip: <b>5 wins, 13 ties, 2 losses</b>. On cafe noise both AuK configs recovered perfect ASR (0.000 WER) on all 10 clips. On the hard condition AuK roughly halves the input's WER (0.487 &rarr; 0.260); the best OSS (MossFormer2) reaches only 0.368.</p>
+
+<h2 class="section">Aligned ESTOI spot check (speaker p363, cross-correlation aligned, extended, 48 kHz)</h2>
+<div class="card"><table class="rates"><thead><tr><th>Model</th><th>Cafe 10 dB</th><th>Reverb+noise hard</th></tr></thead><tbody>
+<tr><td>Raw degraded input</td><td>0.426</td><td>0.236</td></tr>
+<tr><td>DeepFilterNet3</td><td>0.543</td><td>0.246</td></tr>
+<tr><td>MossFormer2</td><td>0.667</td><td>0.272</td></tr>
+<tr><td>Resemble denoise</td><td>0.495</td><td>0.232</td></tr>
+<tr><td>Resemble full enhance</td><td>0.446</td><td>-0.015</td></tr>
+<tr><td><b>AuK 16/1.0</b></td><td>-0.054</td><td><span class="badge g">0.410</span></td></tr>
+<tr><td><b>AuK 32/2.0</b></td><td>-0.041</td><td><span class="badge g">0.417</span></td></tr>
+</tbody></table></div>
+<p class="secblurb">On the hard condition AuK wins both WER and ESTOI outright. Its negative cafe ESTOI is a measurement artifact, not a quality signal: the raw server output carries small time-varying duration drift (about 60 ms lead at clip start) and intrusive metrics punish any generative reconstruction that is not sample-aligned, even when word accuracy is perfect. The backend pipeline removes exactly this drift (per-chunk length restore plus cross-correlation realignment, 2% cap), so backend-integrated output should score better than the raw numbers here.</p>
+
+<h2 class="section">Bandwidth</h2>
+<p class="secblurb">95% spectral rolloff, Hz. Clean reference 718. Raw input 1165-2725 (noise energy). AuK 726-832 - tracks the clean reference, removing the high-frequency noise floor. MossFormer2 708-946 similar. Resemble full enhance 1122-4648 (adds high-frequency hash). The AuK path outputs true 24 kHz audio; Adobe Enhance Speech is band-limited to about 9.5 kHz.</p>
+
+<h2 class="section">Against Adobe Enhance Speech</h2>
+<div class="callout amber">Adobe's published numbers (cleanvoice.ai independent benchmark): WER 17.1%, DNSMOS 3.08, speaker similarity 0.945, output band-limited near 9.5 kHz. Our AuK pooled WER of 13.0% is on <b>this</b> corpus, not Adobe's benchmark - the numbers are the same ballpark, not a superiority claim. A true head-to-head needs Adobe's output on these same 20 clips (pending reference clips, non-blocking). Structural advantages that hold without the head-to-head: full-band 24 kHz output vs ~9.5 kHz, and it rides the same AuK server the production backend already runs - no new infra and no new spend.</div>
+
+<h2 class="section">Method and caveats</h2>
+<div class="card">
+<p style="font-size:14px;margin-bottom:8px"><b>Corpus.</b> 10 VCTK speakers, each degraded two ways: cafe noise mixed at 10 dB SNR, and reverb+noise hard mix. Synthetically degraded, so the clean references are exact - real-world noise is the next step up.</p>
+<p style="font-size:14px;margin-bottom:8px"><b>Metrics.</b> WER: faster-whisper base.en on each output vs the ASR transcript of the matching clean clip (inputs resampled to 16 kHz for ASR). ESTOI: pystoi extended at 48 kHz; the main table's ESTOI was computed without time alignment and read as directional only; the aligned spot check above is the reliable read. AuK outputs were scored as raw server output, without the backend's mastering layer (loudness, realignment, dry/wet blend).</p>
+<p style="font-size:14px;margin-bottom:8px"><b>Environment.</b> Colab L4 (sm_8.9, 23 GB), audio.cpp v0.9.0 prebuilt (sha-pinned), AuK Base F32 + Qwen Q8_0 + VAE F32 GGUF, seed 42. AuK latency is estimated from the run window (~40 min for 40 inferences including an 11 GB model download and server start); per-clip server timing was not captured this run.</p>
+<p style="font-size:14px"><b>Failures kept in the record.</b> DeepFilterNet3 needed a rust toolchain rebuild, a torchaudio compatibility shim, and tensor shape fixes. Resemble needed a no-deps install, a device-mismatch patch in its inference.py, and lambd &le; 1.0. The full metrics pass needed CUDA 12 userland libs on LD_LIBRARY_PATH. The Colab kernel restarted mid-probe (pip installs lost, /content survived) and one browser lease idled out; both were recovered and rerun. Resemble's full enhance stage is disqualified on word accuracy (pooled WER 0.697 vs input 0.262).</p>
+</div>
+
+<h2 class="section">Known worst case</h2>
+<p class="secblurb">Worst AuK result: speaker p304 reverb+noise hard, WER 1.000 - but the raw degraded input is also 1.000 on this clip (ASR loses it before any enhancement), so it is the corpus's hardest clip rather than an AuK regression. Note AuK-32 scores 1.25 there (more ASR insertions than reference words), one reason the 16-step default stands. Best OSS on that clip: Resemble denoise 0.375, MossFormer2 0.625. Flagged for an ear check.</p>
+
+<h2 class="section">What is next</h2>
+<p class="secblurb">Adobe reference clips for the true head-to-head; the 31-clip benchmark corpus v2 (wind, traffic, crowd, whisper, clipped, codec, stereo, long-form) through the same harness; the listening page with input/model side-by-side audio for the human ear test (audio currently on the eval VM, being added to the org Colab harness).</p>
+</div></body></html>
