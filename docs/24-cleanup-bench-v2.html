@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice cleanup - before and after</title>
+<style>
+:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;--greenbg:#e9f4ec;--amber:#8a6d1a;--amberbg:#faf3df;--red:#a52a1e;--redbg:#faeae7;--gray:#6b6b66;--graybg:#efefec;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+header{padding:44px 0 8px}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;font-weight:700}
+.sub{max-width:760px;font-size:15.5px;color:var(--mut)}
+.callout{margin:22px 0 6px;border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:14.5px}
+.callout.amber{background:var(--amberbg);border-color:#e6d9b4}
+h2.section{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:34px 0 4px}
+.secblurb{font-size:13.5px;color:var(--mut);margin-bottom:14px;max-width:760px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:16px}
+.card.failed{background:#fbfaf8}
+.chead{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px}
+.badge{font-size:11.5px;font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:999px;text-transform:uppercase}
+.badge.g{background:var(--greenbg);color:var(--green)}
+.badge.a{background:var(--amberbg);color:var(--amber)}
+.badge.r{background:var(--redbg);color:var(--red)}
+.badge.y{background:var(--graybg);color:var(--gray)}
+.cid{font-size:13px;font-weight:700}
+.cop{font-size:11.5px;color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:2px 7px}
+.cdet{font-size:13px;color:var(--mut);margin-left:auto}
+.edit{font-size:15px;margin:2px 0 14px;color:var(--ink)}
+.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+figure{background:#fafaf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+figcaption{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+audio{width:100%;height:36px;display:block}
+audio+div{margin-top:6px;font-size:12px}
+a{color:var(--green)}
+table.rates{width:100%;border-collapse:collapse;font-size:14.5px}
+table.rates th,table.rates td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.rates th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+ul.bullets{margin:4px 0 4px 18px;font-size:14.5px}
+ul.bullets li{margin:8px 0}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;word-break:break-all}
+footer{border-top:1px solid var(--line);margin:34px 0 60px;padding-top:18px;font-size:13px;color:var(--mut)}
+footer p{margin:8px 0}
+
+dl.eval{display:flex;flex-wrap:wrap;gap:.15rem .9rem;margin:.5rem 0 0;font-size:.82rem}
+dl.eval dt{color:#666}dl.eval dd{margin:0;font-weight:600}
+.note{font-size:.85rem;color:#555;margin:.2rem 0 .7rem}
+.badge.a{background:#fff3cd;color:#8a6d00}
+</style></head><body>
+<h1>Voice cleanup &middot; before and after</h1>
+<p class="note">10 benchmark pairs, generated Nov 8, 2026 with the project's notebook-selected cleanup settings. Every pair processed successfully on the first attempt.</p>
+<p class="note" style="border-left:4px solid #b8860b;padding:8px 12px;"><strong>Status: unreviewed.</strong> These outputs have not had a listening pass yet. They show what the cleanup step produces on this benchmark set, not a scored quality result.</p>
+<div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Clean studio recording</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-clean-studio-before.mp3"></audio><div><a href="24-clean-studio-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-clean-studio-after.mp3"></audio><div><a href="24-clean-studio-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Clipped input (peaks at full scale)</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-clipped-before.mp3"></audio><div><a href="24-clipped-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-clipped-after.mp3"></audio><div><a href="24-clipped-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Cafe crowd noise</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-crowd-cafe-before.mp3"></audio><div><a href="24-crowd-cafe-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-crowd-cafe-after.mp3"></audio><div><a href="24-crowd-cafe-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Two speakers</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-multi-speaker-before.mp3"></audio><div><a href="24-multi-speaker-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-multi-speaker-after.mp3"></audio><div><a href="24-multi-speaker-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Background music</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-music-before.mp3"></audio><div><a href="24-music-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-music-after.mp3"></audio><div><a href="24-music-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Heavy reverb and noise</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-reverb-noise-hard-before.mp3"></audio><div><a href="24-reverb-noise-hard-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-reverb-noise-hard-after.mp3"></audio><div><a href="24-reverb-noise-hard-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Light reverb</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-reverb-t60-before.mp3"></audio><div><a href="24-reverb-t60-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-reverb-t60-after.mp3"></audio><div><a href="24-reverb-t60-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Street traffic</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-traffic-before.mp3"></audio><div><a href="24-traffic-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-traffic-after.mp3"></audio><div><a href="24-traffic-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Whispered speech</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-whisper-like-before.mp3"></audio><div><a href="24-whisper-like-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-whisper-like-after.mp3"></audio><div><a href="24-whisper-like-after.mp3">Download mp3</a></div></figure></div></div><div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="cid">Wind noise</span></div><div class="players"><figure><figcaption>Before</figcaption><audio controls preload="none" src="24-wind-before.mp3"></audio><div><a href="24-wind-before.mp3">Download mp3</a></div></figure><figure><figcaption>After cleanup</figcaption><audio controls preload="none" src="24-wind-after.mp3"></audio><div><a href="24-wind-after.mp3">Download mp3</a></div></figure></div></div>
+<p class="note">All 10 pairs are shown - no selection. Generated audio; benchmark inputs are synthetic test clips.</p>
+</body></html>
