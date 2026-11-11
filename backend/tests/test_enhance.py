@@ -121,6 +121,22 @@ class MasteringTests(unittest.TestCase):
         r = master_loudness(src, out, self.cfg, out_sr=SR, out_channels=1, n_target=n)
         self.assertEqual(r['mode'], 'measured_gain')
         self.assertTrue(r['within_tolerance'], r)
+    def test_mastering_removes_input_borne_dc(self):
+        # RB1 2026-11-11 'Why 2-Minute': input-borne DC (-0.002456) survived the chain
+        # and breached the 1e-3 output contract. Mastering must strip it sample-exactly.
+        n = 5 * SR
+        src = wav_write(self.root / 'dc.wav', speech_like(n, floor=0.02) * 0.2 - 0.0025)
+        out = self.root / 'out.wav'
+        r = master_loudness(src, out, self.cfg, out_sr=SR, out_channels=1, n_target=n)
+        self.assertTrue(r['within_tolerance'], r)
+        # Removed value is the gained DC (mastering gain scales the DC component too).
+        self.assertLess(r['dc_offset_removed'][0], -0.002)
+        info = analyze(out)
+        self.assertLessEqual(abs(info['dc_offset']), self.cfg.dc_offset_limit, info)
+        self.assertEqual(info['samples'], n)
+        meas = {'duration_seconds': n / SR, 'sample_rate': SR, 'channels': 1, 'samples': n}
+        v = validate_enhanced(out, meas, self.cfg)
+        self.assertTrue(v['ok'], v)
     def test_silence_stays_silence(self):
         n = 5 * SR
         src = wav_write(self.root / 'sil.wav', np.random.default_rng(4).normal(0, 0.0002, n))

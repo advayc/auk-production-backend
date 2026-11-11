@@ -269,6 +269,12 @@ def master_loudness(in_path, out_path, cfg: EnhanceConfig, timeout=180, out_sr=N
         elif len(y) < n_target:
             pad = n_target - len(y)
             y = (np.pad(y, ((0, pad), (0, 0))) if y.ndim == 2 else np.concatenate([y, np.zeros(pad)]))
+    # DC hygiene: an input can carry a DC component that survives the enhance chain
+    # (RB1 2026-11-11 row 'Why 2-Minute': input dc -0.002456, output dc -0.001529 vs
+    # the 1e-3 output contract). Subtract the exact per-channel mean in float before
+    # TP enforcement: no filter latency, no phase effects, sample count unchanged.
+    dc_removed = y.mean(axis=0) if y.ndim == 2 else float(y.mean())
+    y = y - dc_removed
     tp_before = true_peak_dbtp(y, sr)
     tp_gain_db = 0.0
     if tp_before > cfg.true_peak_dbtp:
@@ -286,6 +292,7 @@ def master_loudness(in_path, out_path, cfg: EnhanceConfig, timeout=180, out_sr=N
         ok = loud_ok and final_meas['true_peak_dbtp'] <= cfg.true_peak_dbtp + 0.1
     return {'mode': mode, 'before': before, 'after': final_meas, 'target_lufs': cfg.target_lufs,
         'true_peak_dbtp_limit': cfg.true_peak_dbtp, 'true_peak_gain_db': round(tp_gain_db, 3),
+        'dc_offset_removed': [round(float(v), 8) for v in np.atleast_1d(dc_removed)],
         'alignment_shift_samples': lag, 'within_tolerance': ok}
 
 # ---------- output validation ----------
