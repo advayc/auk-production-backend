@@ -195,6 +195,9 @@ def _quote_words(text: str) -> str:
     return json.dumps(text, ensure_ascii=False)
 
 
+TRANSCRIPT_TEXT_MAX = 16000
+
+
 def build_plan(spec: EditSpec, duration: float, limits: Limits) -> dict:
     duration = require_finite(duration, 'input duration', limits.min_audio_seconds, limits.max_input_seconds)
     if isinstance(spec.seed, bool) or not isinstance(spec.seed, int) or not 0 <= spec.seed < 2**31:
@@ -202,8 +205,16 @@ def build_plan(spec: EditSpec, duration: float, limits: Limits) -> dict:
     for name in ('instruction', 'voice_description', 'old_words', 'new_words',
                  'source_transcript', 'expected_transcript', 'emotion', 'sound'):
         value = getattr(spec, name)
-        if not isinstance(value, str) or len(value) > 4000 or '\x00' in value:
-            raise EditorError('invalid_text', f'{name} must be text of at most 4,000 characters without NUL.')
+        # Transcript cap derivation: the enhancer scope accepts inputs up to 600s
+        # (ENHANCER_SCOPE). Fast natural speech is ~250 words/minute, so 600s holds at
+        # most ~2,500 words; at ~6.4 characters per word plus a space that is ~18.5k
+        # characters, and the QA edit distance is O(words^2) (~6M cells at the cap,
+        # a bounded one-shot cost per request). 16,000 characters covers 600s at up to
+        # ~216 words/minute and keeps the request-size bound tight; prompts and
+        # descriptions keep the original 4,000-character bound.
+        cap = TRANSCRIPT_TEXT_MAX if name in ('source_transcript', 'expected_transcript') else 4000
+        if not isinstance(value, str) or len(value) > cap or '\x00' in value:
+            raise EditorError('invalid_text', f'{name} must be text of at most {cap:,} characters without NUL.')
     op = spec.operation
     preserve_content = op in {'emotion', 'whisper', 'enhance', 'denoise', 'dereverb', 'voice', 'speed',
                               'nonverbal_remove'}

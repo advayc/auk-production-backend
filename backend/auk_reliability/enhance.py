@@ -49,7 +49,10 @@ class EnhanceConfig:
 # ---------- IO: decode to float, encode once ----------
 def decode_float(path, timeout=120):
     """Any container -> (float32 [n, ch], sample_rate) via ffmpeg; no intermediate encodes."""
-    info = probe_audio(Path(path), Limits())
+    # Internal decode path: float intermediates (premaster/mastering float wavs) are
+    # legitimately larger than the user-upload byte cap (e.g. 600s stereo f32 > 64 MiB).
+    # Keep metadata probing; the upload bound does not apply inside the pipeline.
+    info = probe_audio(Path(path), dataclasses.replace(Limits(), max_upload_bytes=1 << 31))
     sr = info['sample_rate']; ch = info['channels']
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-nostdin', '-i', str(path),
         '-f', 'f32le', '-acodec', 'pcm_f32le', '-'], capture_output=True, check=True, timeout=timeout).stdout
@@ -287,14 +290,17 @@ def master_loudness(in_path, out_path, cfg: EnhanceConfig, timeout=180, out_sr=N
 
 # ---------- output validation ----------
 def validate_enhanced(path, meas, cfg: EnhanceConfig, frame_seconds=1 / 25):
+    """Sample-exact output contract: the output must hold exactly the decoded input's
+    sample count. meas['duration_seconds'] is the container/stream duration, which can
+    exceed the decoded length by codec padding (e.g. MP3 gapless trimming), so a
+    duration comparison against it false-fails on correctly sample-exact outputs."""
     out = analyze(path)
     problems = []
     if math.isnan(out['rms_dbfs']) or math.isnan(out['peak_dbfs']): problems.append('nan_or_invalid_signal')
     if abs(out['dc_offset']) > cfg.dc_offset_limit: problems.append(f"dc_offset {out['dc_offset']}")
     if out['clipping_fraction'] > 0.005: problems.append(f"clipping_fraction {out['clipping_fraction']}")
-    dur_tol = max(frame_seconds, 32 / out['sample_rate'])
-    if abs(out['duration_seconds'] - meas['duration_seconds']) > dur_tol:
-        problems.append(f"duration drift {out['duration_seconds']} vs {meas['duration_seconds']}")
+    if out['samples'] != meas['samples']:
+        problems.append(f"sample drift {out['samples']} vs {meas['samples']}")
     if out['channels'] != meas['channels']: problems.append(f"channels {out['channels']} != {meas['channels']}")
     if out['sample_rate'] != meas['sample_rate']: problems.append(f"sample_rate {out['sample_rate']} != {meas['sample_rate']}")
     return {'ok': not problems, 'problems': problems, 'output': out}

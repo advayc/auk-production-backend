@@ -154,6 +154,57 @@ class ValidationTests(unittest.TestCase):
         p = wav_write(self.root / 'ok.wav', y)
         r = validate_enhanced(p, self._meas(), self.cfg)
         self.assertTrue(r['ok'], r)
+    def test_container_duration_longer_than_decoded_passes(self):
+        # Lossy containers (e.g. MP3 with gapless trimming) report a stream duration
+        # longer than the decoded sample count; a sample-exact output must not be
+        # rejected for that container/decoded mismatch (RB1 2026-11-11 false fails).
+        n = 2 * SR
+        y = speech_like(n) * 0.3
+        p = wav_write(self.root / 'gapless.wav', y)
+        meas = {'duration_seconds': (n + 2176) / SR, 'sample_rate': SR, 'channels': 1, 'samples': n}
+        r = validate_enhanced(p, meas, self.cfg)
+        self.assertTrue(r['ok'], r)
+        short = wav_write(self.root / 'gapless-short.wav', y[:SR])
+        r = validate_enhanced(short, meas, self.cfg)
+        self.assertFalse(r['ok'])
+
+class InternalDecodeCapTests(unittest.TestCase):
+    def test_oversize_internal_float_wav_decodes(self):
+        # RT2 2026-11-11: a 255s stereo f32 mastering intermediate (~90 MB) exceeded the
+        # 64 MiB user-upload cap inside decode_float and failed mastering. Internal
+        # pipeline files are not user uploads; decoding must not apply the upload bound.
+        from auk_reliability.enhance import decode_float
+        import tempfile
+        n = 9_500_000  # ~215s stereo 44.1kHz f32: ~76 MB, over the 64 MiB upload cap
+        y = (np.random.default_rng(3).standard_normal((n, 2)) * 0.05).astype('<f4')
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / 'big.wav'
+            write_wav(p, y, 44100)
+            self.assertGreater(p.stat().st_size, 64 * 1024 * 1024)
+            out, sr, info = decode_float(p)
+        self.assertEqual(sr, 44100)
+        self.assertEqual(out.shape[0], n)
+
+class TranscriptCapTests(unittest.TestCase):
+    def test_long_transcript_accepted_for_enhance_scope(self):
+        # Request-path test: plan_request is what ReliabilityWorker._edit calls.
+        from auk_reliability.core import Limits, scoped_limits
+        from auk_reliability.policy import plan_request
+        limits = scoped_limits(Limits(), 'enhance')
+        observed_case = 'x' * 4561  # RB1 2026-11-11: 255s real input's ASR transcript
+        plan = plan_request('voice_enhancer', 'enhance',
+            {'rights_confirmed': True, 'source_text': observed_case, 'seed': 42, 'profile': 'base_q8'},
+            255.19, limits)
+        self.assertEqual(plan['seed'], 42)
+        # Legitimate oversize transcripts are still rejected.
+        with self.assertRaises(Exception) as ctx:
+            plan_request('voice_enhancer', 'enhance',
+                {'rights_confirmed': True, 'source_text': 'word ' * 4000}, 255.19, limits)
+        self.assertEqual(getattr(ctx.exception, 'code', None), 'invalid_text')
+        # Non-transcript text fields keep the tighter 4,000-character bound.
+        with self.assertRaises(Exception):
+            plan_request('voice_enhancer', 'enhance',
+                {'rights_confirmed': True, 'source_text': 'ok', 'instruction': 'x' * 4001}, 10.0, limits)
 
 class EchoAdapter:
     def __init__(self): self.calls = []
