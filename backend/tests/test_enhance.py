@@ -71,6 +71,25 @@ class AnalysisTests(unittest.TestCase):
         self.assertEqual(choose_strength({**base, 'est_snr_db': 20.0, 'clipping_fraction': 0.01}, cfg)[0], 'full')
         self.assertEqual(choose_strength({**base, 'silence_ratio': 0.99}, cfg)[0], 'bypass')
         self.assertEqual(wet_gain_for('full', cfg), 0.85)
+    def test_bed_dbfs_measured(self):
+        n = 4 * SR
+        noisy = wav_write(self.root / 'noisy.wav', speech_like(n, floor=0.09))
+        clean = wav_write(self.root / 'clean.wav', speech_like(n, floor=0.0004))
+        self.assertGreater(analyze(noisy)['bed_dbfs'], analyze(clean)['bed_dbfs'])
+    def test_adaptive_full_wet_default_off(self):
+        cfg = EnhanceConfig()
+        meas = {'bed_dbfs': -20.0}
+        self.assertEqual(wet_gain_for('full', cfg, meas), 0.85)
+        self.assertEqual(wet_gain_for('light', cfg, meas), cfg.light_wet)
+    def test_adaptive_full_wet_scales_with_bed(self):
+        cfg = EnhanceConfig(adaptive_full_wet=True)
+        self.assertEqual(wet_gain_for('full', cfg, {'bed_dbfs': -20.83}), 1.0)   # motorcycle-class loud bed
+        self.assertEqual(wet_gain_for('full', cfg, {'bed_dbfs': -36.83}), 0.85)  # client-class moderate bed
+        self.assertEqual(wet_gain_for('full', cfg, {'bed_dbfs': -45.0}), 0.85)   # quiet bed unchanged
+        self.assertEqual(wet_gain_for('full', cfg, {'bed_dbfs': None}), 0.85)
+        self.assertEqual(wet_gain_for('full', cfg), 0.85)                         # no measurements supplied
+        mid = wet_gain_for('full', cfg, {'bed_dbfs': -32.0})
+        self.assertTrue(0.85 < mid < 1.0)
 
 class DspTests(unittest.TestCase):
     def test_chunk_stitch_is_sample_exact(self):

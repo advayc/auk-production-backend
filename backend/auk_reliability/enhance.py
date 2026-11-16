@@ -37,6 +37,14 @@ class EnhanceConfig:
     clipping_full_fraction: float = 0.001
     light_wet: float = 0.35          # dry/wet blend for moderate noise
     full_wet: float = 0.85           # never fully reconstructed by default, even when severe
+    # Candidate repair (2026-11-15, default OFF pending listening quality gate): scale the
+    # full-strength wet gain with the measured noise-bed level instead of fixing it at 0.85.
+    # Evidence: a loud bed (motorcycle clip, bed ~-21 dBFS) stays audible through the 15% dry
+    # remix at full_wet 0.85 (dry bed contribution ~= bed + 20*log10(0.15)); wet 1.0 candidates
+    # suppress the same bed to near-silence. Measurements only; no listening verdict yet.
+    adaptive_full_wet: bool = False
+    full_wet_bed_ref_db: float = -35.0   # beds at/below this keep full_wet unchanged
+    full_wet_bed_slope_db: float = 0.03  # wet added per dB of bed above the reference
     max_chunk_seconds: float = 12.0
     overlap_seconds: float = 0.5
     target_lufs: float = -16.0
@@ -101,11 +109,12 @@ def analyze(path):
         est_snr = max(hi - lo, 0.0)
     else:
         est_snr = 0.0
+    bed_dbfs = round(float(np.percentile(frame_db, 15)), 2) if nwin else None
     return {'duration_seconds': info['duration_seconds'], 'sample_rate': sr, 'channels': info['channels'],
         'samples': n, 'rms_dbfs': round(20 * math.log10(rms + 1e-12), 2),
         'peak_dbfs': round(20 * math.log10(peak + 1e-12), 2), 'clipping_fraction': round(clipped, 6),
         'dc_offset': round(dc, 6), 'silence_ratio': round(silence_ratio, 4),
-        'est_snr_db': round(est_snr, 2)}
+        'est_snr_db': round(est_snr, 2), 'bed_dbfs': bed_dbfs}
 
 def choose_strength(meas, cfg: EnhanceConfig):
     """bypass | light | full, with the measured reasons recorded."""
@@ -124,8 +133,12 @@ def choose_strength(meas, cfg: EnhanceConfig):
     reasons.append(f"est_snr {meas['est_snr_db']}dB between full {cfg.full_snr_db} and bypass {cfg.bypass_snr_db}")
     return 'light', reasons
 
-def wet_gain_for(strength, cfg: EnhanceConfig):
-    return {'bypass': 0.0, 'light': cfg.light_wet, 'full': cfg.full_wet}[strength]
+def wet_gain_for(strength, cfg: EnhanceConfig, meas=None):
+    base = {'bypass': 0.0, 'light': cfg.light_wet, 'full': cfg.full_wet}[strength]
+    if strength == 'full' and cfg.adaptive_full_wet and meas and meas.get('bed_dbfs') is not None:
+        base = min(1.0, cfg.full_wet + max(0.0, meas['bed_dbfs'] - cfg.full_wet_bed_ref_db)
+                   * cfg.full_wet_bed_slope_db)
+    return base
 
 # ---------- chunking / stitch (chunk vs whole equivalence) ----------
 def chunk_plan(n_samples, sr, cfg: EnhanceConfig):
@@ -344,7 +357,9 @@ def run_voice_enhancer(worker, source, folder, rid, plan, profile, p, limits, re
         meas = analyze(source)
         record['analysis'] = meas
         strength, reasons = choose_strength(meas, cfg)
-        g = wet_gain_for(strength, cfg)
+        g = wet_gain_for(strength, cfg, meas)
+        if strength == 'full' and cfg.adaptive_full_wet and meas.get('bed_dbfs') is not None and g != cfg.full_wet:
+            reasons.append(f"adaptive_full_wet: bed {meas['bed_dbfs']}dB above ref {cfg.full_wet_bed_ref_db}dB -> wet {g:.3f}")
         record['decision'] = {'strength': strength, 'reasons': reasons, 'wet_gain': g}
         y, sr, _info = decode_float(source)
         channel_mode = p.get('channel_mode', 'preserve_original_mix')
