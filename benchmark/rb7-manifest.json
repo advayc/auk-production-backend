@@ -1,0 +1,5295 @@
+{
+ "benchmark": "improve-rb3-2026-11-12",
+ "repo": "advayc/auk-production-backend@ffb35cc",
+ "window_measurements_file": "rb7-window-measurements.json",
+ "drive_mode": false,
+ "inputs": "originals zip over plain HTTPS (owner-shared public file 1Wn4LSlhGslf9ERUtUC4_OqN4i2VLlzfb)",
+ "resume": "RB7 Drive-optional GPU run; fresh public setup (Nov 12 caches deleted).",
+ "scope": "matched full(wet1.0)-vs-light(wet0.35) enhance pairs on the 5 unmeasured light-band inputs; exploratory evidence for the strength-selection retune hypothesis - outcomes unknown, no threshold decision implied",
+ "path": "production voice_enhancer via ReliabilityWorker with per-candidate EnhanceConfig override (recorded)",
+ "generator_profile": "base_q8",
+ "seed": 42,
+ "quality_status": "UNSCORED - user listening gate pending; ASR/speaker are diagnostics only; near-silence metrics are not audibility claims; no Adobe parity claims",
+ "rows": [
+  {
+   "tag": "rb7-cr7-enh-full-w100",
+   "input": "without_Cristiano Ronaldo - Live The Present.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": 30.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 1.0,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 236,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "full",
+    "reasons": [
+     "est_snr 15.71dB <= full threshold 30.0dB"
+    ],
+    "wet_gain": 1.0
+   },
+   "generative": {
+    "chunks": 2,
+    "max_length_drift": 0.005756
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -14.58,
+     "true_peak_dbtp": 2.35,
+     "lra_lu": 3.2
+    },
+    "after": {
+     "integrated_lufs": -17.93,
+     "true_peak_dbtp": -1.0,
+     "lra_lu": 3.2
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": -1.929,
+    "dc_offset_removed": [
+     -5.207e-05,
+     -1.865e-05
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": false
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 14.721458,
+     "sample_rate": 48000,
+     "channels": 2,
+     "samples": 706630,
+     "rms_dbfs": -22.86,
+     "peak_dbfs": -4.19,
+     "clipping_fraction": 0.0,
+     "dc_offset": -0.0,
+     "silence_ratio": 0.3166,
+     "est_snr_db": 59.35,
+     "bed_dbfs": -86.22
+    }
+   },
+   "qa": {
+    "automatic_pass": false,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.2128,
+      "word_error_rate": 0.2128,
+      "exact_normalized_match": false,
+      "status": "review_required",
+      "expected": "Life goes on. The past will never come again. This is the best present we have in our lives. This is the time. Because you know, you don't know what will happen tomorrow. You don't know. I don't know. You don't know. So, leave it to me.",
+      "observed": "life goes on, the past that will never come again this is the best time that we spend in our lives this time because you know, you don't know what will happen tomorrow you don't know I don't know, you don't know so you just leave it like this",
+      "words": [
+       {
+        "word": " life",
+        "start": 0.0,
+        "end": 0.52,
+        "probability": 0.020500730723142624
+       },
+       {
+        "word": " goes",
+        "start": 0.52,
+        "end": 0.7,
+        "probability": 0.4019358456134796
+       },
+       {
+        "word": " on,",
+        "start": 0.7,
+        "end": 1.12,
+        "probability": 0.9849253296852112
+       },
+       {
+        "word": " the",
+        "start": 1.2,
+        "end": 1.6,
+        "probability": 0.313666969537735
+       },
+       {
+        "word": " past",
+        "start": 1.6,
+        "end": 1.8,
+        "probability": 0.26247814297676086
+       },
+       {
+        "word": " that",
+        "start": 1.8,
+        "end": 1.96,
+        "probability": 0.35262009501457214
+       },
+       {
+        "word": " will",
+        "start": 1.96,
+        "end": 2.08,
+        "probability": 0.5473448038101196
+       },
+       {
+        "word": " never",
+        "start": 2.08,
+        "end": 2.44,
+        "probability": 0.9400380253791809
+       },
+       {
+        "word": " come",
+        "start": 2.44,
+        "end": 2.7,
+        "probability": 0.8342708349227905
+       },
+       {
+        "word": " again",
+        "start": 2.7,
+        "end": 3.54,
+        "probability": 0.7500420808792114
+       },
+       {
+        "word": " this",
+        "start": 3.54,
+        "end": 3.76,
+        "probability": 0.07973449677228928
+       },
+       {
+        "word": " is",
+        "start": 3.76,
+        "end": 3.96,
+        "probability": 0.6101043224334717
+       },
+       {
+        "word": " the",
+        "start": 3.96,
+        "end": 3.96,
+        "probability": 0.706521213054657
+       },
+       {
+        "word": " best",
+        "start": 3.96,
+        "end": 4.36,
+        "probability": 0.9007037281990051
+       },
+       {
+        "word": " time",
+        "start": 4.36,
+        "end": 4.48,
+        "probability": 0.45608702301979065
+       },
+       {
+        "word": " that",
+        "start": 4.48,
+        "end": 5.0,
+        "probability": 0.16912131011486053
+       },
+       {
+        "word": " we",
+        "start": 5.0,
+        "end": 5.2,
+        "probability": 0.9131161570549011
+       },
+       {
+        "word": " spend",
+        "start": 5.2,
+        "end": 5.36,
+        "probability": 0.1365569680929184
+       },
+       {
+        "word": " in",
+        "start": 5.36,
+        "end": 5.54,
+        "probability": 0.8360818028450012
+       },
+       {
+        "word": " our",
+        "start": 5.54,
+        "end": 5.56,
+        "probability": 0.883987307548523
+       },
+       {
+        "word": " lives",
+        "start": 5.56,
+        "end": 6.02,
+        "probability": 0.5800573825836182
+       },
+       {
+        "word": " this",
+        "start": 6.02,
+        "end": 6.74,
+        "probability": 0.4031035304069519
+       },
+       {
+        "word": " time",
+        "start": 6.74,
+        "end": 7.0,
+        "probability": 0.5919149518013
+       },
+       {
+        "word": " because",
+        "start": 7.62,
+        "end": 7.88,
+        "probability": 0.5972192287445068
+       },
+       {
+        "word": " you",
+        "start": 7.88,
+        "end": 8.48,
+        "probability": 0.8025709986686707
+       },
+       {
+        "word": " know,",
+        "start": 8.48,
+        "end": 8.66,
+        "probability": 0.7232033610343933
+       },
+       {
+        "word": " you",
+        "start": 8.74,
+        "end": 8.86,
+        "probability": 0.8685962557792664
+       },
+       {
+        "word": " don't",
+        "start": 8.86,
+        "end": 9.12,
+        "probability": 0.8712963759899139
+       },
+       {
+        "word": " know",
+        "start": 9.12,
+        "end": 9.32,
+        "probability": 0.9505570530891418
+       },
+       {
+        "word": " what",
+        "start": 9.32,
+        "end": 9.68,
+        "probability": 0.797172486782074
+       },
+       {
+        "word": " will",
+        "start": 9.68,
+        "end": 9.94,
+        "probability": 0.9077476859092712
+       },
+       {
+        "word": " happen",
+        "start": 9.94,
+        "end": 10.24,
+        "probability": 0.9282194375991821
+       },
+       {
+        "word": " tomorrow",
+        "start": 10.24,
+        "end": 10.54,
+        "probability": 0.45141422748565674
+       },
+       {
+        "word": " you",
+        "start": 11.08,
+        "end": 11.44,
+        "probability": 0.7585054636001587
+       },
+       {
+        "word": " don't",
+        "start": 11.44,
+        "end": 11.7,
+        "probability": 0.945392906665802
+       },
+       {
+        "word": " know",
+        "start": 11.7,
+        "end": 11.96,
+        "probability": 0.9890143275260925
+       },
+       {
+        "word": " I",
+        "start": 11.96,
+        "end": 12.14,
+        "probability": 0.16031935811042786
+       },
+       {
+        "word": " don't",
+        "start": 12.14,
+        "end": 12.32,
+        "probability": 0.9546687304973602
+       },
+       {
+        "word": " know,",
+        "start": 12.32,
+        "end": 12.56,
+        "probability": 0.968397855758667
+       },
+       {
+        "word": " you",
+        "start": 12.72,
+        "end": 12.98,
+        "probability": 0.9551501274108887
+       },
+       {
+        "word": " don't",
+        "start": 12.98,
+        "end": 13.2,
+        "probability": 0.9902748465538025
+       },
+       {
+        "word": " know",
+        "start": 13.2,
+        "end": 13.5,
+        "probability": 0.9981094598770142
+       },
+       {
+        "word": " so",
+        "start": 13.5,
+        "end": 13.92,
+        "probability": 0.5113605260848999
+       },
+       {
+        "word": " you",
+        "start": 13.92,
+        "end": 14.22,
+        "probability": 0.325423002243042
+       },
+       {
+        "word": " just",
+        "start": 14.22,
+        "end": 14.22,
+        "probability": 0.43177029490470886
+       },
+       {
+        "word": " leave",
+        "start": 14.22,
+        "end": 14.22,
+        "probability": 0.387868732213974
+       },
+       {
+        "word": " it",
+        "start": 14.22,
+        "end": 14.32,
+        "probability": 0.3062642216682434
+       },
+       {
+        "word": " like",
+        "start": 14.32,
+        "end": 14.5,
+        "probability": 0.3534889221191406
+       },
+       {
+        "word": " this",
+        "start": 14.5,
+        "end": 14.64,
+        "probability": 0.9370246529579163
+       }
+      ],
+      "passed": false
+     },
+     "speaker": {
+      "score": 0.8685391545295715,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": "qa_failed",
+   "request_dir": "/content/rbench7/requests-rb7/b87496d53a7a4da88b04df7adc363f55",
+   "out_duration_seconds": 14.721458,
+   "out_sha256": "edfe7bdf8ccc592baa1010170715e9b94111d36ddb482fcd7235553b3d8e9f70",
+   "premaster": "/content/rbench7/requests-rb7/b87496d53a7a4da88b04df7adc363f55/enh-premaster.wav",
+   "latency_seconds": 127.0
+  },
+  {
+   "tag": "rb7-cr7-enh-light-w035",
+   "input": "without_Cristiano Ronaldo - Live The Present.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": -1.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 0.85,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 236,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "light",
+    "reasons": [
+     "est_snr 15.71dB between full -1.0 and bypass 25.0"
+    ],
+    "wet_gain": 0.35
+   },
+   "generative": {
+    "chunks": 2,
+    "max_length_drift": 0.005756
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -16.77,
+     "true_peak_dbtp": -0.08,
+     "lra_lu": 3.6
+    },
+    "after": {
+     "integrated_lufs": -17.67,
+     "true_peak_dbtp": -1.0,
+     "lra_lu": 3.6
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": -1.675,
+    "dc_offset_removed": [
+     -3.831e-05,
+     4.69e-06
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": false
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 14.721458,
+     "sample_rate": 48000,
+     "channels": 2,
+     "samples": 706630,
+     "rms_dbfs": -24.4,
+     "peak_dbfs": -4.5,
+     "clipping_fraction": 0.0,
+     "dc_offset": -0.0,
+     "silence_ratio": 0.0163,
+     "est_snr_db": 17.21,
+     "bed_dbfs": -41.76
+    }
+   },
+   "qa": {
+    "automatic_pass": false,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.2553,
+      "word_error_rate": 0.2553,
+      "exact_normalized_match": false,
+      "status": "review_required",
+      "expected": "Life goes on. The past will never come again. This is the best present we have in our lives. This is the time. Because you know, you don't know what will happen tomorrow. You don't know. I don't know. You don't know. So, leave it to me.",
+      "observed": "life goes on, the past that will never come again this is the best present that we think about in our lives this time because you know you don't know what will happen tomorrow you don't know, you don't know, you don't know so you just stay like this",
+      "words": [
+       {
+        "word": " life",
+        "start": 0.0,
+        "end": 0.52,
+        "probability": 0.024765683338046074
+       },
+       {
+        "word": " goes",
+        "start": 0.52,
+        "end": 0.68,
+        "probability": 0.4196251928806305
+       },
+       {
+        "word": " on,",
+        "start": 0.68,
+        "end": 1.08,
+        "probability": 0.988264799118042
+       },
+       {
+        "word": " the",
+        "start": 1.2,
+        "end": 1.6,
+        "probability": 0.31318286061286926
+       },
+       {
+        "word": " past",
+        "start": 1.6,
+        "end": 1.8,
+        "probability": 0.2215794026851654
+       },
+       {
+        "word": " that",
+        "start": 1.8,
+        "end": 1.96,
+        "probability": 0.3583585321903229
+       },
+       {
+        "word": " will",
+        "start": 1.96,
+        "end": 2.1,
+        "probability": 0.5799835920333862
+       },
+       {
+        "word": " never",
+        "start": 2.1,
+        "end": 2.42,
+        "probability": 0.9476674199104309
+       },
+       {
+        "word": " come",
+        "start": 2.42,
+        "end": 2.68,
+        "probability": 0.8598126173019409
+       },
+       {
+        "word": " again",
+        "start": 2.68,
+        "end": 3.54,
+        "probability": 0.7930460572242737
+       },
+       {
+        "word": " this",
+        "start": 3.54,
+        "end": 3.78,
+        "probability": 0.10839172452688217
+       },
+       {
+        "word": " is",
+        "start": 3.78,
+        "end": 3.98,
+        "probability": 0.6063129901885986
+       },
+       {
+        "word": " the",
+        "start": 3.98,
+        "end": 3.98,
+        "probability": 0.7273257970809937
+       },
+       {
+        "word": " best",
+        "start": 3.98,
+        "end": 4.36,
+        "probability": 0.9150478839874268
+       },
+       {
+        "word": " present",
+        "start": 4.36,
+        "end": 4.6,
+        "probability": 0.30207598209381104
+       },
+       {
+        "word": " that",
+        "start": 4.6,
+        "end": 5.04,
+        "probability": 0.3689786195755005
+       },
+       {
+        "word": " we",
+        "start": 5.04,
+        "end": 5.18,
+        "probability": 0.8904708623886108
+       },
+       {
+        "word": " think",
+        "start": 5.18,
+        "end": 5.36,
+        "probability": 0.16340135037899017
+       },
+       {
+        "word": " about",
+        "start": 5.36,
+        "end": 5.54,
+        "probability": 0.5892901420593262
+       },
+       {
+        "word": " in",
+        "start": 5.54,
+        "end": 5.58,
+        "probability": 0.6665653586387634
+       },
+       {
+        "word": " our",
+        "start": 5.58,
+        "end": 5.98,
+        "probability": 0.9401679635047913
+       },
+       {
+        "word": " lives",
+        "start": 5.98,
+        "end": 6.0,
+        "probability": 0.4781559407711029
+       },
+       {
+        "word": " this",
+        "start": 6.0,
+        "end": 6.72,
+        "probability": 0.30785277485847473
+       },
+       {
+        "word": " time",
+        "start": 6.72,
+        "end": 6.98,
+        "probability": 0.4940793812274933
+       },
+       {
+        "word": " because",
+        "start": 7.64,
+        "end": 7.9,
+        "probability": 0.615796685218811
+       },
+       {
+        "word": " you",
+        "start": 7.9,
+        "end": 8.46,
+        "probability": 0.8529047966003418
+       },
+       {
+        "word": " know",
+        "start": 8.46,
+        "end": 8.66,
+        "probability": 0.8543097972869873
+       },
+       {
+        "word": " you",
+        "start": 8.66,
+        "end": 8.86,
+        "probability": 0.28462210297584534
+       },
+       {
+        "word": " don't",
+        "start": 8.86,
+        "end": 9.1,
+        "probability": 0.8410671055316925
+       },
+       {
+        "word": " know",
+        "start": 9.1,
+        "end": 9.32,
+        "probability": 0.9403966665267944
+       },
+       {
+        "word": " what",
+        "start": 9.32,
+        "end": 9.68,
+        "probability": 0.8942640423774719
+       },
+       {
+        "word": " will",
+        "start": 9.68,
+        "end": 9.96,
+        "probability": 0.877261221408844
+       },
+       {
+        "word": " happen",
+        "start": 9.96,
+        "end": 10.2,
+        "probability": 0.9257142543792725
+       },
+       {
+        "word": " tomorrow",
+        "start": 10.2,
+        "end": 10.52,
+        "probability": 0.42590415477752686
+       },
+       {
+        "word": " you",
+        "start": 11.04,
+        "end": 11.42,
+        "probability": 0.7814136743545532
+       },
+       {
+        "word": " don't",
+        "start": 11.42,
+        "end": 11.68,
+        "probability": 0.8686200976371765
+       },
+       {
+        "word": " know,",
+        "start": 11.68,
+        "end": 11.96,
+        "probability": 0.9707916975021362
+       },
+       {
+        "word": " you",
+        "start": 12.0,
+        "end": 12.14,
+        "probability": 0.6696785092353821
+       },
+       {
+        "word": " don't",
+        "start": 12.14,
+        "end": 12.36,
+        "probability": 0.965419590473175
+       },
+       {
+        "word": " know,",
+        "start": 12.36,
+        "end": 12.68,
+        "probability": 0.9960675239562988
+       },
+       {
+        "word": " you",
+        "start": 12.68,
+        "end": 12.96,
+        "probability": 0.7361735105514526
+       },
+       {
+        "word": " don't",
+        "start": 12.96,
+        "end": 13.16,
+        "probability": 0.9774834215641022
+       },
+       {
+        "word": " know",
+        "start": 13.16,
+        "end": 13.54,
+        "probability": 0.9979300498962402
+       },
+       {
+        "word": " so",
+        "start": 13.54,
+        "end": 13.92,
+        "probability": 0.40948235988616943
+       },
+       {
+        "word": " you",
+        "start": 13.92,
+        "end": 14.18,
+        "probability": 0.40010932087898254
+       },
+       {
+        "word": " just",
+        "start": 14.18,
+        "end": 14.18,
+        "probability": 0.3559800088405609
+       },
+       {
+        "word": " stay",
+        "start": 14.18,
+        "end": 14.18,
+        "probability": 0.2579001188278198
+       },
+       {
+        "word": " like",
+        "start": 14.18,
+        "end": 14.48,
+        "probability": 0.4365541636943817
+       },
+       {
+        "word": " this",
+        "start": 14.48,
+        "end": 14.62,
+        "probability": 0.9675512313842773
+       }
+      ],
+      "passed": false
+     },
+     "speaker": {
+      "score": 0.95890212059021,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": "qa_failed",
+   "request_dir": "/content/rbench7/requests-rb7/b25089521e1847cf834796fed351be0e",
+   "out_duration_seconds": 14.721458,
+   "out_sha256": "7b503947a245a0ef843b36f681a3c7b85caa0758b7874313f82be12155084edb",
+   "premaster": "/content/rbench7/requests-rb7/b25089521e1847cf834796fed351be0e/enh-premaster.wav",
+   "latency_seconds": 123.7
+  },
+  {
+   "tag": "rb7-quote-enh-full-w100",
+   "input": "without_Such a great quote  #shorts.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": 30.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 1.0,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 218,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "full",
+    "reasons": [
+     "est_snr 16.19dB <= full threshold 30.0dB"
+    ],
+    "wet_gain": 1.0
+   },
+   "generative": {
+    "chunks": 1,
+    "max_length_drift": 0.001719
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -14.78,
+     "true_peak_dbtp": -0.75,
+     "lra_lu": 1.7
+    },
+    "after": {
+     "integrated_lufs": -15.99,
+     "true_peak_dbtp": -2.04,
+     "lra_lu": 1.6
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -4.921e-05,
+     -4.921e-05
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 10.541859,
+     "sample_rate": 44100,
+     "channels": 2,
+     "samples": 464896,
+     "rms_dbfs": -18.66,
+     "peak_dbfs": -2.02,
+     "clipping_fraction": 0.0,
+     "dc_offset": -0.0,
+     "silence_ratio": 0.0778,
+     "est_snr_db": 17.32,
+     "bed_dbfs": -37.17
+    }
+   },
+   "qa": {
+    "automatic_pass": true,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.0,
+      "word_error_rate": 0.0,
+      "exact_normalized_match": true,
+      "status": "no_text_discrepancy_detected",
+      "expected": "I don't actually know if Christian Bale did say this, but the quote is, if you have a problem with me, text me, and if you don't have my number, you don't know me well enough to have a problem with me. That is so good.",
+      "observed": "I don't actually know if Christian Bale did say this, but the quote is, if you have a problem with me, text me, and if you don't have my number, you don't know me well enough to have a problem with me. That is so good.",
+      "words": [
+       {
+        "word": " I",
+        "start": 0.0,
+        "end": 0.18,
+        "probability": 0.9247222542762756
+       },
+       {
+        "word": " don't",
+        "start": 0.18,
+        "end": 0.4,
+        "probability": 0.9947628378868103
+       },
+       {
+        "word": " actually",
+        "start": 0.4,
+        "end": 0.64,
+        "probability": 0.9764570593833923
+       },
+       {
+        "word": " know",
+        "start": 0.64,
+        "end": 0.9,
+        "probability": 0.9957952499389648
+       },
+       {
+        "word": " if",
+        "start": 0.9,
+        "end": 1.04,
+        "probability": 0.9955111742019653
+       },
+       {
+        "word": " Christian",
+        "start": 1.04,
+        "end": 1.3,
+        "probability": 0.8343234062194824
+       },
+       {
+        "word": " Bale",
+        "start": 1.3,
+        "end": 1.66,
+        "probability": 0.8248172998428345
+       },
+       {
+        "word": " did",
+        "start": 1.66,
+        "end": 1.84,
+        "probability": 0.9842566847801208
+       },
+       {
+        "word": " say",
+        "start": 1.84,
+        "end": 2.14,
+        "probability": 0.998339056968689
+       },
+       {
+        "word": " this,",
+        "start": 2.14,
+        "end": 2.4,
+        "probability": 0.9982277750968933
+       },
+       {
+        "word": " but",
+        "start": 2.54,
+        "end": 2.72,
+        "probability": 0.9842945337295532
+       },
+       {
+        "word": " the",
+        "start": 2.72,
+        "end": 3.06,
+        "probability": 0.9318262934684753
+       },
+       {
+        "word": " quote",
+        "start": 3.06,
+        "end": 3.3,
+        "probability": 0.9955105781555176
+       },
+       {
+        "word": " is,",
+        "start": 3.3,
+        "end": 3.58,
+        "probability": 0.9988347887992859
+       },
+       {
+        "word": " if",
+        "start": 4.04,
+        "end": 4.12,
+        "probability": 0.07134022563695908
+       },
+       {
+        "word": " you",
+        "start": 4.12,
+        "end": 4.24,
+        "probability": 0.9988270401954651
+       },
+       {
+        "word": " have",
+        "start": 4.24,
+        "end": 4.36,
+        "probability": 0.9945541620254517
+       },
+       {
+        "word": " a",
+        "start": 4.36,
+        "end": 4.44,
+        "probability": 0.9922312498092651
+       },
+       {
+        "word": " problem",
+        "start": 4.44,
+        "end": 4.7,
+        "probability": 0.9990655779838562
+       },
+       {
+        "word": " with",
+        "start": 4.7,
+        "end": 4.9,
+        "probability": 0.9976199269294739
+       },
+       {
+        "word": " me,",
+        "start": 4.9,
+        "end": 5.12,
+        "probability": 0.9977498650550842
+       },
+       {
+        "word": " text",
+        "start": 5.28,
+        "end": 5.46,
+        "probability": 0.9977129697799683
+       },
+       {
+        "word": " me,",
+        "start": 5.46,
+        "end": 5.74,
+        "probability": 0.9961400628089905
+       },
+       {
+        "word": " and",
+        "start": 5.94,
+        "end": 6.02,
+        "probability": 0.9928826093673706
+       },
+       {
+        "word": " if",
+        "start": 6.02,
+        "end": 6.14,
+        "probability": 0.9942008852958679
+       },
+       {
+        "word": " you",
+        "start": 6.14,
+        "end": 6.22,
+        "probability": 0.9957371950149536
+       },
+       {
+        "word": " don't",
+        "start": 6.22,
+        "end": 6.4,
+        "probability": 0.9986896812915802
+       },
+       {
+        "word": " have",
+        "start": 6.4,
+        "end": 6.48,
+        "probability": 0.9962946772575378
+       },
+       {
+        "word": " my",
+        "start": 6.48,
+        "end": 6.64,
+        "probability": 0.9983212351799011
+       },
+       {
+        "word": " number,",
+        "start": 6.64,
+        "end": 6.96,
+        "probability": 0.998866081237793
+       },
+       {
+        "word": " you",
+        "start": 7.18,
+        "end": 7.26,
+        "probability": 0.9931429624557495
+       },
+       {
+        "word": " don't",
+        "start": 7.26,
+        "end": 7.54,
+        "probability": 0.9990361332893372
+       },
+       {
+        "word": " know",
+        "start": 7.54,
+        "end": 7.7,
+        "probability": 0.9973534345626831
+       },
+       {
+        "word": " me",
+        "start": 7.7,
+        "end": 7.86,
+        "probability": 0.9989920258522034
+       },
+       {
+        "word": " well",
+        "start": 7.86,
+        "end": 8.04,
+        "probability": 0.9973560571670532
+       },
+       {
+        "word": " enough",
+        "start": 8.04,
+        "end": 8.26,
+        "probability": 0.9991047978401184
+       },
+       {
+        "word": " to",
+        "start": 8.26,
+        "end": 8.42,
+        "probability": 0.9971681237220764
+       },
+       {
+        "word": " have",
+        "start": 8.42,
+        "end": 8.52,
+        "probability": 0.9992917776107788
+       },
+       {
+        "word": " a",
+        "start": 8.52,
+        "end": 8.62,
+        "probability": 0.9964810609817505
+       },
+       {
+        "word": " problem",
+        "start": 8.62,
+        "end": 8.84,
+        "probability": 0.9992534518241882
+       },
+       {
+        "word": " with",
+        "start": 8.84,
+        "end": 9.04,
+        "probability": 0.998664140701294
+       },
+       {
+        "word": " me.",
+        "start": 9.04,
+        "end": 9.26,
+        "probability": 0.9991114735603333
+       },
+       {
+        "word": " That",
+        "start": 9.44,
+        "end": 9.58,
+        "probability": 0.7188442945480347
+       },
+       {
+        "word": " is",
+        "start": 9.58,
+        "end": 9.72,
+        "probability": 0.5905774235725403
+       },
+       {
+        "word": " so",
+        "start": 9.72,
+        "end": 10.04,
+        "probability": 0.9961674809455872
+       },
+       {
+        "word": " good.",
+        "start": 10.04,
+        "end": 10.3,
+        "probability": 0.9938010573387146
+       }
+      ],
+      "passed": true
+     },
+     "speaker": {
+      "score": 0.97515869140625,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": null,
+   "request_dir": "/content/rbench7/requests-rb7/fabdead0aef04b279eb31883e6f37758",
+   "out_duration_seconds": 10.541859,
+   "out_sha256": "fb876a9eeaa2a70cbf6d512e9f743656771d5f427c28583a200698b7e20d1973",
+   "premaster": "/content/rbench7/requests-rb7/fabdead0aef04b279eb31883e6f37758/enh-premaster.wav",
+   "latency_seconds": 87.1
+  },
+  {
+   "tag": "rb7-quote-enh-light-w035",
+   "input": "without_Such a great quote  #shorts.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": -1.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 0.85,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 218,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "light",
+    "reasons": [
+     "est_snr 16.19dB between full -1.0 and bypass 25.0"
+    ],
+    "wet_gain": 0.35
+   },
+   "generative": {
+    "chunks": 1,
+    "max_length_drift": 0.001719
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -16.44,
+     "true_peak_dbtp": -2.58,
+     "lra_lu": 1.8
+    },
+    "after": {
+     "integrated_lufs": -15.99,
+     "true_peak_dbtp": -2.19,
+     "lra_lu": 1.8
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -0.0001006,
+     -0.0001006
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 10.541859,
+     "sample_rate": 44100,
+     "channels": 2,
+     "samples": 464896,
+     "rms_dbfs": -18.66,
+     "peak_dbfs": -2.19,
+     "clipping_fraction": 0.0,
+     "dc_offset": 0.0,
+     "silence_ratio": 0.0797,
+     "est_snr_db": 17.99,
+     "bed_dbfs": -37.53
+    }
+   },
+   "qa": {
+    "automatic_pass": false,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.0435,
+      "word_error_rate": 0.0435,
+      "exact_normalized_match": false,
+      "status": "review_required",
+      "expected": "I don't actually know if Christian Bale did say this, but the quote is, if you have a problem with me, text me, and if you don't have my number, you don't know me well enough to have a problem with me. That is so good.",
+      "observed": "I don't actually know if Christian Bale did say this, but the quote is, if you have a problem with me, text me, and if you don't have my number, you don't know me well enough to have a problem with me. That's so good.",
+      "words": [
+       {
+        "word": " I",
+        "start": 0.0,
+        "end": 0.16,
+        "probability": 0.9331996440887451
+       },
+       {
+        "word": " don't",
+        "start": 0.16,
+        "end": 0.4,
+        "probability": 0.9957101047039032
+       },
+       {
+        "word": " actually",
+        "start": 0.4,
+        "end": 0.64,
+        "probability": 0.9756765961647034
+       },
+       {
+        "word": " know",
+        "start": 0.64,
+        "end": 0.9,
+        "probability": 0.9958605170249939
+       },
+       {
+        "word": " if",
+        "start": 0.9,
+        "end": 1.04,
+        "probability": 0.9958425164222717
+       },
+       {
+        "word": " Christian",
+        "start": 1.04,
+        "end": 1.3,
+        "probability": 0.7513059377670288
+       },
+       {
+        "word": " Bale",
+        "start": 1.3,
+        "end": 1.66,
+        "probability": 0.831443727016449
+       },
+       {
+        "word": " did",
+        "start": 1.66,
+        "end": 1.84,
+        "probability": 0.9841586351394653
+       },
+       {
+        "word": " say",
+        "start": 1.84,
+        "end": 2.14,
+        "probability": 0.9983996748924255
+       },
+       {
+        "word": " this,",
+        "start": 2.14,
+        "end": 2.4,
+        "probability": 0.9978975057601929
+       },
+       {
+        "word": " but",
+        "start": 2.54,
+        "end": 2.72,
+        "probability": 0.9874396324157715
+       },
+       {
+        "word": " the",
+        "start": 2.72,
+        "end": 3.06,
+        "probability": 0.9501761198043823
+       },
+       {
+        "word": " quote",
+        "start": 3.06,
+        "end": 3.3,
+        "probability": 0.994819700717926
+       },
+       {
+        "word": " is,",
+        "start": 3.3,
+        "end": 3.58,
+        "probability": 0.9989930987358093
+       },
+       {
+        "word": " if",
+        "start": 4.04,
+        "end": 4.12,
+        "probability": 0.07116765528917313
+       },
+       {
+        "word": " you",
+        "start": 4.12,
+        "end": 4.24,
+        "probability": 0.9984174966812134
+       },
+       {
+        "word": " have",
+        "start": 4.24,
+        "end": 4.36,
+        "probability": 0.9956480860710144
+       },
+       {
+        "word": " a",
+        "start": 4.36,
+        "end": 4.44,
+        "probability": 0.9954250454902649
+       },
+       {
+        "word": " problem",
+        "start": 4.44,
+        "end": 4.7,
+        "probability": 0.9991565942764282
+       },
+       {
+        "word": " with",
+        "start": 4.7,
+        "end": 4.92,
+        "probability": 0.9978759288787842
+       },
+       {
+        "word": " me,",
+        "start": 4.92,
+        "end": 5.1,
+        "probability": 0.9979864358901978
+       },
+       {
+        "word": " text",
+        "start": 5.28,
+        "end": 5.46,
+        "probability": 0.997826874256134
+       },
+       {
+        "word": " me,",
+        "start": 5.46,
+        "end": 5.76,
+        "probability": 0.9967712759971619
+       },
+       {
+        "word": " and",
+        "start": 5.94,
+        "end": 6.02,
+        "probability": 0.9881078600883484
+       },
+       {
+        "word": " if",
+        "start": 6.02,
+        "end": 6.14,
+        "probability": 0.9950357675552368
+       },
+       {
+        "word": " you",
+        "start": 6.14,
+        "end": 6.22,
+        "probability": 0.9963964819908142
+       },
+       {
+        "word": " don't",
+        "start": 6.22,
+        "end": 6.4,
+        "probability": 0.9987682104110718
+       },
+       {
+        "word": " have",
+        "start": 6.4,
+        "end": 6.48,
+        "probability": 0.9964998960494995
+       },
+       {
+        "word": " my",
+        "start": 6.48,
+        "end": 6.64,
+        "probability": 0.9988839030265808
+       },
+       {
+        "word": " number,",
+        "start": 6.64,
+        "end": 6.96,
+        "probability": 0.9988214373588562
+       },
+       {
+        "word": " you",
+        "start": 7.2,
+        "end": 7.26,
+        "probability": 0.9941551089286804
+       },
+       {
+        "word": " don't",
+        "start": 7.26,
+        "end": 7.54,
+        "probability": 0.9990864396095276
+       },
+       {
+        "word": " know",
+        "start": 7.54,
+        "end": 7.7,
+        "probability": 0.9977017045021057
+       },
+       {
+        "word": " me",
+        "start": 7.7,
+        "end": 7.86,
+        "probability": 0.9988906979560852
+       },
+       {
+        "word": " well",
+        "start": 7.86,
+        "end": 8.04,
+        "probability": 0.9961633682250977
+       },
+       {
+        "word": " enough",
+        "start": 8.04,
+        "end": 8.26,
+        "probability": 0.999264657497406
+       },
+       {
+        "word": " to",
+        "start": 8.26,
+        "end": 8.42,
+        "probability": 0.9976166486740112
+       },
+       {
+        "word": " have",
+        "start": 8.42,
+        "end": 8.52,
+        "probability": 0.9993085861206055
+       },
+       {
+        "word": " a",
+        "start": 8.52,
+        "end": 8.6,
+        "probability": 0.9968985319137573
+       },
+       {
+        "word": " problem",
+        "start": 8.6,
+        "end": 8.84,
+        "probability": 0.9993220567703247
+       },
+       {
+        "word": " with",
+        "start": 8.84,
+        "end": 9.04,
+        "probability": 0.998913049697876
+       },
+       {
+        "word": " me.",
+        "start": 9.04,
+        "end": 9.26,
+        "probability": 0.999067485332489
+       },
+       {
+        "word": " That's",
+        "start": 9.42,
+        "end": 9.72,
+        "probability": 0.5576030910015106
+       },
+       {
+        "word": " so",
+        "start": 9.72,
+        "end": 10.04,
+        "probability": 0.9956957101821899
+       },
+       {
+        "word": " good.",
+        "start": 10.04,
+        "end": 10.3,
+        "probability": 0.9955132603645325
+       }
+      ],
+      "passed": false
+     },
+     "speaker": {
+      "score": 0.9874794483184814,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": "qa_failed",
+   "request_dir": "/content/rbench7/requests-rb7/b0da32050b7a4aaf9a58b03cc824ce0f",
+   "out_duration_seconds": 10.541859,
+   "out_sha256": "0fd3bfb658541d839e0908f5ca31cd83a1ce8c669a6e5de1153318984c1f3f44",
+   "premaster": "/content/rbench7/requests-rb7/b0da32050b7a4aaf9a58b03cc824ce0f/enh-premaster.wav",
+   "latency_seconds": 88.8
+  },
+  {
+   "tag": "rb7-happy-enh-full-w100",
+   "input": "without_Happiness shouldnt depend on this  #shorts.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": 30.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 1.0,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 352,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "full",
+    "reasons": [
+     "est_snr 18.78dB <= full threshold 30.0dB"
+    ],
+    "wet_gain": 1.0
+   },
+   "generative": {
+    "chunks": 3,
+    "max_length_drift": 0.010485
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -12.61,
+     "true_peak_dbtp": -0.73,
+     "lra_lu": 3.3
+    },
+    "after": {
+     "integrated_lufs": -16.0,
+     "true_peak_dbtp": -4.13,
+     "lra_lu": 3.3
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -5.999e-05,
+     -5.999e-05
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 24.009433,
+     "sample_rate": 44100,
+     "channels": 2,
+     "samples": 1058816,
+     "rms_dbfs": -18.85,
+     "peak_dbfs": -4.15,
+     "clipping_fraction": 0.0,
+     "dc_offset": 0.0,
+     "silence_ratio": 0.1242,
+     "est_snr_db": 19.87,
+     "bed_dbfs": -45.13
+    }
+   },
+   "qa": {
+    "automatic_pass": true,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.0,
+      "word_error_rate": 0.0,
+      "exact_normalized_match": true,
+      "status": "no_text_discrepancy_detected",
+      "expected": "if your happiness depends on the actions of others, you're at mercy of things that you can't control. And that's never where I want to be. So I always want to live in like, me and my therapist talk about like my higher goddess, my higher self, like I always want to live there knowing that when I'm there, you can't take that away from me. That's mine.",
+      "observed": "If your happiness depends on the actions of others, you're at mercy of things that you can't control. And that's never where I want to be. So I always want to live in like, me and my therapist talk about like my higher goddess, my higher self, like I always want to live there knowing that when I'm there, you can't take that away from me. That's mine.",
+      "words": [
+       {
+        "word": " If",
+        "start": 0.0,
+        "end": 0.26,
+        "probability": 0.6076192855834961
+       },
+       {
+        "word": " your",
+        "start": 0.26,
+        "end": 0.4,
+        "probability": 0.9712790846824646
+       },
+       {
+        "word": " happiness",
+        "start": 0.4,
+        "end": 1.06,
+        "probability": 0.9972406625747681
+       },
+       {
+        "word": " depends",
+        "start": 1.06,
+        "end": 2.24,
+        "probability": 0.9879635572433472
+       },
+       {
+        "word": " on",
+        "start": 2.24,
+        "end": 2.98,
+        "probability": 0.9981167316436768
+       },
+       {
+        "word": " the",
+        "start": 2.98,
+        "end": 3.08,
+        "probability": 0.9995875954627991
+       },
+       {
+        "word": " actions",
+        "start": 3.08,
+        "end": 3.44,
+        "probability": 0.9978131055831909
+       },
+       {
+        "word": " of",
+        "start": 3.44,
+        "end": 3.68,
+        "probability": 0.9991756081581116
+       },
+       {
+        "word": " others,",
+        "start": 3.68,
+        "end": 4.0,
+        "probability": 0.9985393285751343
+       },
+       {
+        "word": " you're",
+        "start": 4.76,
+        "end": 5.06,
+        "probability": 0.9884653985500336
+       },
+       {
+        "word": " at",
+        "start": 5.06,
+        "end": 5.24,
+        "probability": 0.9987762570381165
+       },
+       {
+        "word": " mercy",
+        "start": 5.24,
+        "end": 5.6,
+        "probability": 0.9922234416007996
+       },
+       {
+        "word": " of",
+        "start": 5.6,
+        "end": 6.02,
+        "probability": 0.9974753260612488
+       },
+       {
+        "word": " things",
+        "start": 6.02,
+        "end": 6.34,
+        "probability": 0.9984326958656311
+       },
+       {
+        "word": " that",
+        "start": 6.34,
+        "end": 6.56,
+        "probability": 0.9963458180427551
+       },
+       {
+        "word": " you",
+        "start": 6.56,
+        "end": 6.68,
+        "probability": 0.9992784857749939
+       },
+       {
+        "word": " can't",
+        "start": 6.68,
+        "end": 7.0,
+        "probability": 0.997745931148529
+       },
+       {
+        "word": " control.",
+        "start": 7.0,
+        "end": 7.42,
+        "probability": 0.9995842576026917
+       },
+       {
+        "word": " And",
+        "start": 7.94,
+        "end": 8.3,
+        "probability": 0.9431824088096619
+       },
+       {
+        "word": " that's",
+        "start": 8.3,
+        "end": 8.64,
+        "probability": 0.9983137845993042
+       },
+       {
+        "word": " never",
+        "start": 8.64,
+        "end": 8.92,
+        "probability": 0.9985658526420593
+       },
+       {
+        "word": " where",
+        "start": 8.92,
+        "end": 9.76,
+        "probability": 0.9918335676193237
+       },
+       {
+        "word": " I",
+        "start": 9.76,
+        "end": 9.94,
+        "probability": 0.9974006414413452
+       },
+       {
+        "word": " want",
+        "start": 9.94,
+        "end": 10.1,
+        "probability": 0.8715980052947998
+       },
+       {
+        "word": " to",
+        "start": 10.1,
+        "end": 10.24,
+        "probability": 0.999573290348053
+       },
+       {
+        "word": " be.",
+        "start": 10.24,
+        "end": 10.38,
+        "probability": 0.9993307590484619
+       },
+       {
+        "word": " So",
+        "start": 10.5,
+        "end": 10.54,
+        "probability": 0.9582072496414185
+       },
+       {
+        "word": " I",
+        "start": 10.54,
+        "end": 10.66,
+        "probability": 0.8407928347587585
+       },
+       {
+        "word": " always",
+        "start": 10.66,
+        "end": 11.24,
+        "probability": 0.9524288773536682
+       },
+       {
+        "word": " want",
+        "start": 11.24,
+        "end": 11.48,
+        "probability": 0.9848039150238037
+       },
+       {
+        "word": " to",
+        "start": 11.48,
+        "end": 11.56,
+        "probability": 0.9995465874671936
+       },
+       {
+        "word": " live",
+        "start": 11.56,
+        "end": 11.8,
+        "probability": 0.9989948868751526
+       },
+       {
+        "word": " in",
+        "start": 11.8,
+        "end": 12.16,
+        "probability": 0.9891078472137451
+       },
+       {
+        "word": " like,",
+        "start": 12.16,
+        "end": 12.48,
+        "probability": 0.7551226615905762
+       },
+       {
+        "word": " me",
+        "start": 13.02,
+        "end": 13.3,
+        "probability": 0.9609327912330627
+       },
+       {
+        "word": " and",
+        "start": 13.3,
+        "end": 13.38,
+        "probability": 0.9851153492927551
+       },
+       {
+        "word": " my",
+        "start": 13.38,
+        "end": 13.5,
+        "probability": 0.9981732368469238
+       },
+       {
+        "word": " therapist",
+        "start": 13.5,
+        "end": 13.78,
+        "probability": 0.9203811883926392
+       },
+       {
+        "word": " talk",
+        "start": 13.78,
+        "end": 14.04,
+        "probability": 0.9065713286399841
+       },
+       {
+        "word": " about",
+        "start": 14.04,
+        "end": 14.22,
+        "probability": 0.9981358051300049
+       },
+       {
+        "word": " like",
+        "start": 14.22,
+        "end": 14.38,
+        "probability": 0.8743076920509338
+       },
+       {
+        "word": " my",
+        "start": 14.38,
+        "end": 14.52,
+        "probability": 0.8519812226295471
+       },
+       {
+        "word": " higher",
+        "start": 14.52,
+        "end": 14.88,
+        "probability": 0.9760918021202087
+       },
+       {
+        "word": " goddess,",
+        "start": 14.88,
+        "end": 15.28,
+        "probability": 0.9229049682617188
+       },
+       {
+        "word": " my",
+        "start": 15.66,
+        "end": 15.76,
+        "probability": 0.9976627826690674
+       },
+       {
+        "word": " higher",
+        "start": 15.76,
+        "end": 16.06,
+        "probability": 0.9856282472610474
+       },
+       {
+        "word": " self,",
+        "start": 16.06,
+        "end": 16.48,
+        "probability": 0.9936010241508484
+       },
+       {
+        "word": " like",
+        "start": 16.62,
+        "end": 16.76,
+        "probability": 0.9863128066062927
+       },
+       {
+        "word": " I",
+        "start": 16.76,
+        "end": 16.98,
+        "probability": 0.7711271643638611
+       },
+       {
+        "word": " always",
+        "start": 16.98,
+        "end": 17.36,
+        "probability": 0.999079704284668
+       },
+       {
+        "word": " want",
+        "start": 17.36,
+        "end": 17.6,
+        "probability": 0.9924356341362
+       },
+       {
+        "word": " to",
+        "start": 17.6,
+        "end": 17.68,
+        "probability": 0.9997522234916687
+       },
+       {
+        "word": " live",
+        "start": 17.68,
+        "end": 17.86,
+        "probability": 0.9991461038589478
+       },
+       {
+        "word": " there",
+        "start": 17.86,
+        "end": 18.22,
+        "probability": 0.9965645670890808
+       },
+       {
+        "word": " knowing",
+        "start": 18.22,
+        "end": 19.1,
+        "probability": 0.422433465719223
+       },
+       {
+        "word": " that",
+        "start": 19.1,
+        "end": 19.6,
+        "probability": 0.9990361928939819
+       },
+       {
+        "word": " when",
+        "start": 19.6,
+        "end": 20.38,
+        "probability": 0.9654151201248169
+       },
+       {
+        "word": " I'm",
+        "start": 20.38,
+        "end": 20.64,
+        "probability": 0.9973949193954468
+       },
+       {
+        "word": " there,",
+        "start": 20.64,
+        "end": 20.88,
+        "probability": 0.9983161687850952
+       },
+       {
+        "word": " you",
+        "start": 21.06,
+        "end": 21.12,
+        "probability": 0.9974774718284607
+       },
+       {
+        "word": " can't",
+        "start": 21.12,
+        "end": 21.5,
+        "probability": 0.9977365136146545
+       },
+       {
+        "word": " take",
+        "start": 21.5,
+        "end": 21.7,
+        "probability": 0.9992830157279968
+       },
+       {
+        "word": " that",
+        "start": 21.7,
+        "end": 21.92,
+        "probability": 0.9995266199111938
+       },
+       {
+        "word": " away",
+        "start": 21.92,
+        "end": 22.2,
+        "probability": 0.9994763731956482
+       },
+       {
+        "word": " from",
+        "start": 22.2,
+        "end": 22.46,
+        "probability": 0.998630702495575
+       },
+       {
+        "word": " me.",
+        "start": 22.46,
+        "end": 22.68,
+        "probability": 0.9988163709640503
+       },
+       {
+        "word": " That's",
+        "start": 22.84,
+        "end": 23.36,
+        "probability": 0.7683779895305634
+       },
+       {
+        "word": " mine.",
+        "start": 23.36,
+        "end": 23.68,
+        "probability": 0.9737694263458252
+       }
+      ],
+      "passed": true
+     },
+     "speaker": {
+      "score": 0.9736899137496948,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": null,
+   "request_dir": "/content/rbench7/requests-rb7/c0dc7fbce7bd40218b2ed36e19ace366",
+   "out_duration_seconds": 24.009433,
+   "out_sha256": "af894031a25381d4c75870106e8fcd847d9afd9947d6952b0c4ca8af6d0ade8b",
+   "premaster": "/content/rbench7/requests-rb7/c0dc7fbce7bd40218b2ed36e19ace366/enh-premaster.wav",
+   "latency_seconds": 183.0
+  },
+  {
+   "tag": "rb7-happy-enh-light-w035",
+   "input": "without_Happiness shouldnt depend on this  #shorts.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": -1.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 0.85,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 352,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "light",
+    "reasons": [
+     "est_snr 18.78dB between full -1.0 and bypass 25.0"
+    ],
+    "wet_gain": 0.35
+   },
+   "generative": {
+    "chunks": 3,
+    "max_length_drift": 0.010485
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -14.9,
+     "true_peak_dbtp": -2.66,
+     "lra_lu": 3.2
+    },
+    "after": {
+     "integrated_lufs": -16.0,
+     "true_peak_dbtp": -3.77,
+     "lra_lu": 3.2
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -0.00012071,
+     -0.00012071
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 24.009433,
+     "sample_rate": 44100,
+     "channels": 2,
+     "samples": 1058816,
+     "rms_dbfs": -18.82,
+     "peak_dbfs": -3.77,
+     "clipping_fraction": 0.0,
+     "dc_offset": -0.0,
+     "silence_ratio": 0.1275,
+     "est_snr_db": 20.42,
+     "bed_dbfs": -46.31
+    }
+   },
+   "qa": {
+    "automatic_pass": true,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.0,
+      "word_error_rate": 0.0,
+      "exact_normalized_match": true,
+      "status": "no_text_discrepancy_detected",
+      "expected": "if your happiness depends on the actions of others, you're at mercy of things that you can't control. And that's never where I want to be. So I always want to live in like, me and my therapist talk about like my higher goddess, my higher self, like I always want to live there knowing that when I'm there, you can't take that away from me. That's mine.",
+      "observed": "if your happiness depends on the actions of others, you're at mercy of things that you can't control. And that's never where I want to be. So I always want to live in like, me and my therapist talk about like my higher goddess, my higher self, like I always want to live there knowing that when I'm there, you can't take that away from me. That's mine.",
+      "words": [
+       {
+        "word": " if",
+        "start": 0.0,
+        "end": 0.26,
+        "probability": 0.3085280954837799
+       },
+       {
+        "word": " your",
+        "start": 0.26,
+        "end": 0.4,
+        "probability": 0.9597580432891846
+       },
+       {
+        "word": " happiness",
+        "start": 0.4,
+        "end": 1.06,
+        "probability": 0.996745228767395
+       },
+       {
+        "word": " depends",
+        "start": 1.06,
+        "end": 2.26,
+        "probability": 0.9895272254943848
+       },
+       {
+        "word": " on",
+        "start": 2.26,
+        "end": 2.98,
+        "probability": 0.9976592063903809
+       },
+       {
+        "word": " the",
+        "start": 2.98,
+        "end": 3.08,
+        "probability": 0.9995703101158142
+       },
+       {
+        "word": " actions",
+        "start": 3.08,
+        "end": 3.44,
+        "probability": 0.997559666633606
+       },
+       {
+        "word": " of",
+        "start": 3.44,
+        "end": 3.68,
+        "probability": 0.998950719833374
+       },
+       {
+        "word": " others,",
+        "start": 3.68,
+        "end": 4.02,
+        "probability": 0.9980472326278687
+       },
+       {
+        "word": " you're",
+        "start": 4.74,
+        "end": 5.06,
+        "probability": 0.9932330846786499
+       },
+       {
+        "word": " at",
+        "start": 5.06,
+        "end": 5.24,
+        "probability": 0.9988024234771729
+       },
+       {
+        "word": " mercy",
+        "start": 5.24,
+        "end": 5.6,
+        "probability": 0.988166332244873
+       },
+       {
+        "word": " of",
+        "start": 5.6,
+        "end": 6.02,
+        "probability": 0.9963849782943726
+       },
+       {
+        "word": " things",
+        "start": 6.02,
+        "end": 6.34,
+        "probability": 0.9986011385917664
+       },
+       {
+        "word": " that",
+        "start": 6.34,
+        "end": 6.56,
+        "probability": 0.9978247880935669
+       },
+       {
+        "word": " you",
+        "start": 6.56,
+        "end": 6.68,
+        "probability": 0.9993577599525452
+       },
+       {
+        "word": " can't",
+        "start": 6.68,
+        "end": 7.0,
+        "probability": 0.9969227015972137
+       },
+       {
+        "word": " control.",
+        "start": 7.0,
+        "end": 7.42,
+        "probability": 0.9993042945861816
+       },
+       {
+        "word": " And",
+        "start": 7.96,
+        "end": 8.3,
+        "probability": 0.9473612308502197
+       },
+       {
+        "word": " that's",
+        "start": 8.3,
+        "end": 8.64,
+        "probability": 0.9980385601520538
+       },
+       {
+        "word": " never",
+        "start": 8.64,
+        "end": 8.94,
+        "probability": 0.9985859394073486
+       },
+       {
+        "word": " where",
+        "start": 8.94,
+        "end": 9.76,
+        "probability": 0.9926935434341431
+       },
+       {
+        "word": " I",
+        "start": 9.76,
+        "end": 9.94,
+        "probability": 0.9979891777038574
+       },
+       {
+        "word": " want",
+        "start": 9.94,
+        "end": 10.1,
+        "probability": 0.8795970678329468
+       },
+       {
+        "word": " to",
+        "start": 10.1,
+        "end": 10.24,
+        "probability": 0.9995067119598389
+       },
+       {
+        "word": " be.",
+        "start": 10.24,
+        "end": 10.38,
+        "probability": 0.9993948936462402
+       },
+       {
+        "word": " So",
+        "start": 10.5,
+        "end": 10.54,
+        "probability": 0.9719865918159485
+       },
+       {
+        "word": " I",
+        "start": 10.54,
+        "end": 10.66,
+        "probability": 0.9163206815719604
+       },
+       {
+        "word": " always",
+        "start": 10.66,
+        "end": 11.24,
+        "probability": 0.9737201929092407
+       },
+       {
+        "word": " want",
+        "start": 11.24,
+        "end": 11.48,
+        "probability": 0.9849671721458435
+       },
+       {
+        "word": " to",
+        "start": 11.48,
+        "end": 11.56,
+        "probability": 0.9994124174118042
+       },
+       {
+        "word": " live",
+        "start": 11.56,
+        "end": 11.8,
+        "probability": 0.9990971088409424
+       },
+       {
+        "word": " in",
+        "start": 11.8,
+        "end": 12.16,
+        "probability": 0.9890685677528381
+       },
+       {
+        "word": " like,",
+        "start": 12.16,
+        "end": 12.46,
+        "probability": 0.6009604334831238
+       },
+       {
+        "word": " me",
+        "start": 13.02,
+        "end": 13.3,
+        "probability": 0.9659639000892639
+       },
+       {
+        "word": " and",
+        "start": 13.3,
+        "end": 13.38,
+        "probability": 0.9899133443832397
+       },
+       {
+        "word": " my",
+        "start": 13.38,
+        "end": 13.5,
+        "probability": 0.9982080459594727
+       },
+       {
+        "word": " therapist",
+        "start": 13.5,
+        "end": 13.78,
+        "probability": 0.9246364831924438
+       },
+       {
+        "word": " talk",
+        "start": 13.78,
+        "end": 14.04,
+        "probability": 0.9198331832885742
+       },
+       {
+        "word": " about",
+        "start": 14.04,
+        "end": 14.22,
+        "probability": 0.9987302422523499
+       },
+       {
+        "word": " like",
+        "start": 14.22,
+        "end": 14.36,
+        "probability": 0.8578753471374512
+       },
+       {
+        "word": " my",
+        "start": 14.36,
+        "end": 14.52,
+        "probability": 0.8549550771713257
+       },
+       {
+        "word": " higher",
+        "start": 14.52,
+        "end": 14.9,
+        "probability": 0.9770580530166626
+       },
+       {
+        "word": " goddess,",
+        "start": 14.9,
+        "end": 15.28,
+        "probability": 0.9225403666496277
+       },
+       {
+        "word": " my",
+        "start": 15.66,
+        "end": 15.76,
+        "probability": 0.9981940388679504
+       },
+       {
+        "word": " higher",
+        "start": 15.76,
+        "end": 16.06,
+        "probability": 0.984599769115448
+       },
+       {
+        "word": " self,",
+        "start": 16.06,
+        "end": 16.48,
+        "probability": 0.9933611154556274
+       },
+       {
+        "word": " like",
+        "start": 16.62,
+        "end": 16.76,
+        "probability": 0.991746187210083
+       },
+       {
+        "word": " I",
+        "start": 16.76,
+        "end": 16.98,
+        "probability": 0.7100023627281189
+       },
+       {
+        "word": " always",
+        "start": 16.98,
+        "end": 17.36,
+        "probability": 0.9989783763885498
+       },
+       {
+        "word": " want",
+        "start": 17.36,
+        "end": 17.6,
+        "probability": 0.9919093251228333
+       },
+       {
+        "word": " to",
+        "start": 17.6,
+        "end": 17.68,
+        "probability": 0.9997091889381409
+       },
+       {
+        "word": " live",
+        "start": 17.68,
+        "end": 17.86,
+        "probability": 0.9992420673370361
+       },
+       {
+        "word": " there",
+        "start": 17.86,
+        "end": 18.24,
+        "probability": 0.9950007796287537
+       },
+       {
+        "word": " knowing",
+        "start": 18.8,
+        "end": 19.1,
+        "probability": 0.3785093128681183
+       },
+       {
+        "word": " that",
+        "start": 19.1,
+        "end": 19.6,
+        "probability": 0.9991453886032104
+       },
+       {
+        "word": " when",
+        "start": 19.6,
+        "end": 20.38,
+        "probability": 0.9659519791603088
+       },
+       {
+        "word": " I'm",
+        "start": 20.38,
+        "end": 20.64,
+        "probability": 0.9967420399188995
+       },
+       {
+        "word": " there,",
+        "start": 20.64,
+        "end": 20.88,
+        "probability": 0.9987607002258301
+       },
+       {
+        "word": " you",
+        "start": 21.06,
+        "end": 21.12,
+        "probability": 0.9977506995201111
+       },
+       {
+        "word": " can't",
+        "start": 21.12,
+        "end": 21.5,
+        "probability": 0.9975669682025909
+       },
+       {
+        "word": " take",
+        "start": 21.5,
+        "end": 21.7,
+        "probability": 0.99937903881073
+       },
+       {
+        "word": " that",
+        "start": 21.7,
+        "end": 21.92,
+        "probability": 0.999579131603241
+       },
+       {
+        "word": " away",
+        "start": 21.92,
+        "end": 22.2,
+        "probability": 0.9995403289794922
+       },
+       {
+        "word": " from",
+        "start": 22.2,
+        "end": 22.46,
+        "probability": 0.9984689354896545
+       },
+       {
+        "word": " me.",
+        "start": 22.46,
+        "end": 22.7,
+        "probability": 0.9988942742347717
+       },
+       {
+        "word": " That's",
+        "start": 22.84,
+        "end": 23.36,
+        "probability": 0.7301149070262909
+       },
+       {
+        "word": " mine.",
+        "start": 23.36,
+        "end": 23.68,
+        "probability": 0.948114275932312
+       }
+      ],
+      "passed": true
+     },
+     "speaker": {
+      "score": 0.9869511723518372,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": null,
+   "request_dir": "/content/rbench7/requests-rb7/8d0ded615c3341878fa0acd0378c77a7",
+   "out_duration_seconds": 24.009433,
+   "out_sha256": "cb8ccbb7459c2cb12620023e65ed72ad85defab230fd5f5ceb99f375410d57d0",
+   "premaster": "/content/rbench7/requests-rb7/8d0ded615c3341878fa0acd0378c77a7/enh-premaster.wav",
+   "latency_seconds": 183.5
+  },
+  {
+   "tag": "rb7-tucci-enh-full-w100",
+   "input": "without_Italian food no-nos!  Stanley Tucci  Dish.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": 30.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 1.0,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 355,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "full",
+    "reasons": [
+     "est_snr 19.98dB <= full threshold 30.0dB"
+    ],
+    "wet_gain": 1.0
+   },
+   "generative": {
+    "chunks": 2,
+    "max_length_drift": 0.000466
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -11.64,
+     "true_peak_dbtp": 0.12,
+     "lra_lu": 2.9
+    },
+    "after": {
+     "integrated_lufs": -16.0,
+     "true_peak_dbtp": -4.36,
+     "lra_lu": 2.9
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -4.704e-05,
+     -4.704e-05
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 22.954667,
+     "sample_rate": 48000,
+     "channels": 2,
+     "samples": 1101824,
+     "rms_dbfs": -19.83,
+     "peak_dbfs": -4.36,
+     "clipping_fraction": 0.0,
+     "dc_offset": -1e-06,
+     "silence_ratio": 0.2249,
+     "est_snr_db": 29.75,
+     "bed_dbfs": -82.11
+    }
+   },
+   "qa": {
+    "automatic_pass": false,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.1077,
+      "word_error_rate": 0.1077,
+      "exact_normalized_match": false,
+      "status": "review_required",
+      "expected": "But yeah, is there something that annoys you both about, you know, the hot takes on Italian food outside of Italy? Well, cream and carbonara as well. Cream and carbonara. Too much sauce. Too much sauce, yeah. Like it looks, yeah. Too much sauce. Spaghetti with bolognese. Pre-grated Parmesan, I can't deal with that. Mm-hmm. So I love them. Not a lot. No.",
+      "observed": "But yeah, is there something that annoys you both about, you know, the hot takes on Italian food outside of Italy? Well, cream and carbonara as well. Cream and carbonara. Too much sauce. Too much sauce, yeah. Too much sauce. Sogetti with bolognese, pre-grated Parmesan, I can't deal with that. Mm-hmm. I don't love them. Not a lot. No.",
+      "words": [
+       {
+        "word": " But",
+        "start": 0.0,
+        "end": 0.18,
+        "probability": 0.4948063790798187
+       },
+       {
+        "word": " yeah,",
+        "start": 0.18,
+        "end": 0.36,
+        "probability": 0.4173217713832855
+       },
+       {
+        "word": " is",
+        "start": 0.42,
+        "end": 0.52,
+        "probability": 0.953290581703186
+       },
+       {
+        "word": " there",
+        "start": 0.52,
+        "end": 0.64,
+        "probability": 0.9839909076690674
+       },
+       {
+        "word": " something",
+        "start": 0.64,
+        "end": 0.96,
+        "probability": 0.9957226514816284
+       },
+       {
+        "word": " that",
+        "start": 0.96,
+        "end": 1.22,
+        "probability": 0.9978996515274048
+       },
+       {
+        "word": " annoys",
+        "start": 1.22,
+        "end": 1.82,
+        "probability": 0.9793158173561096
+       },
+       {
+        "word": " you",
+        "start": 1.82,
+        "end": 1.98,
+        "probability": 0.9904844760894775
+       },
+       {
+        "word": " both",
+        "start": 1.98,
+        "end": 2.32,
+        "probability": 0.9944688081741333
+       },
+       {
+        "word": " about,",
+        "start": 2.32,
+        "end": 3.36,
+        "probability": 0.9089572429656982
+       },
+       {
+        "word": " you",
+        "start": 3.64,
+        "end": 3.76,
+        "probability": 0.974560558795929
+       },
+       {
+        "word": " know,",
+        "start": 3.76,
+        "end": 3.9,
+        "probability": 0.9994913339614868
+       },
+       {
+        "word": " the",
+        "start": 3.98,
+        "end": 4.08,
+        "probability": 0.9916194677352905
+       },
+       {
+        "word": " hot",
+        "start": 4.08,
+        "end": 5.14,
+        "probability": 0.6982603669166565
+       },
+       {
+        "word": " takes",
+        "start": 5.14,
+        "end": 5.52,
+        "probability": 0.9622119665145874
+       },
+       {
+        "word": " on",
+        "start": 5.52,
+        "end": 5.74,
+        "probability": 0.9954959154129028
+       },
+       {
+        "word": " Italian",
+        "start": 5.74,
+        "end": 6.14,
+        "probability": 0.9950342178344727
+       },
+       {
+        "word": " food",
+        "start": 6.14,
+        "end": 6.46,
+        "probability": 0.9987738728523254
+       },
+       {
+        "word": " outside",
+        "start": 6.46,
+        "end": 6.92,
+        "probability": 0.9946046471595764
+       },
+       {
+        "word": " of",
+        "start": 6.92,
+        "end": 7.14,
+        "probability": 0.9976849555969238
+       },
+       {
+        "word": " Italy?",
+        "start": 7.14,
+        "end": 7.36,
+        "probability": 0.9984961748123169
+       },
+       {
+        "word": " Well,",
+        "start": 7.6,
+        "end": 7.7,
+        "probability": 0.6313542127609253
+       },
+       {
+        "word": " cream",
+        "start": 7.84,
+        "end": 7.96,
+        "probability": 0.40427836775779724
+       },
+       {
+        "word": " and",
+        "start": 7.96,
+        "end": 8.1,
+        "probability": 0.4999356269836426
+       },
+       {
+        "word": " carbonara",
+        "start": 8.1,
+        "end": 8.72,
+        "probability": 0.9537046551704407
+       },
+       {
+        "word": " as",
+        "start": 8.72,
+        "end": 8.82,
+        "probability": 0.4776819944381714
+       },
+       {
+        "word": " well.",
+        "start": 8.82,
+        "end": 8.82,
+        "probability": 0.9182180762290955
+       },
+       {
+        "word": " Cream",
+        "start": 8.82,
+        "end": 8.98,
+        "probability": 0.9412398338317871
+       },
+       {
+        "word": " and",
+        "start": 8.98,
+        "end": 9.12,
+        "probability": 0.9604019522666931
+       },
+       {
+        "word": " carbonara.",
+        "start": 9.12,
+        "end": 9.72,
+        "probability": 0.9969828724861145
+       },
+       {
+        "word": " Too",
+        "start": 9.96,
+        "end": 10.08,
+        "probability": 0.9710546731948853
+       },
+       {
+        "word": " much",
+        "start": 10.08,
+        "end": 10.32,
+        "probability": 0.9976289868354797
+       },
+       {
+        "word": " sauce.",
+        "start": 10.32,
+        "end": 10.58,
+        "probability": 0.9961859583854675
+       },
+       {
+        "word": " Too",
+        "start": 10.9,
+        "end": 11.02,
+        "probability": 0.7222105264663696
+       },
+       {
+        "word": " much",
+        "start": 11.02,
+        "end": 11.3,
+        "probability": 0.9964091181755066
+       },
+       {
+        "word": " sauce,",
+        "start": 11.3,
+        "end": 11.56,
+        "probability": 0.9299067854881287
+       },
+       {
+        "word": " yeah.",
+        "start": 11.84,
+        "end": 11.98,
+        "probability": 0.8111726641654968
+       },
+       {
+        "word": " Too",
+        "start": 12.3,
+        "end": 12.3,
+        "probability": 0.0835576206445694
+       },
+       {
+        "word": " much",
+        "start": 12.3,
+        "end": 12.48,
+        "probability": 0.998390793800354
+       },
+       {
+        "word": " sauce.",
+        "start": 12.48,
+        "end": 12.62,
+        "probability": 0.8461961150169373
+       },
+       {
+        "word": " Sogetti",
+        "start": 12.66,
+        "end": 13.06,
+        "probability": 0.532839760184288
+       },
+       {
+        "word": " with",
+        "start": 13.06,
+        "end": 13.34,
+        "probability": 0.99033522605896
+       },
+       {
+        "word": " bolognese,",
+        "start": 13.34,
+        "end": 14.18,
+        "probability": 0.8749488294124603
+       },
+       {
+        "word": " pre",
+        "start": 14.38,
+        "end": 14.58,
+        "probability": 0.8266969323158264
+       },
+       {
+        "word": "-grated",
+        "start": 14.58,
+        "end": 14.96,
+        "probability": 0.9145374099413554
+       },
+       {
+        "word": " Parmesan,",
+        "start": 14.96,
+        "end": 15.44,
+        "probability": 0.7292363047599792
+       },
+       {
+        "word": " I",
+        "start": 15.7,
+        "end": 15.74,
+        "probability": 0.9716453552246094
+       },
+       {
+        "word": " can't",
+        "start": 15.74,
+        "end": 16.08,
+        "probability": 0.9974930584430695
+       },
+       {
+        "word": " deal",
+        "start": 16.08,
+        "end": 16.22,
+        "probability": 0.9944328665733337
+       },
+       {
+        "word": " with",
+        "start": 16.22,
+        "end": 16.42,
+        "probability": 0.9988547563552856
+       },
+       {
+        "word": " that.",
+        "start": 16.42,
+        "end": 16.6,
+        "probability": 0.9994192123413086
+       },
+       {
+        "word": " Mm",
+        "start": 16.68,
+        "end": 16.8,
+        "probability": 0.14775334298610687
+       },
+       {
+        "word": "-hmm.",
+        "start": 16.8,
+        "end": 17.3,
+        "probability": 0.7983026802539825
+       },
+       {
+        "word": " I",
+        "start": 17.44,
+        "end": 17.62,
+        "probability": 0.20079703629016876
+       },
+       {
+        "word": " don't",
+        "start": 17.62,
+        "end": 17.82,
+        "probability": 0.6599983125925064
+       },
+       {
+        "word": " love",
+        "start": 17.82,
+        "end": 17.96,
+        "probability": 0.8928954601287842
+       },
+       {
+        "word": " them.",
+        "start": 17.96,
+        "end": 18.12,
+        "probability": 0.3851519525051117
+       },
+       {
+        "word": " Not",
+        "start": 18.42,
+        "end": 18.62,
+        "probability": 0.5894274711608887
+       },
+       {
+        "word": " a",
+        "start": 18.62,
+        "end": 18.72,
+        "probability": 0.5835443735122681
+       },
+       {
+        "word": " lot.",
+        "start": 18.72,
+        "end": 18.84,
+        "probability": 0.9543942213058472
+       },
+       {
+        "word": " No.",
+        "start": 19.0,
+        "end": 19.36,
+        "probability": 0.23561374843120575
+       }
+      ],
+      "passed": false
+     },
+     "speaker": {
+      "score": 0.8944253921508789,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": "qa_failed",
+   "request_dir": "/content/rbench7/requests-rb7/04c00ffdb8cd4f9fb7576cb46022d33c",
+   "out_duration_seconds": 22.954667,
+   "out_sha256": "942bfcbcfd84ebea50550eeeb02d6ec81612a66cde799853762487c6cc1072c8",
+   "premaster": "/content/rbench7/requests-rb7/04c00ffdb8cd4f9fb7576cb46022d33c/enh-premaster.wav",
+   "latency_seconds": 150.8
+  },
+  {
+   "tag": "rb7-tucci-enh-light-w035",
+   "input": "without_Italian food no-nos!  Stanley Tucci  Dish.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": -1.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 0.85,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 355,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "light",
+    "reasons": [
+     "est_snr 19.98dB between full -1.0 and bypass 25.0"
+    ],
+    "wet_gain": 0.35
+   },
+   "generative": {
+    "chunks": 2,
+    "max_length_drift": 0.000466
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -15.01,
+     "true_peak_dbtp": -1.61,
+     "lra_lu": 3.5
+    },
+    "after": {
+     "integrated_lufs": -15.99,
+     "true_peak_dbtp": -2.66,
+     "lra_lu": 3.5
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -4.899e-05,
+     -4.899e-05
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 22.954667,
+     "sample_rate": 48000,
+     "channels": 2,
+     "samples": 1101824,
+     "rms_dbfs": -19.83,
+     "peak_dbfs": -2.65,
+     "clipping_fraction": 0.0,
+     "dc_offset": 0.0,
+     "silence_ratio": 0.1378,
+     "est_snr_db": 21.1,
+     "bed_dbfs": -47.21
+    }
+   },
+   "qa": {
+    "automatic_pass": false,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.2,
+      "word_error_rate": 0.2,
+      "exact_normalized_match": false,
+      "status": "review_required",
+      "expected": "But yeah, is there something that annoys you both about, you know, the hot takes on Italian food outside of Italy? Well, cream and carbonara as well. Cream and carbonara. Too much sauce. Too much sauce, yeah. Like it looks, yeah. Too much sauce. Spaghetti with bolognese. Pre-grated Parmesan, I can't deal with that. Mm-hmm. So I love them. Not a lot. No.",
+      "observed": "But yeah, is there something that annoys you both about, you know, the hot takes on Italian food outside of Italy? Well, cream and carbonara as well. Cream and carbonara? Too much sauce? Too much sauce, yeah. Yeah, spaghetti with bolognese, pre-grated parmesan, I can't deal with that. So not that one. Not that one. No.",
+      "words": [
+       {
+        "word": " But",
+        "start": 0.0,
+        "end": 0.2,
+        "probability": 0.4396539628505707
+       },
+       {
+        "word": " yeah,",
+        "start": 0.2,
+        "end": 0.34,
+        "probability": 0.5937859416007996
+       },
+       {
+        "word": " is",
+        "start": 0.42,
+        "end": 0.5,
+        "probability": 0.9818951487541199
+       },
+       {
+        "word": " there",
+        "start": 0.5,
+        "end": 0.64,
+        "probability": 0.9909685254096985
+       },
+       {
+        "word": " something",
+        "start": 0.64,
+        "end": 0.94,
+        "probability": 0.9896977543830872
+       },
+       {
+        "word": " that",
+        "start": 0.94,
+        "end": 1.24,
+        "probability": 0.993665337562561
+       },
+       {
+        "word": " annoys",
+        "start": 1.24,
+        "end": 1.82,
+        "probability": 0.9652361869812012
+       },
+       {
+        "word": " you",
+        "start": 1.82,
+        "end": 1.98,
+        "probability": 0.9906898736953735
+       },
+       {
+        "word": " both",
+        "start": 1.98,
+        "end": 2.3,
+        "probability": 0.9836212396621704
+       },
+       {
+        "word": " about,",
+        "start": 2.3,
+        "end": 3.32,
+        "probability": 0.8517939448356628
+       },
+       {
+        "word": " you",
+        "start": 3.6,
+        "end": 3.76,
+        "probability": 0.9359345436096191
+       },
+       {
+        "word": " know,",
+        "start": 3.76,
+        "end": 3.9,
+        "probability": 0.9990789890289307
+       },
+       {
+        "word": " the",
+        "start": 3.98,
+        "end": 4.08,
+        "probability": 0.9823143482208252
+       },
+       {
+        "word": " hot",
+        "start": 4.08,
+        "end": 5.16,
+        "probability": 0.7332484126091003
+       },
+       {
+        "word": " takes",
+        "start": 5.16,
+        "end": 5.52,
+        "probability": 0.9536711573600769
+       },
+       {
+        "word": " on",
+        "start": 5.52,
+        "end": 5.74,
+        "probability": 0.9862662553787231
+       },
+       {
+        "word": " Italian",
+        "start": 5.74,
+        "end": 6.14,
+        "probability": 0.9818982481956482
+       },
+       {
+        "word": " food",
+        "start": 6.14,
+        "end": 6.46,
+        "probability": 0.9973674416542053
+       },
+       {
+        "word": " outside",
+        "start": 6.46,
+        "end": 6.96,
+        "probability": 0.9884366989135742
+       },
+       {
+        "word": " of",
+        "start": 6.96,
+        "end": 7.14,
+        "probability": 0.9969764947891235
+       },
+       {
+        "word": " Italy?",
+        "start": 7.14,
+        "end": 7.3,
+        "probability": 0.9106547236442566
+       },
+       {
+        "word": " Well,",
+        "start": 7.58,
+        "end": 7.68,
+        "probability": 0.6030184030532837
+       },
+       {
+        "word": " cream",
+        "start": 7.8,
+        "end": 7.96,
+        "probability": 0.529244065284729
+       },
+       {
+        "word": " and",
+        "start": 7.96,
+        "end": 8.1,
+        "probability": 0.4611911177635193
+       },
+       {
+        "word": " carbonara",
+        "start": 8.1,
+        "end": 8.72,
+        "probability": 0.9084399044513702
+       },
+       {
+        "word": " as",
+        "start": 8.72,
+        "end": 8.8,
+        "probability": 0.35842379927635193
+       },
+       {
+        "word": " well.",
+        "start": 8.8,
+        "end": 8.8,
+        "probability": 0.9130613803863525
+       },
+       {
+        "word": " Cream",
+        "start": 8.8,
+        "end": 8.98,
+        "probability": 0.8760712146759033
+       },
+       {
+        "word": " and",
+        "start": 8.98,
+        "end": 9.12,
+        "probability": 0.9558935165405273
+       },
+       {
+        "word": " carbonara?",
+        "start": 9.12,
+        "end": 9.7,
+        "probability": 0.9941960275173187
+       },
+       {
+        "word": " Too",
+        "start": 10.0,
+        "end": 10.08,
+        "probability": 0.9657513499259949
+       },
+       {
+        "word": " much",
+        "start": 10.08,
+        "end": 10.32,
+        "probability": 0.998664379119873
+       },
+       {
+        "word": " sauce?",
+        "start": 10.32,
+        "end": 10.58,
+        "probability": 0.9976874589920044
+       },
+       {
+        "word": " Too",
+        "start": 10.9,
+        "end": 11.02,
+        "probability": 0.6496461629867554
+       },
+       {
+        "word": " much",
+        "start": 11.02,
+        "end": 11.36,
+        "probability": 0.9980452060699463
+       },
+       {
+        "word": " sauce,",
+        "start": 11.36,
+        "end": 11.56,
+        "probability": 0.6907634735107422
+       },
+       {
+        "word": " yeah.",
+        "start": 11.82,
+        "end": 11.98,
+        "probability": 0.8745496869087219
+       },
+       {
+        "word": " Yeah,",
+        "start": 12.22,
+        "end": 12.22,
+        "probability": 0.10355443507432938
+       },
+       {
+        "word": " spaghetti",
+        "start": 12.86,
+        "end": 12.86,
+        "probability": 0.15301920473575592
+       },
+       {
+        "word": " with",
+        "start": 12.86,
+        "end": 13.3,
+        "probability": 0.9892979860305786
+       },
+       {
+        "word": " bolognese,",
+        "start": 13.3,
+        "end": 14.16,
+        "probability": 0.8700644075870514
+       },
+       {
+        "word": " pre",
+        "start": 14.38,
+        "end": 14.56,
+        "probability": 0.971625030040741
+       },
+       {
+        "word": "-grated",
+        "start": 14.56,
+        "end": 14.92,
+        "probability": 0.9125837683677673
+       },
+       {
+        "word": " parmesan,",
+        "start": 14.92,
+        "end": 15.4,
+        "probability": 0.6701005101203918
+       },
+       {
+        "word": " I",
+        "start": 15.68,
+        "end": 15.76,
+        "probability": 0.9456200003623962
+       },
+       {
+        "word": " can't",
+        "start": 15.76,
+        "end": 16.06,
+        "probability": 0.9966221153736115
+       },
+       {
+        "word": " deal",
+        "start": 16.06,
+        "end": 16.2,
+        "probability": 0.9919120073318481
+       },
+       {
+        "word": " with",
+        "start": 16.2,
+        "end": 16.42,
+        "probability": 0.9987867474555969
+       },
+       {
+        "word": " that.",
+        "start": 16.42,
+        "end": 16.6,
+        "probability": 0.9995021820068359
+       },
+       {
+        "word": " So",
+        "start": 17.6,
+        "end": 17.64,
+        "probability": 0.22338345646858215
+       },
+       {
+        "word": " not",
+        "start": 17.64,
+        "end": 17.86,
+        "probability": 0.7789750695228577
+       },
+       {
+        "word": " that",
+        "start": 17.86,
+        "end": 17.96,
+        "probability": 0.7231826186180115
+       },
+       {
+        "word": " one.",
+        "start": 17.96,
+        "end": 18.12,
+        "probability": 0.17745372653007507
+       },
+       {
+        "word": " Not",
+        "start": 18.4,
+        "end": 18.62,
+        "probability": 0.8201699256896973
+       },
+       {
+        "word": " that",
+        "start": 18.62,
+        "end": 18.76,
+        "probability": 0.577939510345459
+       },
+       {
+        "word": " one.",
+        "start": 18.76,
+        "end": 18.94,
+        "probability": 0.9794287085533142
+       },
+       {
+        "word": " No.",
+        "start": 19.16,
+        "end": 19.36,
+        "probability": 0.5670734643936157
+       }
+      ],
+      "passed": false
+     },
+     "speaker": {
+      "score": 0.9707335829734802,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": "qa_failed",
+   "request_dir": "/content/rbench7/requests-rb7/7ab3bf0098e5455eab588d44945079db",
+   "out_duration_seconds": 22.954667,
+   "out_sha256": "a2b0a3b66789fda4fc6c6c824acc2a54d90eed3c2fa7bb3f78615c0b8f698a7f",
+   "premaster": "/content/rbench7/requests-rb7/7ab3bf0098e5455eab588d44945079db/enh-premaster.wav",
+   "latency_seconds": 139.1
+  },
+  {
+   "tag": "rb7-2min-enh-full-w100",
+   "input": "without_Why 2-Minute Podcast Clips Dominate Attention.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": 30.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 1.0,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 703,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "full",
+    "reasons": [
+     "est_snr 15.61dB <= full threshold 30.0dB"
+    ],
+    "wet_gain": 1.0
+   },
+   "generative": {
+    "chunks": 3,
+    "max_length_drift": 0.001082
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -6.74,
+     "true_peak_dbtp": 0.4,
+     "lra_lu": 3.7
+    },
+    "after": {
+     "integrated_lufs": -16.01,
+     "true_peak_dbtp": -8.94,
+     "lra_lu": 3.7
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -0.00111316,
+     -0.00111333
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 34.667392,
+     "sample_rate": 44100,
+     "channels": 2,
+     "samples": 1528832,
+     "rms_dbfs": -18.71,
+     "peak_dbfs": -9.23,
+     "clipping_fraction": 0.0,
+     "dc_offset": 0.0,
+     "silence_ratio": 0.0514,
+     "est_snr_db": 14.59,
+     "bed_dbfs": -35.29
+    }
+   },
+   "qa": {
+    "automatic_pass": false,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.1111,
+      "word_error_rate": 0.1111,
+      "exact_normalized_match": false,
+      "status": "review_required",
+      "expected": "Not everybody likes to sit down and listen to a podcast for an hour and a half or three hours like Joe Rogan or whatever, but a lot of people will watch a two minute clip. You know what I mean? I've got just a little blip of something. And then sometimes there's a mix where somebody sees a clip online and then they go, oh, that's pretty cool. I'll check out the show. Yeah. And that's the idea. Yeah. And that's our thing too. We're in the top 15%. Yes. We'll all Spotify a video podcast. Which is amazing. It is amazing. It's pretty cool. It turns out nobody watches videos on Spotify. We appreciate y'all. We do. We do appreciate y'all. Indeed indeed. Yeah, so so what you got going on this weekend?",
+      "observed": "Not everybody likes to sit down and listen to a podcast for an hour and a half or three hours like Joe Rogan or whatever, but a lot of people will watch a two minute clip. You know what I mean? I've got just a little blip of something. And then sometimes there's a mix where somebody sees a clip online and they go, oh, that's pretty cool. I'll check out the show. And that's the idea. Yeah. And that was our thing too, we're in the top 15%. Yes. Of all Spotify video podcasts. It is amazing. It is amazing. Pretty cool. Turns out nobody watches videos on Spotify. We appreciate y'all. We do appreciate y'all. Yeah, so what you got going on this weekend?",
+      "words": [
+       {
+        "word": " Not",
+        "start": 0.0,
+        "end": 0.18,
+        "probability": 0.5088547468185425
+       },
+       {
+        "word": " everybody",
+        "start": 0.18,
+        "end": 0.4,
+        "probability": 0.9776665568351746
+       },
+       {
+        "word": " likes",
+        "start": 0.4,
+        "end": 0.66,
+        "probability": 0.987597644329071
+       },
+       {
+        "word": " to",
+        "start": 0.66,
+        "end": 0.76,
+        "probability": 0.9870693683624268
+       },
+       {
+        "word": " sit",
+        "start": 0.76,
+        "end": 0.94,
+        "probability": 0.996978759765625
+       },
+       {
+        "word": " down",
+        "start": 0.94,
+        "end": 1.08,
+        "probability": 0.8549867868423462
+       },
+       {
+        "word": " and",
+        "start": 1.08,
+        "end": 1.22,
+        "probability": 0.9611438512802124
+       },
+       {
+        "word": " listen",
+        "start": 1.22,
+        "end": 1.36,
+        "probability": 0.9961249232292175
+       },
+       {
+        "word": " to",
+        "start": 1.36,
+        "end": 1.5,
+        "probability": 0.9977055191993713
+       },
+       {
+        "word": " a",
+        "start": 1.5,
+        "end": 1.62,
+        "probability": 0.9727425575256348
+       },
+       {
+        "word": " podcast",
+        "start": 1.62,
+        "end": 1.9,
+        "probability": 0.9981231093406677
+       },
+       {
+        "word": " for",
+        "start": 1.9,
+        "end": 2.14,
+        "probability": 0.890293300151825
+       },
+       {
+        "word": " an",
+        "start": 2.14,
+        "end": 2.3,
+        "probability": 0.8975067734718323
+       },
+       {
+        "word": " hour",
+        "start": 2.3,
+        "end": 2.4,
+        "probability": 0.9989099502563477
+       },
+       {
+        "word": " and",
+        "start": 2.4,
+        "end": 2.52,
+        "probability": 0.967380702495575
+       },
+       {
+        "word": " a",
+        "start": 2.52,
+        "end": 2.52,
+        "probability": 0.9825515747070312
+       },
+       {
+        "word": " half",
+        "start": 2.52,
+        "end": 2.76,
+        "probability": 0.9979548454284668
+       },
+       {
+        "word": " or",
+        "start": 2.76,
+        "end": 2.88,
+        "probability": 0.7410256862640381
+       },
+       {
+        "word": " three",
+        "start": 2.88,
+        "end": 3.1,
+        "probability": 0.9749738574028015
+       },
+       {
+        "word": " hours",
+        "start": 3.1,
+        "end": 3.28,
+        "probability": 0.9981846213340759
+       },
+       {
+        "word": " like",
+        "start": 3.28,
+        "end": 3.48,
+        "probability": 0.8697088360786438
+       },
+       {
+        "word": " Joe",
+        "start": 3.48,
+        "end": 3.6,
+        "probability": 0.9942949414253235
+       },
+       {
+        "word": " Rogan",
+        "start": 3.6,
+        "end": 3.92,
+        "probability": 0.9848951101303101
+       },
+       {
+        "word": " or",
+        "start": 3.92,
+        "end": 4.06,
+        "probability": 0.9570580720901489
+       },
+       {
+        "word": " whatever,",
+        "start": 4.06,
+        "end": 4.4,
+        "probability": 0.995918333530426
+       },
+       {
+        "word": " but",
+        "start": 5.02,
+        "end": 5.34,
+        "probability": 0.9950559139251709
+       },
+       {
+        "word": " a",
+        "start": 5.34,
+        "end": 5.66,
+        "probability": 0.9898446798324585
+       },
+       {
+        "word": " lot",
+        "start": 5.66,
+        "end": 5.78,
+        "probability": 0.9962155222892761
+       },
+       {
+        "word": " of",
+        "start": 5.78,
+        "end": 5.88,
+        "probability": 0.9954462647438049
+       },
+       {
+        "word": " people",
+        "start": 5.88,
+        "end": 6.04,
+        "probability": 0.9997099041938782
+       },
+       {
+        "word": " will",
+        "start": 6.04,
+        "end": 6.34,
+        "probability": 0.9920364022254944
+       },
+       {
+        "word": " watch",
+        "start": 6.34,
+        "end": 6.78,
+        "probability": 0.998751163482666
+       },
+       {
+        "word": " a",
+        "start": 6.78,
+        "end": 7.4,
+        "probability": 0.9817221760749817
+       },
+       {
+        "word": " two",
+        "start": 7.4,
+        "end": 7.56,
+        "probability": 0.9655448198318481
+       },
+       {
+        "word": " minute",
+        "start": 7.56,
+        "end": 7.72,
+        "probability": 0.7952393293380737
+       },
+       {
+        "word": " clip.",
+        "start": 7.72,
+        "end": 8.0,
+        "probability": 0.9989864230155945
+       },
+       {
+        "word": " You",
+        "start": 8.56,
+        "end": 8.56,
+        "probability": 0.7784111499786377
+       },
+       {
+        "word": " know",
+        "start": 8.56,
+        "end": 8.62,
+        "probability": 0.9969233870506287
+       },
+       {
+        "word": " what",
+        "start": 8.62,
+        "end": 8.72,
+        "probability": 0.9933366775512695
+       },
+       {
+        "word": " I",
+        "start": 8.72,
+        "end": 8.74,
+        "probability": 0.9984081387519836
+       },
+       {
+        "word": " mean?",
+        "start": 8.74,
+        "end": 8.86,
+        "probability": 0.9981082677841187
+       },
+       {
+        "word": " I've",
+        "start": 9.02,
+        "end": 9.12,
+        "probability": 0.540066584944725
+       },
+       {
+        "word": " got",
+        "start": 9.12,
+        "end": 9.18,
+        "probability": 0.8799236416816711
+       },
+       {
+        "word": " just",
+        "start": 9.18,
+        "end": 9.4,
+        "probability": 0.9325296878814697
+       },
+       {
+        "word": " a",
+        "start": 9.4,
+        "end": 9.56,
+        "probability": 0.9960753321647644
+       },
+       {
+        "word": " little",
+        "start": 9.56,
+        "end": 9.66,
+        "probability": 0.9985602498054504
+       },
+       {
+        "word": " blip",
+        "start": 9.66,
+        "end": 9.94,
+        "probability": 0.9943886697292328
+       },
+       {
+        "word": " of",
+        "start": 9.94,
+        "end": 10.1,
+        "probability": 0.9968068599700928
+       },
+       {
+        "word": " something.",
+        "start": 10.1,
+        "end": 10.34,
+        "probability": 0.998586893081665
+       },
+       {
+        "word": " And",
+        "start": 10.72,
+        "end": 10.94,
+        "probability": 0.9907802939414978
+       },
+       {
+        "word": " then",
+        "start": 10.94,
+        "end": 11.06,
+        "probability": 0.9947951436042786
+       },
+       {
+        "word": " sometimes",
+        "start": 11.06,
+        "end": 11.32,
+        "probability": 0.9730744361877441
+       },
+       {
+        "word": " there's",
+        "start": 11.32,
+        "end": 11.62,
+        "probability": 0.9941689372062683
+       },
+       {
+        "word": " a",
+        "start": 11.62,
+        "end": 11.7,
+        "probability": 0.9973358511924744
+       },
+       {
+        "word": " mix",
+        "start": 11.7,
+        "end": 11.86,
+        "probability": 0.9971787929534912
+       },
+       {
+        "word": " where",
+        "start": 11.86,
+        "end": 12.06,
+        "probability": 0.8680906295776367
+       },
+       {
+        "word": " somebody",
+        "start": 12.06,
+        "end": 12.34,
+        "probability": 0.9892521500587463
+       },
+       {
+        "word": " sees",
+        "start": 12.34,
+        "end": 12.52,
+        "probability": 0.9964792132377625
+       },
+       {
+        "word": " a",
+        "start": 12.52,
+        "end": 12.66,
+        "probability": 0.9892904162406921
+       },
+       {
+        "word": " clip",
+        "start": 12.66,
+        "end": 12.78,
+        "probability": 0.9988767504692078
+       },
+       {
+        "word": " online",
+        "start": 12.78,
+        "end": 13.14,
+        "probability": 0.9981993436813354
+       },
+       {
+        "word": " and",
+        "start": 13.14,
+        "end": 13.42,
+        "probability": 0.9280058741569519
+       },
+       {
+        "word": " they",
+        "start": 13.42,
+        "end": 13.56,
+        "probability": 0.5789067149162292
+       },
+       {
+        "word": " go,",
+        "start": 13.56,
+        "end": 13.66,
+        "probability": 0.9275909066200256
+       },
+       {
+        "word": " oh,",
+        "start": 13.66,
+        "end": 13.76,
+        "probability": 0.48484882712364197
+       },
+       {
+        "word": " that's",
+        "start": 13.78,
+        "end": 13.9,
+        "probability": 0.9985062777996063
+       },
+       {
+        "word": " pretty",
+        "start": 13.9,
+        "end": 14.02,
+        "probability": 0.9984208345413208
+       },
+       {
+        "word": " cool.",
+        "start": 14.02,
+        "end": 14.22,
+        "probability": 0.9985791444778442
+       },
+       {
+        "word": " I'll",
+        "start": 14.28,
+        "end": 14.32,
+        "probability": 0.9891199469566345
+       },
+       {
+        "word": " check",
+        "start": 14.32,
+        "end": 14.44,
+        "probability": 0.9960273504257202
+       },
+       {
+        "word": " out",
+        "start": 14.44,
+        "end": 14.58,
+        "probability": 0.9940539002418518
+       },
+       {
+        "word": " the",
+        "start": 14.58,
+        "end": 14.7,
+        "probability": 0.9953254461288452
+       },
+       {
+        "word": " show.",
+        "start": 14.7,
+        "end": 14.92,
+        "probability": 0.9993804693222046
+       },
+       {
+        "word": " And",
+        "start": 15.1,
+        "end": 15.24,
+        "probability": 0.569617748260498
+       },
+       {
+        "word": " that's",
+        "start": 15.24,
+        "end": 15.58,
+        "probability": 0.9960866272449493
+       },
+       {
+        "word": " the",
+        "start": 15.58,
+        "end": 15.68,
+        "probability": 0.9983990788459778
+       },
+       {
+        "word": " idea.",
+        "start": 15.68,
+        "end": 15.94,
+        "probability": 0.9983299374580383
+       },
+       {
+        "word": " Yeah.",
+        "start": 16.12,
+        "end": 16.3,
+        "probability": 0.2610941231250763
+       },
+       {
+        "word": " And",
+        "start": 16.52,
+        "end": 16.62,
+        "probability": 0.9757777452468872
+       },
+       {
+        "word": " that",
+        "start": 16.62,
+        "end": 16.74,
+        "probability": 0.962207555770874
+       },
+       {
+        "word": " was",
+        "start": 16.74,
+        "end": 16.8,
+        "probability": 0.695083498954773
+       },
+       {
+        "word": " our",
+        "start": 16.8,
+        "end": 16.92,
+        "probability": 0.6763278245925903
+       },
+       {
+        "word": " thing",
+        "start": 16.92,
+        "end": 17.1,
+        "probability": 0.9911825656890869
+       },
+       {
+        "word": " too,",
+        "start": 17.1,
+        "end": 17.26,
+        "probability": 0.94547438621521
+       },
+       {
+        "word": " we're",
+        "start": 17.34,
+        "end": 17.4,
+        "probability": 0.6518726497888565
+       },
+       {
+        "word": " in",
+        "start": 17.4,
+        "end": 17.5,
+        "probability": 0.34401997923851013
+       },
+       {
+        "word": " the",
+        "start": 17.5,
+        "end": 17.56,
+        "probability": 0.9937671422958374
+       },
+       {
+        "word": " top",
+        "start": 17.56,
+        "end": 17.74,
+        "probability": 0.9922547340393066
+       },
+       {
+        "word": " 15%.",
+        "start": 17.74,
+        "end": 19.04,
+        "probability": 0.6167314052581787
+       },
+       {
+        "word": " Yes.",
+        "start": 19.04,
+        "end": 19.52,
+        "probability": 0.7735310792922974
+       },
+       {
+        "word": " Of",
+        "start": 20.02,
+        "end": 20.02,
+        "probability": 0.19358429312705994
+       },
+       {
+        "word": " all",
+        "start": 20.02,
+        "end": 20.16,
+        "probability": 0.984045147895813
+       },
+       {
+        "word": " Spotify",
+        "start": 20.16,
+        "end": 20.62,
+        "probability": 0.9823725819587708
+       },
+       {
+        "word": " video",
+        "start": 20.62,
+        "end": 21.12,
+        "probability": 0.8815616369247437
+       },
+       {
+        "word": " podcasts.",
+        "start": 21.12,
+        "end": 21.64,
+        "probability": 0.7044426202774048
+       },
+       {
+        "word": " It",
+        "start": 21.98,
+        "end": 22.04,
+        "probability": 0.6037558317184448
+       },
+       {
+        "word": " is",
+        "start": 22.04,
+        "end": 22.18,
+        "probability": 0.5959325432777405
+       },
+       {
+        "word": " amazing.",
+        "start": 22.18,
+        "end": 22.48,
+        "probability": 0.9859066009521484
+       },
+       {
+        "word": " It",
+        "start": 22.92,
+        "end": 23.0,
+        "probability": 0.9545915722846985
+       },
+       {
+        "word": " is",
+        "start": 23.0,
+        "end": 23.16,
+        "probability": 0.9963185787200928
+       },
+       {
+        "word": " amazing.",
+        "start": 23.16,
+        "end": 23.5,
+        "probability": 0.9964599013328552
+       },
+       {
+        "word": " Pretty",
+        "start": 23.8,
+        "end": 23.92,
+        "probability": 0.6357014775276184
+       },
+       {
+        "word": " cool.",
+        "start": 23.92,
+        "end": 24.08,
+        "probability": 0.9970982074737549
+       },
+       {
+        "word": " Turns",
+        "start": 24.28,
+        "end": 24.44,
+        "probability": 0.7569729089736938
+       },
+       {
+        "word": " out",
+        "start": 24.44,
+        "end": 24.62,
+        "probability": 0.9989169836044312
+       },
+       {
+        "word": " nobody",
+        "start": 24.62,
+        "end": 24.84,
+        "probability": 0.9278846383094788
+       },
+       {
+        "word": " watches",
+        "start": 24.84,
+        "end": 25.14,
+        "probability": 0.98895663022995
+       },
+       {
+        "word": " videos",
+        "start": 25.14,
+        "end": 25.46,
+        "probability": 0.9657742381095886
+       },
+       {
+        "word": " on",
+        "start": 25.46,
+        "end": 25.68,
+        "probability": 0.9971164464950562
+       },
+       {
+        "word": " Spotify.",
+        "start": 25.68,
+        "end": 25.98,
+        "probability": 0.9916453957557678
+       },
+       {
+        "word": " We",
+        "start": 26.42,
+        "end": 26.58,
+        "probability": 0.7925626039505005
+       },
+       {
+        "word": " appreciate",
+        "start": 26.58,
+        "end": 26.88,
+        "probability": 0.7495788931846619
+       },
+       {
+        "word": " y",
+        "start": 26.88,
+        "end": 27.18,
+        "probability": 0.9215348958969116
+       },
+       {
+        "word": "'all.",
+        "start": 27.18,
+        "end": 27.3,
+        "probability": 0.998172402381897
+       },
+       {
+        "word": " We",
+        "start": 27.48,
+        "end": 27.6,
+        "probability": 0.7964312434196472
+       },
+       {
+        "word": " do",
+        "start": 27.6,
+        "end": 27.76,
+        "probability": 0.9766125679016113
+       },
+       {
+        "word": " appreciate",
+        "start": 27.76,
+        "end": 28.48,
+        "probability": 0.6120733618736267
+       },
+       {
+        "word": " y",
+        "start": 28.48,
+        "end": 28.86,
+        "probability": 0.9956974983215332
+       },
+       {
+        "word": "'all.",
+        "start": 28.86,
+        "end": 28.94,
+        "probability": 0.998861163854599
+       },
+       {
+        "word": " Yeah,",
+        "start": 30.98,
+        "end": 31.56,
+        "probability": 0.05524212494492531
+       },
+       {
+        "word": " so",
+        "start": 31.56,
+        "end": 32.14,
+        "probability": 0.8946207165718079
+       },
+       {
+        "word": " what",
+        "start": 32.14,
+        "end": 33.02,
+        "probability": 0.2497459203004837
+       },
+       {
+        "word": " you",
+        "start": 33.02,
+        "end": 33.18,
+        "probability": 0.941519558429718
+       },
+       {
+        "word": " got",
+        "start": 33.18,
+        "end": 33.36,
+        "probability": 0.9574641585350037
+       },
+       {
+        "word": " going",
+        "start": 33.36,
+        "end": 33.64,
+        "probability": 0.9813868403434753
+       },
+       {
+        "word": " on",
+        "start": 33.64,
+        "end": 33.96,
+        "probability": 0.9956564903259277
+       },
+       {
+        "word": " this",
+        "start": 33.96,
+        "end": 34.2,
+        "probability": 0.9885187745094299
+       },
+       {
+        "word": " weekend?",
+        "start": 34.2,
+        "end": 34.5,
+        "probability": 0.9942860007286072
+       }
+      ],
+      "passed": false
+     },
+     "speaker": {
+      "score": 0.9457482099533081,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": "qa_failed",
+   "request_dir": "/content/rbench7/requests-rb7/76ab35f7b6cc4db785dfd8040b9ccb74",
+   "out_duration_seconds": 34.667392,
+   "out_sha256": "5a31ac37330926e7e4772804613cbb018b80bb6e4511c145f14b847233ee7186",
+   "premaster": "/content/rbench7/requests-rb7/76ab35f7b6cc4db785dfd8040b9ccb74/enh-premaster.wav",
+   "latency_seconds": 231.0
+  },
+  {
+   "tag": "rb7-2min-enh-light-w035",
+   "input": "without_Why 2-Minute Podcast Clips Dominate Attention.mp3",
+   "operation": "enhance",
+   "cfg": {
+    "bypass_snr_db": 25.0,
+    "full_snr_db": -1.0,
+    "clipping_full_fraction": 0.001,
+    "light_wet": 0.35,
+    "full_wet": 0.85,
+    "adaptive_full_wet": false,
+    "full_wet_bed_ref_db": -35.0,
+    "full_wet_bed_slope_db": 0.03,
+    "max_chunk_seconds": 12.0,
+    "overlap_seconds": 0.5,
+    "target_lufs": -16.0,
+    "loudness_tolerance_lu": 0.5,
+    "true_peak_dbtp": -1.0,
+    "max_duration_drift": 0.02,
+    "dc_offset_limit": 0.001,
+    "nan_allowed": false
+   },
+   "seed": 42,
+   "source_transcript_chars": 703,
+   "qa_reference": "full transcript (16,000-char contract, c907bd6)",
+   "technical_success": true,
+   "decision": {
+    "strength": "light",
+    "reasons": [
+     "est_snr 15.61dB between full -1.0 and bypass 25.0"
+    ],
+    "wet_gain": 0.35
+   },
+   "generative": {
+    "chunks": 3,
+    "max_length_drift": 0.001082
+   },
+   "loudness": {
+    "mode": "measured_gain",
+    "before": {
+     "integrated_lufs": -10.97,
+     "true_peak_dbtp": -1.09,
+     "lra_lu": 6.4
+    },
+    "after": {
+     "integrated_lufs": -15.99,
+     "true_peak_dbtp": -6.11,
+     "lra_lu": 6.4
+    },
+    "target_lufs": -16.0,
+    "true_peak_dbtp_limit": -1.0,
+    "true_peak_gain_db": 0.0,
+    "dc_offset_removed": [
+     -0.00152848,
+     -0.00152876
+    ],
+    "alignment_shift_samples": 0,
+    "within_tolerance": true
+   },
+   "validation": {
+    "ok": true,
+    "problems": [],
+    "output": {
+     "duration_seconds": 34.667392,
+     "sample_rate": 44100,
+     "channels": 2,
+     "samples": 1528832,
+     "rms_dbfs": -18.76,
+     "peak_dbfs": -6.11,
+     "clipping_fraction": 0.0,
+     "dc_offset": -0.0,
+     "silence_ratio": 0.0485,
+     "est_snr_db": 16.17,
+     "bed_dbfs": -36.81
+    }
+   },
+   "qa": {
+    "automatic_pass": false,
+    "checks": {
+     "transcript": {
+      "metric": "word_error_rate",
+      "error_rate": 0.1704,
+      "word_error_rate": 0.1704,
+      "exact_normalized_match": false,
+      "status": "review_required",
+      "expected": "Not everybody likes to sit down and listen to a podcast for an hour and a half or three hours like Joe Rogan or whatever, but a lot of people will watch a two minute clip. You know what I mean? I've got just a little blip of something. And then sometimes there's a mix where somebody sees a clip online and then they go, oh, that's pretty cool. I'll check out the show. Yeah. And that's the idea. Yeah. And that's our thing too. We're in the top 15%. Yes. We'll all Spotify a video podcast. Which is amazing. It is amazing. It's pretty cool. It turns out nobody watches videos on Spotify. We appreciate y'all. We do. We do appreciate y'all. Indeed indeed. Yeah, so so what you got going on this weekend?",
+      "observed": "Everybody likes to sit down and listen to a podcast for an hour and a half or three hours like Joe Rogan or whatever But a lot of people will watch a two-minute clip. Yeah, you know what I mean Yeah, just a little blip of something and then sometimes there's a mix where somebody sees a clip online and then they all that's pretty cool I'll check out the show. Yeah, that's the idea. Yeah, and that's our thing too. We're the top 15 percent Yes, all Spotify video podcast is amazing. It is amazing. It's pretty cool turns out. Nobody watches videos on spotify Appreciate y'all Yeah, so what you got going on this weekend?",
+      "words": [
+       {
+        "word": " Everybody",
+        "start": 0.0,
+        "end": 0.46,
+        "probability": 0.6241127252578735
+       },
+       {
+        "word": " likes",
+        "start": 0.46,
+        "end": 0.68,
+        "probability": 0.9684740900993347
+       },
+       {
+        "word": " to",
+        "start": 0.68,
+        "end": 0.78,
+        "probability": 0.9729210734367371
+       },
+       {
+        "word": " sit",
+        "start": 0.78,
+        "end": 0.94,
+        "probability": 0.9951580166816711
+       },
+       {
+        "word": " down",
+        "start": 0.94,
+        "end": 1.08,
+        "probability": 0.904848575592041
+       },
+       {
+        "word": " and",
+        "start": 1.08,
+        "end": 1.2,
+        "probability": 0.9404565095901489
+       },
+       {
+        "word": " listen",
+        "start": 1.2,
+        "end": 1.36,
+        "probability": 0.99611496925354
+       },
+       {
+        "word": " to",
+        "start": 1.36,
+        "end": 1.5,
+        "probability": 0.995170533657074
+       },
+       {
+        "word": " a",
+        "start": 1.5,
+        "end": 1.62,
+        "probability": 0.9778376221656799
+       },
+       {
+        "word": " podcast",
+        "start": 1.62,
+        "end": 1.9,
+        "probability": 0.9967935681343079
+       },
+       {
+        "word": " for",
+        "start": 1.9,
+        "end": 2.18,
+        "probability": 0.28597426414489746
+       },
+       {
+        "word": " an",
+        "start": 2.18,
+        "end": 2.28,
+        "probability": 0.7541053295135498
+       },
+       {
+        "word": " hour",
+        "start": 2.28,
+        "end": 2.4,
+        "probability": 0.9961339235305786
+       },
+       {
+        "word": " and",
+        "start": 2.4,
+        "end": 2.52,
+        "probability": 0.9780123829841614
+       },
+       {
+        "word": " a",
+        "start": 2.52,
+        "end": 2.52,
+        "probability": 0.9829198718070984
+       },
+       {
+        "word": " half",
+        "start": 2.52,
+        "end": 2.78,
+        "probability": 0.998428225517273
+       },
+       {
+        "word": " or",
+        "start": 2.78,
+        "end": 2.88,
+        "probability": 0.8721149563789368
+       },
+       {
+        "word": " three",
+        "start": 2.88,
+        "end": 3.1,
+        "probability": 0.9847197532653809
+       },
+       {
+        "word": " hours",
+        "start": 3.1,
+        "end": 3.28,
+        "probability": 0.9975735545158386
+       },
+       {
+        "word": " like",
+        "start": 3.28,
+        "end": 3.46,
+        "probability": 0.9062709808349609
+       },
+       {
+        "word": " Joe",
+        "start": 3.46,
+        "end": 3.6,
+        "probability": 0.993756890296936
+       },
+       {
+        "word": " Rogan",
+        "start": 3.6,
+        "end": 3.92,
+        "probability": 0.963007390499115
+       },
+       {
+        "word": " or",
+        "start": 3.92,
+        "end": 4.06,
+        "probability": 0.9625746607780457
+       },
+       {
+        "word": " whatever",
+        "start": 4.06,
+        "end": 4.38,
+        "probability": 0.9931463003158569
+       },
+       {
+        "word": " But",
+        "start": 4.94,
+        "end": 5.3,
+        "probability": 0.760958731174469
+       },
+       {
+        "word": " a",
+        "start": 5.3,
+        "end": 5.66,
+        "probability": 0.9992289543151855
+       },
+       {
+        "word": " lot",
+        "start": 5.66,
+        "end": 5.78,
+        "probability": 0.9996496438980103
+       },
+       {
+        "word": " of",
+        "start": 5.78,
+        "end": 5.88,
+        "probability": 0.9996798038482666
+       },
+       {
+        "word": " people",
+        "start": 5.88,
+        "end": 6.04,
+        "probability": 0.9999071359634399
+       },
+       {
+        "word": " will",
+        "start": 6.04,
+        "end": 6.34,
+        "probability": 0.9963397979736328
+       },
+       {
+        "word": " watch",
+        "start": 6.34,
+        "end": 6.78,
+        "probability": 0.9989513158798218
+       },
+       {
+        "word": " a",
+        "start": 6.78,
+        "end": 7.42,
+        "probability": 0.9862929582595825
+       },
+       {
+        "word": " two",
+        "start": 7.42,
+        "end": 7.58,
+        "probability": 0.9772399067878723
+       },
+       {
+        "word": "-minute",
+        "start": 7.58,
+        "end": 7.72,
+        "probability": 0.8386137783527374
+       },
+       {
+        "word": " clip.",
+        "start": 7.72,
+        "end": 8.02,
+        "probability": 0.9979726672172546
+       },
+       {
+        "word": " Yeah,",
+        "start": 8.18,
+        "end": 8.44,
+        "probability": 0.9274808764457703
+       },
+       {
+        "word": " you",
+        "start": 8.44,
+        "end": 8.56,
+        "probability": 0.8892055749893188
+       },
+       {
+        "word": " know",
+        "start": 8.56,
+        "end": 8.64,
+        "probability": 0.9942346215248108
+       },
+       {
+        "word": " what",
+        "start": 8.64,
+        "end": 8.72,
+        "probability": 0.3830645680427551
+       },
+       {
+        "word": " I",
+        "start": 8.72,
+        "end": 8.78,
+        "probability": 0.8919214606285095
+       },
+       {
+        "word": " mean",
+        "start": 8.78,
+        "end": 8.86,
+        "probability": 0.9989213943481445
+       },
+       {
+        "word": " Yeah,",
+        "start": 8.86,
+        "end": 9.08,
+        "probability": 0.23023952543735504
+       },
+       {
+        "word": " just",
+        "start": 9.08,
+        "end": 9.42,
+        "probability": 0.9476637840270996
+       },
+       {
+        "word": " a",
+        "start": 9.42,
+        "end": 9.54,
+        "probability": 0.9991926550865173
+       },
+       {
+        "word": " little",
+        "start": 9.54,
+        "end": 9.66,
+        "probability": 0.9995611310005188
+       },
+       {
+        "word": " blip",
+        "start": 9.66,
+        "end": 9.96,
+        "probability": 0.9872044026851654
+       },
+       {
+        "word": " of",
+        "start": 9.96,
+        "end": 10.1,
+        "probability": 0.9988013505935669
+       },
+       {
+        "word": " something",
+        "start": 10.1,
+        "end": 10.36,
+        "probability": 0.9985927939414978
+       },
+       {
+        "word": " and",
+        "start": 10.36,
+        "end": 10.94,
+        "probability": 0.9512919187545776
+       },
+       {
+        "word": " then",
+        "start": 10.94,
+        "end": 11.06,
+        "probability": 0.9979832172393799
+       },
+       {
+        "word": " sometimes",
+        "start": 11.06,
+        "end": 11.3,
+        "probability": 0.9947350025177002
+       },
+       {
+        "word": " there's",
+        "start": 11.3,
+        "end": 11.62,
+        "probability": 0.9874947369098663
+       },
+       {
+        "word": " a",
+        "start": 11.62,
+        "end": 11.7,
+        "probability": 0.9984015822410583
+       },
+       {
+        "word": " mix",
+        "start": 11.7,
+        "end": 11.86,
+        "probability": 0.9965207576751709
+       },
+       {
+        "word": " where",
+        "start": 11.86,
+        "end": 12.08,
+        "probability": 0.8409209847450256
+       },
+       {
+        "word": " somebody",
+        "start": 12.08,
+        "end": 12.34,
+        "probability": 0.9944456815719604
+       },
+       {
+        "word": " sees",
+        "start": 12.34,
+        "end": 12.52,
+        "probability": 0.9961918592453003
+       },
+       {
+        "word": " a",
+        "start": 12.52,
+        "end": 12.66,
+        "probability": 0.9917275905609131
+       },
+       {
+        "word": " clip",
+        "start": 12.66,
+        "end": 12.78,
+        "probability": 0.9968857169151306
+       },
+       {
+        "word": " online",
+        "start": 12.78,
+        "end": 13.16,
+        "probability": 0.9870361685752869
+       },
+       {
+        "word": " and",
+        "start": 13.16,
+        "end": 13.42,
+        "probability": 0.6835804581642151
+       },
+       {
+        "word": " then",
+        "start": 13.42,
+        "end": 13.52,
+        "probability": 0.3316185176372528
+       },
+       {
+        "word": " they",
+        "start": 13.52,
+        "end": 13.6,
+        "probability": 0.8650525212287903
+       },
+       {
+        "word": " all",
+        "start": 13.6,
+        "end": 13.7,
+        "probability": 0.2054453045129776
+       },
+       {
+        "word": " that's",
+        "start": 13.7,
+        "end": 13.9,
+        "probability": 0.9488675594329834
+       },
+       {
+        "word": " pretty",
+        "start": 13.9,
+        "end": 14.02,
+        "probability": 0.9879717230796814
+       },
+       {
+        "word": " cool",
+        "start": 14.02,
+        "end": 14.22,
+        "probability": 0.9872666001319885
+       },
+       {
+        "word": " I'll",
+        "start": 14.22,
+        "end": 14.32,
+        "probability": 0.7093494236469269
+       },
+       {
+        "word": " check",
+        "start": 14.32,
+        "end": 14.46,
+        "probability": 0.9962693452835083
+       },
+       {
+        "word": " out",
+        "start": 14.46,
+        "end": 14.6,
+        "probability": 0.9956051707267761
+       },
+       {
+        "word": " the",
+        "start": 14.6,
+        "end": 14.72,
+        "probability": 0.9637578129768372
+       },
+       {
+        "word": " show.",
+        "start": 14.72,
+        "end": 14.9,
+        "probability": 0.9972725510597229
+       },
+       {
+        "word": " Yeah,",
+        "start": 15.04,
+        "end": 15.26,
+        "probability": 0.9489569067955017
+       },
+       {
+        "word": " that's",
+        "start": 15.3,
+        "end": 15.58,
+        "probability": 0.8539894223213196
+       },
+       {
+        "word": " the",
+        "start": 15.58,
+        "end": 15.68,
+        "probability": 0.9994617104530334
+       },
+       {
+        "word": " idea.",
+        "start": 15.68,
+        "end": 16.0,
+        "probability": 0.9990812540054321
+       },
+       {
+        "word": " Yeah,",
+        "start": 16.02,
+        "end": 16.38,
+        "probability": 0.9870010614395142
+       },
+       {
+        "word": " and",
+        "start": 16.38,
+        "end": 16.64,
+        "probability": 0.7904914021492004
+       },
+       {
+        "word": " that's",
+        "start": 16.64,
+        "end": 16.82,
+        "probability": 0.7141993641853333
+       },
+       {
+        "word": " our",
+        "start": 16.82,
+        "end": 16.9,
+        "probability": 0.6877780556678772
+       },
+       {
+        "word": " thing",
+        "start": 16.9,
+        "end": 17.1,
+        "probability": 0.9690344929695129
+       },
+       {
+        "word": " too.",
+        "start": 17.1,
+        "end": 17.28,
+        "probability": 0.5425631403923035
+       },
+       {
+        "word": " We're",
+        "start": 17.38,
+        "end": 17.4,
+        "probability": 0.9592652916908264
+       },
+       {
+        "word": " the",
+        "start": 17.4,
+        "end": 17.52,
+        "probability": 0.8298282027244568
+       },
+       {
+        "word": " top",
+        "start": 17.52,
+        "end": 17.74,
+        "probability": 0.9904897212982178
+       },
+       {
+        "word": " 15",
+        "start": 17.74,
+        "end": 18.24,
+        "probability": 0.9466912150382996
+       },
+       {
+        "word": " percent",
+        "start": 18.24,
+        "end": 18.74,
+        "probability": 0.2129453867673874
+       },
+       {
+        "word": " Yes,",
+        "start": 19.42,
+        "end": 19.78,
+        "probability": 0.17780230939388275
+       },
+       {
+        "word": " all",
+        "start": 19.78,
+        "end": 20.14,
+        "probability": 0.4402337372303009
+       },
+       {
+        "word": " Spotify",
+        "start": 20.14,
+        "end": 20.62,
+        "probability": 0.9295129179954529
+       },
+       {
+        "word": " video",
+        "start": 20.62,
+        "end": 21.14,
+        "probability": 0.6903497576713562
+       },
+       {
+        "word": " podcast",
+        "start": 21.14,
+        "end": 21.6,
+        "probability": 0.8299816846847534
+       },
+       {
+        "word": " is",
+        "start": 21.6,
+        "end": 22.14,
+        "probability": 0.20773708820343018
+       },
+       {
+        "word": " amazing.",
+        "start": 22.14,
+        "end": 22.48,
+        "probability": 0.9784196615219116
+       },
+       {
+        "word": " It",
+        "start": 22.84,
+        "end": 23.02,
+        "probability": 0.9909233450889587
+       },
+       {
+        "word": " is",
+        "start": 23.02,
+        "end": 23.16,
+        "probability": 0.9961066842079163
+       },
+       {
+        "word": " amazing.",
+        "start": 23.16,
+        "end": 23.44,
+        "probability": 0.9937546253204346
+       },
+       {
+        "word": " It's",
+        "start": 23.64,
+        "end": 23.88,
+        "probability": 0.5481623858213425
+       },
+       {
+        "word": " pretty",
+        "start": 23.88,
+        "end": 23.92,
+        "probability": 0.7801801562309265
+       },
+       {
+        "word": " cool",
+        "start": 23.92,
+        "end": 24.14,
+        "probability": 0.9969514608383179
+       },
+       {
+        "word": " turns",
+        "start": 24.14,
+        "end": 24.44,
+        "probability": 0.33312034606933594
+       },
+       {
+        "word": " out.",
+        "start": 24.44,
+        "end": 24.62,
+        "probability": 0.99677973985672
+       },
+       {
+        "word": " Nobody",
+        "start": 24.68,
+        "end": 24.86,
+        "probability": 0.9837897419929504
+       },
+       {
+        "word": " watches",
+        "start": 24.86,
+        "end": 25.14,
+        "probability": 0.974000871181488
+       },
+       {
+        "word": " videos",
+        "start": 25.14,
+        "end": 25.44,
+        "probability": 0.9463011026382446
+       },
+       {
+        "word": " on",
+        "start": 25.44,
+        "end": 25.68,
+        "probability": 0.9787026047706604
+       },
+       {
+        "word": " spotify",
+        "start": 25.68,
+        "end": 26.22,
+        "probability": 0.45301443338394165
+       },
+       {
+        "word": " Appreciate",
+        "start": 26.22,
+        "end": 26.9,
+        "probability": 0.031966160982847214
+       },
+       {
+        "word": " y",
+        "start": 26.9,
+        "end": 27.16,
+        "probability": 0.8714114427566528
+       },
+       {
+        "word": "'all",
+        "start": 27.16,
+        "end": 27.32,
+        "probability": 0.9951684474945068
+       },
+       {
+        "word": " Yeah,",
+        "start": 31.04,
+        "end": 31.6,
+        "probability": 0.04873195290565491
+       },
+       {
+        "word": " so",
+        "start": 31.6,
+        "end": 32.16,
+        "probability": 0.9152550101280212
+       },
+       {
+        "word": " what",
+        "start": 32.16,
+        "end": 33.02,
+        "probability": 0.3874155282974243
+       },
+       {
+        "word": " you",
+        "start": 33.02,
+        "end": 33.18,
+        "probability": 0.9442410469055176
+       },
+       {
+        "word": " got",
+        "start": 33.18,
+        "end": 33.36,
+        "probability": 0.9262312650680542
+       },
+       {
+        "word": " going",
+        "start": 33.36,
+        "end": 33.64,
+        "probability": 0.9791434407234192
+       },
+       {
+        "word": " on",
+        "start": 33.64,
+        "end": 33.94,
+        "probability": 0.996457040309906
+       },
+       {
+        "word": " this",
+        "start": 33.94,
+        "end": 34.2,
+        "probability": 0.9894888997077942
+       },
+       {
+        "word": " weekend?",
+        "start": 34.2,
+        "end": 34.48,
+        "probability": 0.9948903322219849
+       }
+      ],
+      "passed": false
+     },
+     "speaker": {
+      "score": 0.9672400951385498,
+      "threshold": 0.75,
+      "passed": true
+     }
+    },
+    "unverified": [],
+    "semantic_success": null,
+    "quality_review_required": [
+     "instruction_following",
+     "naturalness",
+     "noise/reverb improvement",
+     "seams/endings"
+    ],
+    "note": "ASR and embedding scores are heuristics. Human quality review remains required."
+   },
+   "failure_reason": "qa_failed",
+   "request_dir": "/content/rbench7/requests-rb7/8dcf32ecc427414bb83bd63bbcde4047",
+   "out_duration_seconds": 34.667392,
+   "out_sha256": "4f1a8f565e7ecb17c67d6ff04f18590cf81747a609c6429ad15b6d8f6ce316b3",
+   "premaster": "/content/rbench7/requests-rb7/8dcf32ecc427414bb83bd63bbcde4047/enh-premaster.wav",
+   "latency_seconds": 214.7
+  }
+ ]
+}
