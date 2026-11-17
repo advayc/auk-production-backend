@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Original vs Adobe vs AuK candidate - client recording (unreviewed)</title>
+<style>
+:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;max-width:1100px;margin:0 auto;padding:0 18px}
+h1{font-size:clamp(24px,3.6vw,32px);line-height:1.15;margin:34px 0 10px;font-weight:700}
+h2{font-size:19px;margin:26px 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:18px}
+.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+figure{background:#fafaf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+figcaption{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+audio{width:100%;height:36px;display:block}
+audio+div{margin-top:6px;font-size:12px}
+a{color:var(--green)}
+footer{border-top:1px solid var(--line);margin:30px 0 60px;padding-top:16px;font-size:13px;color:var(--mut)}
+footer p{margin:8px 0}
+.note{font-size:.85rem;color:#555;margin:.2rem 0 .7rem}
+.keyline{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;padding:12px 16px;margin-bottom:12px;font-size:.95rem}
+.keyline.warn{border-left-color:#b8860b}
+.keyline b.lead{display:block;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:3px}
+.rowlab{font-size:13px;font-weight:700;margin:14px 0 6px}
+</style></head><body>
+<h1>Original vs Adobe vs AuK candidate</h1>
+<p class="note">The client recording (4 min 15 s), three ways: the original audio, the Adobe Enhance output supplied by the owner on Nov 16, 2026, and the AuK evaluation candidate. This is the main comparison page. Related material: <a href="129-enhancement-candidates-unreviewed.html">full enhancement review</a> (earlier experiments, motorcycle clip, technical notes) and <a href="130-full-vs-light-cleanup-listening.html">full-vs-light strength pairs</a>.</p>
+
+<div class="keyline warn"><b class="lead">Status</b><strong>Unreviewed - no listening verdict exists yet.</strong> The AuK version shown here is the single candidate selected for evaluation; that selection is not a quality claim, and nothing on this page is adopted or production-approved.</div>
+
+<div class="keyline"><b class="lead">What to listen for</b>Does the candidate keep every word and the speaker's voice character while quieting the background - and how does it compare to Adobe on the same moments? The excerpt rows below isolate the three most informative moments.</div>
+
+<h2>Full recordings</h2>
+<p class="note">Not loudness-matched - judge character and content, not volume. Use the level-matched excerpts below for direct A/B.</p>
+<div class="card"><div class="players">
+<figure><figcaption>Original recording</figcaption><audio controls preload="metadata" src="129-client-original.mp3"></audio><div><a href="129-client-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Enhance (owner-supplied)</figcaption><audio controls preload="metadata" src="129-client-adobe-reference.mp3"></audio><div><a href="129-client-adobe-reference.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="129-client-candidate-wet100.mp3"></audio><div><a href="129-client-candidate-wet100.mp3">Download mp3</a></div></figure>
+</div></div>
+
+<h2>Focused excerpts</h2>
+<p class="note">Level-matched within each row (attenuation only - nothing is amplified), so a quieter excerpt genuinely had less sound at that moment.</p>
+
+<div class="card">
+<div class="rowlab">0:50-0:58 &middot; product name phrase</div>
+<div class="players">
+<figure><figcaption>Original recording</figcaption><audio controls preload="metadata" src="129-client-excerpt-C1-magic-hour--source.mp3"></audio></figure>
+<figure><figcaption>Adobe Enhance (owner-supplied)</figcaption><audio controls preload="metadata" src="129-client-excerpt-C1-magic-hour--adobe.mp3"></audio></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="129-client-excerpt-C1-magic-hour--wet100.mp3"></audio></figure>
+</div>
+<div class="rowlab">2:30-2:39 &middot; flagged word difference (automatic transcript check)</div>
+<div class="players">
+<figure><figcaption>Original recording</figcaption><audio controls preload="metadata" src="129-client-excerpt-C2-caught-these--source.mp3"></audio></figure>
+<figure><figcaption>Adobe Enhance (owner-supplied)</figcaption><audio controls preload="metadata" src="129-client-excerpt-C2-caught-these--adobe.mp3"></audio></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="129-client-excerpt-C2-caught-these--wet100.mp3"></audio></figure>
+</div>
+<div class="rowlab">3:31-3:36 &middot; background noise in a pause</div>
+<div class="players">
+<figure><figcaption>Original recording</figcaption><audio controls preload="metadata" src="129-client-excerpt-C3-noisy-pause--source.mp3"></audio></figure>
+<figure><figcaption>Adobe Enhance (owner-supplied)</figcaption><audio controls preload="metadata" src="129-client-excerpt-C3-noisy-pause--adobe.mp3"></audio></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="129-client-excerpt-C3-noisy-pause--wet100.mp3"></audio></figure>
+</div>
+</div>
+
+<h2>What the measurements say (diagnostics, not listening)</h2>
+<div class="card">
+<p class="note" style="font-size:.95rem;color:var(--ink)">Ten inter-word pause windows, measured the same way on the Adobe output and the candidate; a side counts as cleaner only when it is more than 0.5 dB lower. <strong>Adobe is cleaner in 5 of 10 windows, the candidate in 3 of 10, and 2 are tied.</strong> The windows where Adobe is cleaner mostly hold discrete sounds - breaths and movement - by 2.5-8 dB. On true stationary pauses the candidate goes much quieter than Adobe (e.g. the 3:34 pause: candidate -85.5 dB, Adobe -44.4 dB). One loud breath at 3:41 is kept at near-original level by both.</p>
+<p class="note">These are pause-level measurements only. They describe background level in specific windows; they are not quality scores and they say nothing about how the voice itself sounds. An automatic machine-vs-machine transcript check also flags about 3% word difference on the candidate - a place to listen (the 2:30 excerpt above), not confirmed word loss. Signal-integrity checks pass on all three versions (sample-exact duration, no clipping, level targets within ceiling).</p>
+</div>
+
+<footer>
+<p>Provenance: the Adobe Enhance output was supplied by the owner on Nov 16, 2026 and is the agreed benchmark. The candidate is AuK enhance at full strength, unblended (no original mixed back in). Excerpts are level-matched by attenuation only, within each row.</p>
+<p>Unreviewed: no listening verdict exists for anything on this page. Measured evidence and automatic checks are diagnostics; the listening decision is the owner's.</p>
+</footer>
+</body></html>
