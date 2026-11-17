@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Enhancement candidates - unreviewed listening review</title>
 <style>
-:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;--greenbg:#e9f4ec;--amber:#8a6d1a;--amberbg:#faf3df;--red:#a52a1e;--redbg:#faeae7;--gray:#6b6b66;--graybg:#efefec;}
+:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;--amber:#8a6d1a;--gray:#6b6b66;--graybg:#efefec;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
 h1{font-size:clamp(24px,3.6vw,32px);line-height:1.15;margin:34px 0 10px;font-weight:700}
@@ -20,97 +20,128 @@ figcaption{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:upp
 audio{width:100%;height:36px;display:block}
 audio+div{margin-top:6px;font-size:12px}
 a{color:var(--green)}
-ul.bullets{margin:4px 0 4px 18px;font-size:14px}
-ul.bullets li{margin:7px 0}
 footer{border-top:1px solid var(--line);margin:30px 0 60px;padding-top:16px;font-size:13px;color:var(--mut)}
 footer p{margin:8px 0}
 .note{font-size:.85rem;color:#555;margin:.2rem 0 .7rem}
+.keyline{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;padding:12px 16px;margin-bottom:12px;font-size:.95rem}
+.keyline.warn{border-left-color:#b8860b}
+.keyline b.lead{display:block;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:3px}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:18px}
+summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--mut)}
+summary:hover{color:var(--ink)}
+details .inner{margin-top:14px}
 </style></head><body>
-<h1>Enhancement candidates &middot; unreviewed listening review</h1>
-<p class="note">Two recordings the owner gave feedback on (Nov 11, 2026), reprocessed Nov 12, 2026 with candidate settings. Each card has the original recording, our standard output (the pipeline&#39;s default settings - our earlier comparison baseline), and candidates with alternative cleanup settings, each labeled by what its setting does (details in the footnote at the bottom). These are candidates for a listening decision, not adopted production outputs.</p>
-<p class="note" style="border-left:4px solid #b8860b;padding:8px 12px;"><strong>Status: unreviewed.</strong> No listening verdict exists for any candidate on this page, and no candidate is presented as an improvement. All candidates pass the pipeline's current technical checks (sample-exact duration, no clipping, level targets within the true-peak ceiling). The remaining decision is human listening.</p>
-<p class="note" style="border-left:4px solid #6b6b66;padding:8px 12px;"><strong>Comparisons and loudness:</strong> the full-length players are mastered to a -1.0 dBTP ceiling but are not loudness-matched to one another, so use them for character and artifacts, not volume. The excerpt groups below (both clips) are level-matched within each group (attenuation only, matched down to the quietest variant in that window), so loudness should not bias those A/Bs. An Adobe output (Adobe Podcast Enhance, supplied by the owner on Nov 16, 2026) is included for the client recording (full-length and in each excerpt group); there is no third-party reference for the motorcycle clip. References inform listening; no parity or superiority claim is made or implied.</p>
-<p class="note" style="border-left:4px solid #6b6b66;padding:8px 12px;"><strong>Diagnostics are not quality scores:</strong> the notes on each card come from automatic speech-to-text word diffs, a speaker-similarity score, and energy measurements. They locate where to listen; they do not score how it sounds.</p>
-<p class="note" style="border-left:4px solid #2f6f4f;padding:8px 12px;"><strong>Recommendation (Nov 16, 2026): one candidate for your listening decision - "Enhance, full strength".</strong> Of the settings tested on these two recordings it cleans the most in the measured windows, and on the motorcycle clip the pipeline's automatic strength selection already chooses full strength on its own (measured noise estimate 6.7 dB SNR). This is a candidate for evaluation, not a cleared production output - nothing is adopted without your listening verdict.</p>
-<p class="note" style="border-left:4px solid #2f6f4f;padding:8px 12px;"><strong>Where it stands against the Adobe output you supplied (client recording, measured, not audibility):</strong> per-window levels in 10 inter-word windows, lower = cleaner, a side counts as cleaner only by &gt;0.5 dB: the candidate is cleaner in 3 of 10 windows (e.g. the 214.1s pause: -85.5 dB vs Adobe's -44.4), Adobe is cleaner in 5 of 10 (mostly windows holding discrete sounds - breaths and movement - by 2.5-8 dB), and 2 of 10 are tied. One loud breath (221.4s) is kept at near-original level by both. Two more variants were run Nov 16 and measured the same way: an aggressive denoise variant (weaker than the candidate on deep pauses) and an adaptive-strength variant (produced the same output as the candidate on this recording). Neither closes the discrete-sound gap, so no further strength variants are planned: that gap needs different engineering (targeted breath/transient handling), not more strength settings. Automatic speech-to-text checks show small word differences against the original's auto-transcript for every full-strength client variant (~3% word error rate, machine-vs-machine, a listening flag not confirmed word loss); the motorcycle candidate's auto-transcript matched its original exactly. The known limit of this comparison: one recording, and the Adobe file as supplied (128 kbps).</p>
-<p class="note" style="border-left:4px solid #2f6f4f;padding:8px 12px;"><strong>Gaps before production, in order:</strong> 1) your listening verdict on the candidate vs Adobe below; 2) the pipeline's automatic strength selection currently picks the gentler setting on this client recording (noise estimate 15.7 dB SNR vs the default full-strength threshold of 12 dB), so shipping the candidate behavior automatically means retuning that selection - a hypothesis to validate across all 12 real inputs, not a decided fix; 3) the discrete-sound gap vs Adobe above.</p>
+<h1>Enhancement review &middot; unreviewed</h1>
+<p class="note">Two recordings the owner gave feedback on, reprocessed with candidate settings. One candidate is recommended below for a listening decision; everything else is supporting material. Nothing on this page is adopted, and nothing here is a quality verdict or a parity claim.</p>
 
+<div class="keyline warn"><b class="lead">Status</b><strong>Unreviewed.</strong> No listening verdict exists yet, and no candidate is presented as an improvement. Signal-integrity checks pass on all outputs (sample-exact duration, no clipping, level targets within the true-peak ceiling). Automatic transcript checks return review-required flags on every full-strength client variant (about 3% machine-vs-machine word difference) - these are places to listen, not confirmed word loss.</div>
 
-<div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="badge y">Candidate &middot; not production</span><span class="cid">Motorcycle audio without wind noise (11.9s)</span></div>
-<div class="cdet" style="margin-bottom:12px">Owner feedback on the standard output: the motorcycle sound is still there. Speech sits at 0.0-3.9s and 5.7-6.4s; the engine demonstration audio plays between and after those words (~3.9-5.7s and ~6.4-11.9s), so that is where to listen. In the engine-demo windows the measured level of the standard output is 10-18 dB below the original (the residual the owner reported), while both candidates measure near silence there. Whether near-silence in those windows sounds right is a listening call. The enhance candidate's automatic transcript matches the original's exactly; the denoise candidate's transcript flags a timing smear on the closing words and one substitution ("sound" &rarr; "sun"). A third run (two-pass) produced the same content as the enhance candidate and is not a separate player.</div>
-<h3>Focused excerpts &middot; level-matched within each group</h3>
-<p class="note">Same window cut from every variant, level-matched by attenuation only. Use these for the A/B; the full-clip players below are not loudness-matched, so do not judge them by volume.</p>
-<h3>0:03.5-0:06.5 &middot; "from this" + engine demo + "to this"</h3>
+<div class="keyline"><b class="lead">Recommendation - one candidate</b><strong>"Enhance, full strength"</strong> is the single candidate for your listening decision. Of the settings tested on these two recordings, it cleans the most in the measured windows. Measured against the Adobe output you supplied (client recording, 10 inter-word windows, lower = cleaner, a side counts only by &gt;0.5 dB): <strong>candidate cleaner in 3 of 10, Adobe cleaner in 5 of 10</strong> (mostly discrete sounds - breaths and movement - by 2.5-8 dB), <strong>2 tied</strong>. Two more variants were tested Nov 16 (aggressive denoise; adaptive strength) and neither changes this, so no further strength variants are planned - the remaining gap vs Adobe is discrete sounds, which needs different engineering, not more strength settings.</div>
+
+<div class="keyline"><b class="lead">Gaps before production, in order</b>1) <strong>Your listening verdict</strong> on the candidate vs Adobe below. 2) The pipeline's automatic strength selection currently picks the gentler setting on this client recording (noise estimate 15.7 dB vs the default threshold of 12 dB; on the motorcycle clip it already picks full strength at 6.7 dB) - retuning it is a hypothesis to validate across all 12 real inputs, not a decided fix. 3) The discrete-sound gap vs Adobe above.</div>
+
+<div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="badge y">Candidate &middot; not production</span><span class="cid">Client recording (4 min 15 s) &middot; the decision: Adobe vs candidate</span></div>
+<div class="cdet" style="margin-bottom:12px">Owner feedback: Adobe cleans this one better, so Adobe is the bar. The Adobe output was supplied by the owner on Nov 16, 2026. On true stationary pauses the candidate goes much quieter than Adobe (e.g. the 3:34 pause: candidate -85.5 dB, Adobe -44.4 dB); Adobe is quieter on windows holding breaths and movement. One loud breath (3:41) is kept at near-original level by both. The excerpt rows isolate where to listen.</div>
+
+<h3>Full recordings (not loudness-matched - judge character, not volume)</h3>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M1-from-this-to-this--source.mp3"></audio></figure>
-<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M1-from-this-to-this--published.mp3"></audio></figure>
-<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M1-from-this-to-this--enh100.mp3"></audio></figure>
-<figure><figcaption>Experiment: Denoise, full strength</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M1-from-this-to-this--den100.mp3"></audio></figure>
+<figure><figcaption>Original recording</figcaption><audio controls preload="metadata" src="129-client-original.mp3"></audio><div><a href="129-client-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe (owner-supplied)</figcaption><audio controls preload="metadata" src="129-client-adobe-reference.mp3"></audio><div><a href="129-client-adobe-reference.mp3">Download mp3</a></div></figure>
+<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="metadata" src="129-client-candidate-wet100.mp3"></audio><div><a href="129-client-candidate-wet100.mp3">Download mp3</a></div></figure>
 </div>
-<h3>0:06.5-0:11.9 &middot; second engine demo (no speech)</h3>
-<div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M2-engine-demo--source.mp3"></audio></figure>
-<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M2-engine-demo--published.mp3"></audio></figure>
-<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M2-engine-demo--enh100.mp3"></audio></figure>
-<figure><figcaption>Experiment: Denoise, full strength</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M2-engine-demo--den100.mp3"></audio></figure>
-</div>
-<h3>Full clip (not loudness-matched)</h3>
-<div class="players">
-<figure><figcaption>Original recording</figcaption><audio controls preload="none" src="129-motorcycle-original.mp3"></audio><div><a href="129-motorcycle-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="none" src="129-motorcycle-published.mp3"></audio><div><a href="129-motorcycle-published.mp3">Download mp3</a></div></figure>
-<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="none" src="129-motorcycle-candidate-enh.mp3"></audio><div><a href="129-motorcycle-candidate-enh.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Experiment: Denoise, full strength</figcaption><audio controls preload="none" src="129-motorcycle-candidate-den.mp3"></audio><div><a href="129-motorcycle-candidate-den.mp3">Download mp3</a></div></figure>
-</div></div>
 
-<div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="badge y">Candidate &middot; not production</span><span class="cid">Client-provided recording (4 min 15 s)</span></div>
-<div class="cdet" style="margin-bottom:12px">Owner feedback: Adobe cleans this one better, so the bar for these candidates is set by listening, not by our diagnostics. The Adobe output was supplied by the owner on Nov 16, 2026 and is included below as the comparison bar. Measured context (10 inter-word pause windows, lower = cleaner): on true stationary pauses the candidates go much quieter than Adobe (e.g. the 214.1s pause: full-strength enhance candidate -85.5 dB, Adobe -44.4 dB, standard output -23.3 dB); counting a side as cleaner only by &gt;0.5 dB per window, the candidate is cleaner in 3 of 10, Adobe in 5 of 10 (mostly discrete sounds - breaths, movement - by 2.5-8 dB), 2 tied One loud breath (221.4-222.2s) is kept by both Adobe and the candidates. The Adobe master is also quieter and more compressed (measured LRA 3.5 vs 8.9-9.4 for ours), which changes its overall character. Automatic transcript checks show a comparable number of small word-diff flags across Adobe, the standard output, and the candidates, at different spots; these flags are places to listen, not confirmed word loss. The excerpt groups below isolate the flagged windows.</div>
-
-<h3>Focused excerpts &middot; level-matched within each group</h3>
-<p class="note">Each group is cut from the same window of every variant and level-matched by attenuation only. Times are positions in the full recording. Excerpts are for review; full measurements live on the lossless masters (kept private).</p>
-
+<h3>Focused excerpts &middot; level-matched within each row (attenuation only)</h3>
 <h3>0:50-0:58 &middot; product name phrase</h3>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--source.mp3"></audio></figure>
-<figure><figcaption>Adobe</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--adobe.mp3"></audio></figure>
-<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--published.mp3"></audio></figure>
-<figure><figcaption>Experiment: Enhance + 15% original</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--w85.mp3"></audio></figure>
-<figure><figcaption>Experiment: Enhance + 8% original</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--w92.mp3"></audio></figure>
-<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--wet100.mp3"></audio></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="129-client-excerpt-C1-magic-hour--source.mp3"></audio></figure>
+<figure><figcaption>Adobe</figcaption><audio controls preload="metadata" src="129-client-excerpt-C1-magic-hour--adobe.mp3"></audio></figure>
+<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="metadata" src="129-client-excerpt-C1-magic-hour--wet100.mp3"></audio></figure>
 </div>
-
 <h3>2:30-2:39 &middot; flagged word diff</h3>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--source.mp3"></audio></figure>
-<figure><figcaption>Adobe</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--adobe.mp3"></audio></figure>
-<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--published.mp3"></audio></figure>
-<figure><figcaption>Experiment: Enhance + 15% original</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--w85.mp3"></audio></figure>
-<figure><figcaption>Experiment: Enhance + 8% original</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--w92.mp3"></audio></figure>
-<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--wet100.mp3"></audio></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="129-client-excerpt-C2-caught-these--source.mp3"></audio></figure>
+<figure><figcaption>Adobe</figcaption><audio controls preload="metadata" src="129-client-excerpt-C2-caught-these--adobe.mp3"></audio></figure>
+<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="metadata" src="129-client-excerpt-C2-caught-these--wet100.mp3"></audio></figure>
 </div>
-
 <h3>3:31-3:36 &middot; background noise in a pause</h3>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--source.mp3"></audio></figure>
-<figure><figcaption>Adobe</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--adobe.mp3"></audio></figure>
-<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--published.mp3"></audio></figure>
-<figure><figcaption>Experiment: Enhance + 15% original</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--w85.mp3"></audio></figure>
-<figure><figcaption>Experiment: Enhance + 8% original</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--w92.mp3"></audio></figure>
-<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--wet100.mp3"></audio></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="129-client-excerpt-C3-noisy-pause--source.mp3"></audio></figure>
+<figure><figcaption>Adobe</figcaption><audio controls preload="metadata" src="129-client-excerpt-C3-noisy-pause--adobe.mp3"></audio></figure>
+<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="metadata" src="129-client-excerpt-C3-noisy-pause--wet100.mp3"></audio></figure>
 </div>
 
+<details style="margin-top:18px"><summary>Earlier experiments and baseline (tested, not recommended)</summary><div class="inner">
+<p class="note">Standard output = the pipeline's default settings (our earlier comparison baseline). The +15%/+8% blends mix a little of the original back in; the aggressive denoise and adaptive-strength variants from Nov 16 measured no better than the candidate (details in the technical notes at the bottom).</p>
 <h3>Full recordings</h3>
 <div class="players">
-<figure><figcaption>Original recording</figcaption><audio controls preload="none" src="129-client-original.mp3"></audio><div><a href="129-client-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe (owner-supplied)</figcaption><audio controls preload="none" src="129-client-adobe-reference.mp3"></audio><div><a href="129-client-adobe-reference.mp3">Download mp3</a></div></figure>
 <figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="none" src="129-client-published.mp3"></audio><div><a href="129-client-published.mp3">Download mp3</a></div></figure>
 <figure><figcaption>Experiment: Enhance + 15% original</figcaption><audio controls preload="none" src="129-client-candidate-w85.mp3"></audio><div><a href="129-client-candidate-w85.mp3">Download mp3</a></div></figure>
 <figure><figcaption>Experiment: Enhance + 8% original</figcaption><audio controls preload="none" src="129-client-candidate-w92.mp3"></audio><div><a href="129-client-candidate-w92.mp3">Download mp3</a></div></figure>
-<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="none" src="129-client-candidate-wet100.mp3"></audio><div><a href="129-client-candidate-wet100.mp3">Download mp3</a></div></figure>
-</div></div>
+</div>
+<h3>0:50-0:58 &middot; product name phrase</h3>
+<div class="players">
+<figure><figcaption>Standard output</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--published.mp3"></audio></figure>
+<figure><figcaption>Experiment: +15% original</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--w85.mp3"></audio></figure>
+<figure><figcaption>Experiment: +8% original</figcaption><audio controls preload="none" src="129-client-excerpt-C1-magic-hour--w92.mp3"></audio></figure>
+</div>
+<h3>2:30-2:39 &middot; flagged word diff</h3>
+<div class="players">
+<figure><figcaption>Standard output</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--published.mp3"></audio></figure>
+<figure><figcaption>Experiment: +15% original</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--w85.mp3"></audio></figure>
+<figure><figcaption>Experiment: +8% original</figcaption><audio controls preload="none" src="129-client-excerpt-C2-caught-these--w92.mp3"></audio></figure>
+</div>
+<h3>3:31-3:36 &middot; background noise in a pause</h3>
+<div class="players">
+<figure><figcaption>Standard output</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--published.mp3"></audio></figure>
+<figure><figcaption>Experiment: +15% original</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--w85.mp3"></audio></figure>
+<figure><figcaption>Experiment: +8% original</figcaption><audio controls preload="none" src="129-client-excerpt-C3-noisy-pause--w92.mp3"></audio></figure>
+</div>
+</div></details>
+</div>
 
-<footer>
-<p>Processed Nov 12, 2026 through the production voice-enhancement pipeline (repository commit f6e8c85, seed 42) with per-candidate strength settings recorded in the run manifests. Candidate settings &middot; motorcycle card: &quot;Enhance, full strength&quot; = enhance instruction at full strength, unblended; &quot;Denoise, full strength&quot; = denoise instruction at full strength, unblended. Client card: &quot;Enhance + 15% original&quot; = full-strength enhance output blended with 15% of the original recording; &quot;Enhance + 8% original&quot; likewise with 8%; &quot;Enhance, full strength&quot; = unblended full-strength enhance output. &quot;Full strength&quot; means the processed output only, with none of the original recording mixed back in. &quot;Standard output (default settings)&quot; = the pipeline&#39;s output with its default settings; our earlier comparison baseline. Full-length audio here is lossy MP3 for review (the Adobe output is served as supplied, 128 kbps); lossless masters and the measurement manifest are retained privately. Page updated Nov 16, 2026: single-candidate recommendation added (candidate vs experiments labeled); earlier same-day revision renamed V-numbers to plain setting descriptions and added the owner-supplied Adobe output to the client card.</p>
-<p>Follow-up runs Nov 16, 2026 (commit 20b837a, seed 42, same harness): the previously blocked denoise-strength variant of the client recording was produced and measured, and an adaptive-strength variant was produced and measured. On this recording the adaptive variant&#8217;s output matched the candidate&#8217;s within 0.1 dB on every measured window, and the denoise variant measured between the candidate and Adobe on deep pauses; neither changes the recommendation above. Both are retained privately with their manifests.</p>
-<p>Nothing on this page is a quality verdict, an improvement claim, or a comparison against any third-party tool. Adoption requires the owner's listening decision.</p>
+<div class="card"><div class="chead"><span class="badge a">Unreviewed</span><span class="badge y">Candidate &middot; not production</span><span class="cid">Motorcycle audio without wind noise (11.9s)</span></div>
+<div class="cdet" style="margin-bottom:12px">Owner feedback on the standard output: the motorcycle sound is still there. Speech sits at 0:00-0:03.9 and 0:05.7-0:06.4; the engine demonstration plays between and after those words, so that is where to listen. In the engine-demo windows the standard output measures 10-18 dB below the original (the residual the owner reported), while the candidate measures near silence there - whether that sounds right is a listening call. The candidate's automatic transcript matches the original's exactly. There is no third-party reference for this clip.</div>
+
+<h3>Focused excerpts &middot; level-matched within each row (attenuation only)</h3>
+<h3>0:03.5-0:06.5 &middot; "from this" + engine demo + "to this"</h3>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="129-motorcycle-excerpt-M1-from-this-to-this--source.mp3"></audio></figure>
+<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="metadata" src="129-motorcycle-excerpt-M1-from-this-to-this--published.mp3"></audio></figure>
+<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="metadata" src="129-motorcycle-excerpt-M1-from-this-to-this--enh100.mp3"></audio></figure>
+</div>
+<h3>0:06.5-0:11.9 &middot; second engine demo (no speech)</h3>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="129-motorcycle-excerpt-M2-engine-demo--source.mp3"></audio></figure>
+<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="metadata" src="129-motorcycle-excerpt-M2-engine-demo--published.mp3"></audio></figure>
+<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="metadata" src="129-motorcycle-excerpt-M2-engine-demo--enh100.mp3"></audio></figure>
+</div>
+
+<h3>Full clip (not loudness-matched)</h3>
+<div class="players">
+<figure><figcaption>Original recording</figcaption><audio controls preload="metadata" src="129-motorcycle-original.mp3"></audio><div><a href="129-motorcycle-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Standard output (default settings)</figcaption><audio controls preload="metadata" src="129-motorcycle-published.mp3"></audio><div><a href="129-motorcycle-published.mp3">Download mp3</a></div></figure>
+<figure><figcaption><strong>Candidate:</strong> Enhance, full strength</figcaption><audio controls preload="metadata" src="129-motorcycle-candidate-enh.mp3"></audio><div><a href="129-motorcycle-candidate-enh.mp3">Download mp3</a></div></figure>
+</div>
+
+<details style="margin-top:18px"><summary>Earlier experiment (tested, not recommended)</summary><div class="inner">
+<p class="note">Denoise instruction at full strength. Its automatic transcript flags a timing smear on the closing words and one substitution ("sound" &rarr; "sun"); the enhance candidate's transcript matches the original exactly. A third run (two-pass) produced the same content as the enhance candidate and is not a separate player.</p>
+<div class="players">
+<figure><figcaption>Experiment: Denoise, full strength</figcaption><audio controls preload="none" src="129-motorcycle-candidate-den.mp3"></audio><div><a href="129-motorcycle-candidate-den.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Excerpt 0:03.5-0:06.5 &middot; denoise</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M1-from-this-to-this--den100.mp3"></audio></figure>
+<figure><figcaption>Excerpt 0:06.5-0:11.9 &middot; denoise</figcaption><audio controls preload="none" src="129-motorcycle-excerpt-M2-engine-demo--den100.mp3"></audio></figure>
+</div>
+</div></details>
+</div>
+
+<details><summary>Technical notes &middot; settings, measurements, method</summary><div class="inner">
+<footer style="border-top:none;margin:0;padding-top:0">
+<p><strong>Settings glossary.</strong> "Enhance, full strength" = enhance instruction at full strength, unblended (the processed output only, none of the original mixed back in). "Denoise, full strength" = denoise instruction at full strength, unblended. "Enhance + 15% original" / "+ 8% original" = full-strength enhance output blended with that share of the original recording. "Standard output (default settings)" = the pipeline's output with its default settings; our earlier comparison baseline.</p>
+<p><strong>Provenance.</strong> Motorcycle and client candidates processed Nov 12, 2026 through the production voice-enhancement pipeline (repository commit f6e8c85, seed 42); follow-up client variants Nov 16, 2026 (commit 20b837a, seed 42, same harness). Per-candidate settings are recorded in the run manifests. Full-length audio here is lossy MP3 for review (the Adobe output is served as supplied, 128 kbps); lossless masters and the measurement manifest are retained privately.</p>
+<p><strong>Measured comparison (client recording).</strong> Per-window levels in 10 inter-word windows, lower = cleaner, a side counts as cleaner only by &gt;0.5 dB per window: the candidate is cleaner in 3 of 10 windows (e.g. the 214.1s pause: candidate -85.5 dB, Adobe -44.4 dB, standard output -23.3 dB), Adobe in 5 of 10 (mostly windows holding discrete sounds - breaths, movement - by 2.5-8 dB), 2 tied. One loud breath (221.4-222.2s) is kept at near-original level by both. The Adobe master is quieter and more compressed overall (measured LRA 3.5 vs 8.9-9.4 for ours), which changes its overall character. Window RMS measured in dBFS; overall figures via ffmpeg loudnorm.</p>
+<p><strong>Nov 16 follow-up variants.</strong> An aggressive denoise variant and an adaptive-strength variant of the client recording were produced and measured the same way. On this recording the adaptive variant's output matched the candidate's within 0.1 dB on every measured window, and the denoise variant measured between the candidate and Adobe on deep pauses; neither closes the discrete-sound gap and neither changes the recommendation. Both are retained privately with their manifests.</p>
+<p><strong>Diagnostics are not quality scores.</strong> Notes on this page come from automatic speech-to-text word diffs, a speaker-similarity score, and energy measurements. They locate where to listen; they do not score how it sounds. Automatic transcript checks show a comparable number of small word-diff flags across Adobe, the standard output, and the candidates, at different spots; these flags are places to listen, not confirmed word loss. Signal-integrity checks (sample-exact duration, no clipping, level targets) pass on all outputs; transcript review flags are separate from signal integrity and remain open pending listening.</p>
+<p><strong>Loudness.</strong> Full-length players are mastered to a -1.0 dBTP ceiling but are not loudness-matched to one another - use them for character and artifacts, not volume. Excerpt rows are level-matched within each row (attenuation only, matched down to the quietest variant in that window), so loudness should not bias those A/Bs. References inform listening; no parity or superiority claim is made or implied. Known limit of the Adobe comparison: one recording, and the Adobe file as supplied (128 kbps).</p>
+<p>Page updated Nov 16, 2026: restructured to a single-candidate decision view (client Adobe vs candidate first, experiments and technical detail collapsed); earlier same-day revisions added the recommendation, renamed V-numbers to plain setting descriptions, and added the owner-supplied Adobe output. Nothing on this page is a quality verdict, an improvement claim, or a comparison against any third-party tool. Adoption requires the owner's listening decision.</p>
 </footer>
+</div></details>
 </body></html>
