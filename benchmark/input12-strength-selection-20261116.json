@@ -1,0 +1,110 @@
+[
+ {
+  "name": "Cristiano Ronaldo - Live The Present",
+  "dur": 14.76,
+  "est_snr": 15.71,
+  "bed": -37.42,
+  "silence": 0.0136,
+  "clip": 0.0,
+  "stock_decision": "light"
+ },
+ {
+  "name": "Happiness shouldnt depend on this  #shorts",
+  "dur": 24.058776,
+  "est_snr": 18.78,
+  "bed": -45.69,
+  "silence": 0.1192,
+  "clip": 0.0,
+  "stock_decision": "light"
+ },
+ {
+  "name": "How to Create an Audio-Only Podcast on YouTube",
+  "dur": 38.544,
+  "est_snr": 9.42,
+  "bed": -29.21,
+  "silence": 0.0026,
+  "clip": 0.0,
+  "stock_decision": "full"
+ },
+ {
+  "name": "How to record motorcycle audio without wind noise (1)",
+  "dur": 11.937959,
+  "est_snr": 6.66,
+  "bed": -20.83,
+  "silence": 0.0034,
+  "clip": 4e-06,
+  "stock_decision": "full"
+ },
+ {
+  "name": "Italian food no-nos!  Stanley Tucci  Dish",
+  "dur": 22.992,
+  "est_snr": 19.98,
+  "bed": -42.86,
+  "silence": 0.1325,
+  "clip": 0.0,
+  "stock_decision": "light"
+ },
+ {
+  "name": "Live an INTENTIONAL life",
+  "dur": 23.76,
+  "est_snr": 11.22,
+  "bed": -24.79,
+  "silence": 0.0067,
+  "clip": 0.000321,
+  "stock_decision": "full"
+ },
+ {
+  "name": "Recording noise-free vocals in Times Square (1)",
+  "dur": 26.88,
+  "est_snr": 11.45,
+  "bed": -25.15,
+  "silence": 0.0723,
+  "clip": 0.000263,
+  "stock_decision": "full"
+ },
+ {
+  "name": "Such a great quote  #shorts",
+  "dur": 10.579592,
+  "est_snr": 16.19,
+  "bed": -38.06,
+  "silence": 0.0835,
+  "clip": 0.0,
+  "stock_decision": "light"
+ },
+ {
+  "name": "Tips for Podcast Beginners",
+  "dur": 59.036735,
+  "est_snr": 11.62,
+  "bed": -35.55,
+  "silence": 0.021,
+  "clip": 0.0,
+  "stock_decision": "full"
+ },
+ {
+  "name": "Why 2-Minute Podcast Clips Dominate Attention",
+  "dur": 34.716735,
+  "est_snr": 15.61,
+  "bed": -32.87,
+  "silence": 0.0283,
+  "clip": 1e-06,
+  "stock_decision": "light"
+ },
+ {
+  "name": "Why Most Listeners Drop Off in 2 Minutes!",
+  "dur": 34.45551,
+  "est_snr": 7.88,
+  "bed": -36.44,
+  "silence": 0.0349,
+  "clip": 0.0,
+  "stock_decision": "full"
+ },
+ {
+  "name": "client_provided",
+  "dur": 255.190204,
+  "est_snr": 15.65,
+  "bed": -36.83,
+  "silence": 0.0103,
+  "clip": 1e-06,
+  "stock_decision": "light"
+ }
+]
