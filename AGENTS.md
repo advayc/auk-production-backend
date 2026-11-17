@@ -4,9 +4,9 @@ AuK voice editing backend, distribution copy of the org Colab build. The noteboo
 
 ## Layout
 
-- `AI_Voice_Editor_Production_Colab.ipynb`: supported runner. Open the org Colab, run cells P1 to P4 in order on a T4. The notebook restores the same 0.3.0 package this repo carries (embedded archive sha-verified against the repo code).
+- `AI_Voice_Editor_Production_Colab.ipynb`: supported runner. Open the org Colab, run cells P1 to P4 in order on a T4. The notebook restores the same v0.5.1 package this repo carries (embedded archive rebuilt from the repo tree on 2026-11-16, sha-pinned).
 - `backend/auk_reliability/`: the `auk-reliability` package. Entry point: `edit_audio()` in `worker.py`. Acceptance harness in `acceptance.py`.
-- `backend/tests/`: unittest suite, 175 tests.
+- `backend/tests/`: unittest suite, 472 tests.
 - `backend/datasets/bootstrap/manifest.candidate.json`: checksum-pinned evaluation manifest (LibriSpeech dev-clean, CC BY 4.0).
 - `backend/reports/`: dataset audit and per-operation profile recommendations (currently `not_qualified`).
 
@@ -25,4 +25,4 @@ AuK voice editing backend, distribution copy of the org Colab build. The noteboo
 - Automatic QA passing is not naturalness. Keep the human listening step in any acceptance flow.
 - Qwen2.5-Omni-3B ships under a research noncommercial evaluation license; commercial use requires a separate license and redistribution requires attribution. Keep `COMMERCIAL_USE=False` paths intact. See `backend/SOURCES.md`.
 - `backend/SOURCES.md` attribution must stay with the dataset.
-- v0.3.0 is a candidate: CPU 175 tests pass. GPU evidence so far comes from a mixed v0.2.9-base + apparent-0.3.0-overlay build (module hash unrecorded), not the canonical 0.3.0 tree; on that build the current localized test case fails closed by design and the one paced attempt failed automatic QA. Do not describe localized edits as working until a contract-preserving pass on the canonical 0.3.0 build and human listening review exist. v0.2.9's L4 results apply to 0.2.9 code only.
+- The current package is v0.5.1: 472 CPU tests pass. On the GPU-qualification side, v0.3.0 remains a candidate: GPU evidence so far comes from a mixed v0.2.9-base + apparent-0.3.0-overlay build (module hash unrecorded), not the canonical 0.3.0 tree; on that build the current localized test case fails closed by design and the one paced attempt failed automatic QA. Do not describe localized edits as working until a contract-preserving pass on the canonical 0.3.0 build and human listening review exist. v0.2.9's L4 results apply to 0.2.9 code only.

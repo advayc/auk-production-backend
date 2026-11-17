@@ -1583,7 +1583,7 @@
       },
       "expected_text": "were the better team on the night",
       "target_seconds": 4.38,
-      "instruction": "Replace 'They were' with 'were'.",
+      "instruction": "Say the following with the same voice: 'were the better team on the night'",
       "human_review_required": true
     },
     {
@@ -1604,7 +1604,7 @@
       },
       "expected_text": "They the better team on the night according to everyone",
       "target_seconds": 4.56,
-      "instruction": "Replace 'were the' with 'the'.",
+      "instruction": "Say the following with the same voice: 'They the better team on the night according to everyone'",
       "human_review_required": true
     },
     {
@@ -1625,7 +1625,7 @@
       },
       "expected_text": "They were team on the night in our opinion",
       "target_seconds": 4.1,
-      "instruction": "Replace 'the better team' with 'team'.",
+      "instruction": "Say the following with the same voice: 'They were team on the night in our opinion'",
       "human_review_required": true
     },
     {
@@ -1646,7 +1646,7 @@
       },
       "expected_text": "They were the team on the night despite the rain",
       "target_seconds": 4.56,
-      "instruction": "Replace 'better team' with 'team'.",
+      "instruction": "Say the following with the same voice: 'They were the team on the night despite the rain'",
       "human_review_required": true
     },
     {
@@ -1667,7 +1667,7 @@
       },
       "expected_text": "They were the better on the night as we expected",
       "target_seconds": 4.56,
-      "instruction": "Replace 'team on' with 'on'.",
+      "instruction": "Say the following with the same voice: 'They were the better on the night as we expected'",
       "human_review_required": true
     },
     {
@@ -1688,7 +1688,7 @@
       },
       "expected_text": "They were the better team by a wide margin",
       "target_seconds": 3.76,
-      "instruction": "Replace 'on the night by' with 'by'.",
+      "instruction": "Say the following with the same voice: 'They were the better team by a wide margin'",
       "human_review_required": true
     },
     {
@@ -1709,7 +1709,7 @@
       },
       "expected_text": "They were the better team the night after all",
       "target_seconds": 4.5,
-      "instruction": "Replace 'on the' with 'the'.",
+      "instruction": "Say the following with the same voice: 'They were the better team the night after all'",
       "human_review_required": true
     },
     {
@@ -1730,7 +1730,7 @@
       },
       "expected_text": "They were the better team on without a doubt",
       "target_seconds": 4.1,
-      "instruction": "Replace 'the night without' with 'without'.",
+      "instruction": "Say the following with the same voice: 'They were the better team on without a doubt'",
       "human_review_required": true
     },
     {
@@ -1751,7 +1751,7 @@
       },
       "expected_text": "the better team on the night against their rivals",
       "target_seconds": 4.1,
-      "instruction": "Replace 'They were the' with 'the'.",
+      "instruction": "Say the following with the same voice: 'the better team on the night against their rivals'",
       "human_review_required": true
     },
     {
@@ -1772,7 +1772,7 @@
       },
       "expected_text": "They were on the night this season",
       "target_seconds": 3.5,
-      "instruction": "Replace 'the better team on' with 'on'.",
+      "instruction": "Say the following with the same voice: 'They were on the night this season'",
       "human_review_required": true
     }
   ]
