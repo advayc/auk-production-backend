@@ -26,109 +26,110 @@ th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-alig
 th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 </style></head><body>
 <h1>Adobe vs AuK benchmark</h1>
-<p class="note">Twelve recordings with different noise problems, each in three versions: the original, Adobe Podcast Enhance (free tier, captured Nov 17, 2026), and the AuK candidate (current pipeline, full strength). Built Nov 17, 2026. Related: <a href="131-original-vs-adobe-vs-candidate.html">client recording deep-dive</a> (level-matched excerpts, breath analysis), <a href="130-full-vs-light-cleanup-listening.html">full-vs-light strength pairs</a>.</p>
+<p class="note">Twelve recordings with different noise problems, each in three versions: the original, Adobe Podcast Enhance (free tier, captured Nov 17, 2026), and the AuK candidate (current pipeline, full strength). Built Nov 17, 2026. Related: <a href="131-original-vs-adobe-vs-candidate.html">client recording deep-dive</a> (breath analysis, earlier experiments), <a href="130-full-vs-light-cleanup-listening.html">full-vs-light strength pairs</a>.</p>
 
 <div class="keyline warn"><b class="lead">Status</b><strong>Unreviewed - no listening verdict exists yet.</strong> This page is a listening bench and a measurement record, not a quality claim. Nothing here is adopted or production-approved, and measurements alone did not select or approve anything.</div>
 
-<div class="keyline"><b class="lead">How to compare fairly</b>The three versions are at different loudness - Adobe's free-tier output is typically 2-8 LU quieter than the AuK candidate. Louder can read as better, so match volume before judging, and judge cleanup, words, and voice character rather than volume.</div>
+<div class="keyline"><b class="lead">Level-matched players</b>All players on this page are <strong>level-matched by default</strong>: within each recording, every version is attenuated to the same integrated loudness (the quietest version's level). Attenuation only - nothing is amplified, so peaks never grow and tonal and dynamics differences are preserved. Raw (unmatched) files are linked under each player, and the measurement table below reports raw levels.</div>
 
 <h2>The 12 recordings</h2>
-<p class="note">Ordered shortest to longest. AuK candidates are 128 kbps mp3 transcodes of the pipeline wav outputs for web delivery; the wav originals are archived. Adobe column on the client row is the owner-supplied file (the agreed reference); the free-tier capture is shown separately below it.</p>
+<p class="note">Ordered shortest to longest. Matched players land within 0.1 LU of their row's target (one exception, noted on the client row). Web files are 128 kbps mp3; the pipeline wav originals are archived. On the client row the Adobe column is the owner-supplied file (the agreed reference); the free-tier capture is shown separately below it.</p>
 
 <div class="card">
 <div class="rowlab">A great quote (#shorts) &middot; 11s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-quote-original.mp3"></audio><div><a href="132-quote-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-quote-adobe.mp3"></audio><div><a href="132-quote-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-quote-auk.mp3"></audio><div><a href="132-quote-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-quote-original-matched.mp3"></audio><div><a href="132-quote-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-quote-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-quote-adobe-matched.mp3"></audio><div><a href="132-quote-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-quote-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-quote-auk-matched.mp3"></audio><div><a href="132-quote-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-quote-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Motorcycle audio with wind noise &middot; 12s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-moto-original.mp3"></audio><div><a href="132-moto-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-moto-adobe.mp3"></audio><div><a href="132-moto-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-moto-auk.mp3"></audio><div><a href="132-moto-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-moto-original-matched.mp3"></audio><div><a href="132-moto-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-moto-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-moto-adobe-matched.mp3"></audio><div><a href="132-moto-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-moto-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-moto-auk-matched.mp3"></audio><div><a href="132-moto-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-moto-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Cristiano Ronaldo - Live The Present &middot; 15s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-cr7-original.mp3"></audio><div><a href="132-cr7-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-cr7-adobe.mp3"></audio><div><a href="132-cr7-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-cr7-auk.mp3"></audio><div><a href="132-cr7-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-cr7-original-matched.mp3"></audio><div><a href="132-cr7-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-cr7-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-cr7-adobe-matched.mp3"></audio><div><a href="132-cr7-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-cr7-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-cr7-auk-matched.mp3"></audio><div><a href="132-cr7-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-cr7-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Italian food no-nos! (Stanley Tucci) &middot; 23s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tucci-original.mp3"></audio><div><a href="132-tucci-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tucci-adobe.mp3"></audio><div><a href="132-tucci-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tucci-auk.mp3"></audio><div><a href="132-tucci-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tucci-original-matched.mp3"></audio><div><a href="132-tucci-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tucci-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tucci-adobe-matched.mp3"></audio><div><a href="132-tucci-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tucci-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tucci-auk-matched.mp3"></audio><div><a href="132-tucci-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tucci-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Live an INTENTIONAL life &middot; 24s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-intentional-original.mp3"></audio><div><a href="132-intentional-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-intentional-adobe.mp3"></audio><div><a href="132-intentional-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-intentional-auk.mp3"></audio><div><a href="132-intentional-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-intentional-original-matched.mp3"></audio><div><a href="132-intentional-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-intentional-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-intentional-adobe-matched.mp3"></audio><div><a href="132-intentional-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-intentional-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-intentional-auk-matched.mp3"></audio><div><a href="132-intentional-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-intentional-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Happiness (#shorts) &middot; 24s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-happy-original.mp3"></audio><div><a href="132-happy-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-happy-adobe.mp3"></audio><div><a href="132-happy-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-happy-auk.mp3"></audio><div><a href="132-happy-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-happy-original-matched.mp3"></audio><div><a href="132-happy-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-happy-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-happy-adobe-matched.mp3"></audio><div><a href="132-happy-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-happy-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-happy-auk-matched.mp3"></audio><div><a href="132-happy-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-happy-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Noise-free vocals in Times Square &middot; 27s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-timessq-original.mp3"></audio><div><a href="132-timessq-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-timessq-adobe.mp3"></audio><div><a href="132-timessq-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-timessq-auk.mp3"></audio><div><a href="132-timessq-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-timessq-original-matched.mp3"></audio><div><a href="132-timessq-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-timessq-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-timessq-adobe-matched.mp3"></audio><div><a href="132-timessq-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-timessq-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-timessq-auk-matched.mp3"></audio><div><a href="132-timessq-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-timessq-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Why 2-minute podcast clips dominate &middot; 35s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dominate-original.mp3"></audio><div><a href="132-dominate-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dominate-adobe.mp3"></audio><div><a href="132-dominate-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dominate-auk.mp3"></audio><div><a href="132-dominate-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dominate-original-matched.mp3"></audio><div><a href="132-dominate-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dominate-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dominate-adobe-matched.mp3"></audio><div><a href="132-dominate-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dominate-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dominate-auk-matched.mp3"></audio><div><a href="132-dominate-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dominate-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Why most listeners drop off in 2 minutes &middot; 34s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dropoff-original.mp3"></audio><div><a href="132-dropoff-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dropoff-adobe.mp3"></audio><div><a href="132-dropoff-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dropoff-auk.mp3"></audio><div><a href="132-dropoff-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dropoff-original-matched.mp3"></audio><div><a href="132-dropoff-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dropoff-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dropoff-adobe-matched.mp3"></audio><div><a href="132-dropoff-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dropoff-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dropoff-auk-matched.mp3"></audio><div><a href="132-dropoff-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dropoff-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">How to create an audio-only podcast &middot; 39s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-audiopod-original.mp3"></audio><div><a href="132-audiopod-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-audiopod-adobe.mp3"></audio><div><a href="132-audiopod-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-audiopod-auk.mp3"></audio><div><a href="132-audiopod-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-audiopod-original-matched.mp3"></audio><div><a href="132-audiopod-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-audiopod-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-audiopod-adobe-matched.mp3"></audio><div><a href="132-audiopod-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-audiopod-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-audiopod-auk-matched.mp3"></audio><div><a href="132-audiopod-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-audiopod-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Tips for podcast beginners &middot; 59s</div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tips-original.mp3"></audio><div><a href="132-tips-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tips-adobe.mp3"></audio><div><a href="132-tips-adobe.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tips-auk.mp3"></audio><div><a href="132-tips-auk.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tips-original-matched.mp3"></audio><div><a href="132-tips-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tips-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tips-adobe-matched.mp3"></audio><div><a href="132-tips-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tips-adobe.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tips-auk-matched.mp3"></audio><div><a href="132-tips-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tips-auk.mp3">raw mp3</a></div></figure>
 </div></div>
 
 <div class="card">
-<div class="rowlab">Client recording (Magic Hour) &middot; 255s &middot; main comparison lives on the <a href="131-original-vs-adobe-vs-candidate.html">client deep-dive page</a></div>
+<div class="rowlab">Client recording (Magic Hour) &middot; 255s &middot; more analysis on the <a href="131-original-vs-adobe-vs-candidate.html">client deep-dive page</a></div>
 <div class="players">
-<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="129-client-original.mp3"></audio><div><a href="129-client-original.mp3">Download mp3</a></div></figure>
-<figure><figcaption>Adobe Enhance (owner-supplied reference)</figcaption><audio controls preload="metadata" src="129-client-adobe-reference.mp3"></audio><div><a href="129-client-adobe-reference.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="129-client-candidate-wet100.mp3"></audio><div><a href="129-client-candidate-wet100.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-client-original-matched.mp3"></audio><div><a href="132-client-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="129-client-original.mp3">raw mp3</a></div></figure>
+<figure><figcaption>Adobe Enhance (owner-supplied reference)</figcaption><audio controls preload="metadata" src="132-client-adobe-matched.mp3"></audio><div><a href="132-client-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="129-client-adobe-reference.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-client-auk-matched.mp3"></audio><div><a href="132-client-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="129-client-candidate-wet100.mp3">raw mp3</a></div></figure>
 </div>
 <div class="players" style="margin-top:14px">
-<figure><figcaption>Adobe free tier v2 (secondary)</figcaption><audio controls preload="metadata" src="132-client-adobe-freev2.mp3"></audio><div><a href="132-client-adobe-freev2.mp3">Download mp3</a></div></figure>
-<figure><figcaption>AuK toneA EXPERIMENTAL (see label)</figcaption><audio controls preload="metadata" src="132-client-auk-toneA-EXPERIMENTAL.mp3"></audio><div><a href="132-client-auk-toneA-EXPERIMENTAL.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe free tier v2 (secondary)</figcaption><audio controls preload="metadata" src="132-client-adobefv2-matched.mp3"></audio><div><a href="132-client-adobefv2-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-client-adobe-freev2.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK toneA EXPERIMENTAL (see label)</figcaption><audio controls preload="metadata" src="132-client-toneA-matched.mp3"></audio><div><a href="132-client-toneA-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-client-auk-toneA-EXPERIMENTAL.mp3">raw mp3</a></div></figure>
 </div>
+<p class="note" style="margin-top:10px">Match note: four of the five client players sit at -22.9 LUFS; the free-tier v2 secondary sits 0.45 LU lower. Its raw file already equals the row target, so matching it exactly would require amplification, which this page does not do.</p>
 </div>
 
-<h2>Measurements (diagnostics, not listening)</h2>
+<h2>Raw measurements (diagnostics, not listening)</h2>
 <div class="card">
-<p class="note">Per recording: integrated loudness (I, LUFS) / true peak (TP, dBTP) / loudness range (LRA, LU) / quiet-floor level (bed15, dBFS - the 15th-percentile level of 100 ms frames). Same meter (BS.1770 via ffmpeg) on every file. These describe levels; they are not quality scores.</p>
+<p class="note">Measured on the raw (unmatched) files. Per recording: integrated loudness (I, LUFS) / true peak (TP, dBTP) / loudness range (LRA, LU) / quiet-floor level (bed15, dBFS - the 15th-percentile level of 100 ms frames). Same meter (BS.1770 via ffmpeg) on every file. These describe levels; they are not quality scores.</p>
 <table>
 <tr><th>Recording</th><th>Original I/TP/LRA/bed</th><th>Adobe free I/TP/LRA/bed</th><th>AuK I/TP/LRA/bed</th></tr>
 <tr><td>A great quote (#shorts)</td><td>-17.36 / -3.26 / 1.9 / -29.3</td><td>-21.93 / -7.14 / 3.1 / -36.85</td><td>-15.99 / -1.97 / 1.6 / -28.05</td></tr>
@@ -144,11 +145,11 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <tr><td>Tips for podcast beginners</td><td>-18.82 / -2.53 / 2.1 / -25.99</td><td>-22.78 / -5.91 / 2.3 / -34.33</td><td>-16.22 / -0.94 / 3.1 / -26.26</td></tr>
 <tr><td>Client recording (supplied Adobe ref)</td><td>-20.45 / 0.04 / 7.7 / -33.86</td><td>-21.45 / -6.69 / 3.5 / -50.02</td><td>-19.05 / -0.96 / 8.9 / -46.38</td></tr>
 </table>
-<p class="note" style="margin-top:8px">What stands out: Adobe's free tier consistently lands quieter (I -18 to -24) with heavy true-peak margin (-4.5 to -10.8), while the AuK candidate sits near -16 LUFS with peaks under -0.9. Quiet floors differ most on the noisiest recordings (moto, cr7, tucci, intentional): the unblended full-strength candidate drives pause floors far down (e.g. moto bed -94 dBFS vs Adobe -45). Whether that sounds clean or hollow is a listening question, not a numbers question.</p>
+<p class="note" style="margin-top:8px">Raw loudness differs a lot between versions - Adobe's free tier lands quieter (I -18 to -24) with heavy true-peak margin (-4.5 to -10.8), while the AuK candidate sits near -16 LUFS with peaks under -0.9. That gap is exactly why the players above are level-matched. Quiet floors differ most on the noisiest recordings (moto, cr7, tucci, intentional): the unblended full-strength candidate drives pause floors far down (e.g. moto bed -94 dBFS vs Adobe -45). Whether that sounds clean or hollow is a listening question, not a numbers question.</p>
 </div>
 
 <div class="card">
-<p class="note"><strong>Integrity checks (pass/fail, all 12 rows pass):</strong> durations agree within 0.05 s on every triple (max delta 0.050 s); no processed output clips - every Adobe and AuK file keeps at least 0.9 dB true-peak headroom. Some originals themselves hit 0 dBTP (they are raw uploads). Client row checks are on the deep-dive page.</p>
+<p class="note"><strong>Integrity checks (pass/fail, all rows pass):</strong> raw durations agree within 0.05 s on every triple (max delta 0.050 s); matched renders are sample-rate-exact with their raw sources (duration delta 0.000 s); matched levels verified against their targets after rendering (within 0.1 LU, one noted exception); matched renders are attenuation-only (max applied gain 0.0 dB, max true peak -2.4 dBTP); no processed output clips - every Adobe and AuK file keeps at least 0.9 dB true-peak headroom. Some originals themselves hit 0 dBTP (they are raw uploads). Client row checks are on the deep-dive page.</p>
 </div>
 
 <h2>Client pause windows, incl. toneA experiment</h2>
@@ -171,7 +172,7 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 </div>
 
 <footer>
-<p>Provenance: originals are the 12 owner-provided inputs (Drive folder, Aug 4). Adobe free-tier outputs were captured Nov 17, 2026 from Adobe Podcast Enhance on a free account (30 min/file cap; 9.3 min of audio processed), one file at a time; the client recording's primary Adobe reference is the owner-supplied file from Nov 16, 2026. AuK candidates are the current production pipeline at full strength, unblended (rb7 batch for 5 recordings, rb8 batch for 6, client batch for the client recording; seed 42, pinned repo commits recorded in the run manifests).</p>
+<p>Provenance: originals are the 12 owner-provided inputs (Drive folder, Aug 4). Adobe free-tier outputs were captured Nov 17, 2026 from Adobe Podcast Enhance on a free account (30 min/file cap; 9.3 min of audio processed), one file at a time; the client recording's primary Adobe reference is the owner-supplied file from Nov 16, 2026. AuK candidates are the current production pipeline at full strength, unblended (rb7 batch for 5 recordings, rb8 batch for 6, client batch for the client recording; seed 42, pinned repo commits recorded in the run manifests). Level-matched players are produced by attenuation only and verified after rendering.</p>
 <p>Honesty notes: listening is UNSCORED - no one has rated any of this by ear yet. Measurements are diagnostics and did not select, tune, or approve anything. Adobe free-tier outputs are lossy mp3 at reduced loudness; their quietest readings may be limited by the codec. No parity or superiority claim is made or implied.</p>
 <p>Unreviewed: the listening decision is the owner's.</p>
 </footer>
