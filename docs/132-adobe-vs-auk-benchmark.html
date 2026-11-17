@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adobe vs AuK benchmark - 12 recordings (unreviewed)</title>
+<style>
+:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;max-width:1100px;margin:0 auto;padding:0 18px}
+h1{font-size:clamp(24px,3.6vw,32px);line-height:1.15;margin:34px 0 10px;font-weight:700}
+h2{font-size:19px;margin:26px 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:18px}
+.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+figure{background:#fafaf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+figcaption{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+audio{width:100%;height:36px;display:block}
+audio+div{margin-top:6px;font-size:12px}
+a{color:var(--green)}
+footer{border-top:1px solid var(--line);margin:30px 0 60px;padding-top:16px;font-size:13px;color:var(--mut)}
+footer p{margin:8px 0}
+.note{font-size:.85rem;color:#555;margin:.2rem 0 .7rem}
+.keyline{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;padding:12px 16px;margin-bottom:12px;font-size:.95rem}
+.keyline.warn{border-left-color:#b8860b}
+.keyline b.lead{display:block;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:3px}
+.rowlab{font-size:13px;font-weight:700;margin:4px 0 10px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+</style></head><body>
+<h1>Adobe vs AuK benchmark</h1>
+<p class="note">Twelve recordings with different noise problems, each in three versions: the original, Adobe Podcast Enhance (free tier, captured Nov 17, 2026), and the AuK candidate (current pipeline, full strength). Built Nov 17, 2026. Related: <a href="131-original-vs-adobe-vs-candidate.html">client recording deep-dive</a> (level-matched excerpts, breath analysis), <a href="130-full-vs-light-cleanup-listening.html">full-vs-light strength pairs</a>.</p>
+
+<div class="keyline warn"><b class="lead">Status</b><strong>Unreviewed - no listening verdict exists yet.</strong> This page is a listening bench and a measurement record, not a quality claim. Nothing here is adopted or production-approved, and measurements alone did not select or approve anything.</div>
+
+<div class="keyline"><b class="lead">How to compare fairly</b>The three versions are at different loudness - Adobe's free-tier output is typically 2-8 LU quieter than the AuK candidate. Louder can read as better, so match volume before judging, and judge cleanup, words, and voice character rather than volume.</div>
+
+<h2>The 12 recordings</h2>
+<p class="note">Ordered shortest to longest. AuK candidates are 128 kbps mp3 transcodes of the pipeline wav outputs for web delivery; the wav originals are archived. Adobe column on the client row is the owner-supplied file (the agreed reference); the free-tier capture is shown separately below it.</p>
+
+<div class="card">
+<div class="rowlab">A great quote (#shorts) &middot; 11s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-quote-original.mp3"></audio><div><a href="132-quote-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-quote-adobe.mp3"></audio><div><a href="132-quote-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-quote-auk.mp3"></audio><div><a href="132-quote-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Motorcycle audio with wind noise &middot; 12s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-moto-original.mp3"></audio><div><a href="132-moto-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-moto-adobe.mp3"></audio><div><a href="132-moto-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-moto-auk.mp3"></audio><div><a href="132-moto-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Cristiano Ronaldo - Live The Present &middot; 15s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-cr7-original.mp3"></audio><div><a href="132-cr7-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-cr7-adobe.mp3"></audio><div><a href="132-cr7-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-cr7-auk.mp3"></audio><div><a href="132-cr7-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Italian food no-nos! (Stanley Tucci) &middot; 23s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tucci-original.mp3"></audio><div><a href="132-tucci-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tucci-adobe.mp3"></audio><div><a href="132-tucci-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tucci-auk.mp3"></audio><div><a href="132-tucci-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Live an INTENTIONAL life &middot; 24s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-intentional-original.mp3"></audio><div><a href="132-intentional-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-intentional-adobe.mp3"></audio><div><a href="132-intentional-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-intentional-auk.mp3"></audio><div><a href="132-intentional-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Happiness (#shorts) &middot; 24s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-happy-original.mp3"></audio><div><a href="132-happy-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-happy-adobe.mp3"></audio><div><a href="132-happy-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-happy-auk.mp3"></audio><div><a href="132-happy-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Noise-free vocals in Times Square &middot; 27s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-timessq-original.mp3"></audio><div><a href="132-timessq-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-timessq-adobe.mp3"></audio><div><a href="132-timessq-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-timessq-auk.mp3"></audio><div><a href="132-timessq-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Why 2-minute podcast clips dominate &middot; 35s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dominate-original.mp3"></audio><div><a href="132-dominate-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dominate-adobe.mp3"></audio><div><a href="132-dominate-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dominate-auk.mp3"></audio><div><a href="132-dominate-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Why most listeners drop off in 2 minutes &middot; 34s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dropoff-original.mp3"></audio><div><a href="132-dropoff-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dropoff-adobe.mp3"></audio><div><a href="132-dropoff-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dropoff-auk.mp3"></audio><div><a href="132-dropoff-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">How to create an audio-only podcast &middot; 39s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-audiopod-original.mp3"></audio><div><a href="132-audiopod-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-audiopod-adobe.mp3"></audio><div><a href="132-audiopod-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-audiopod-auk.mp3"></audio><div><a href="132-audiopod-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+<div class="card">
+<div class="rowlab">Tips for podcast beginners &middot; 59s</div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tips-original.mp3"></audio><div><a href="132-tips-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tips-adobe.mp3"></audio><div><a href="132-tips-adobe.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tips-auk.mp3"></audio><div><a href="132-tips-auk.mp3">Download mp3</a></div></figure>
+</div></div>
+
+<div class="card">
+<div class="rowlab">Client recording (Magic Hour) &middot; 255s &middot; main comparison lives on the <a href="131-original-vs-adobe-vs-candidate.html">client deep-dive page</a></div>
+<div class="players">
+<figure><figcaption>Original</figcaption><audio controls preload="metadata" src="129-client-original.mp3"></audio><div><a href="129-client-original.mp3">Download mp3</a></div></figure>
+<figure><figcaption>Adobe Enhance (owner-supplied reference)</figcaption><audio controls preload="metadata" src="129-client-adobe-reference.mp3"></audio><div><a href="129-client-adobe-reference.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="129-client-candidate-wet100.mp3"></audio><div><a href="129-client-candidate-wet100.mp3">Download mp3</a></div></figure>
+</div>
+<div class="players" style="margin-top:14px">
+<figure><figcaption>Adobe free tier v2 (secondary)</figcaption><audio controls preload="metadata" src="132-client-adobe-freev2.mp3"></audio><div><a href="132-client-adobe-freev2.mp3">Download mp3</a></div></figure>
+<figure><figcaption>AuK toneA EXPERIMENTAL (see label)</figcaption><audio controls preload="metadata" src="132-client-auk-toneA-EXPERIMENTAL.mp3"></audio><div><a href="132-client-auk-toneA-EXPERIMENTAL.mp3">Download mp3</a></div></figure>
+</div>
+</div>
+
+<h2>Measurements (diagnostics, not listening)</h2>
+<div class="card">
+<p class="note">Per recording: integrated loudness (I, LUFS) / true peak (TP, dBTP) / loudness range (LRA, LU) / quiet-floor level (bed15, dBFS - the 15th-percentile level of 100 ms frames). Same meter (BS.1770 via ffmpeg) on every file. These describe levels; they are not quality scores.</p>
+<table>
+<tr><th>Recording</th><th>Original I/TP/LRA/bed</th><th>Adobe free I/TP/LRA/bed</th><th>AuK I/TP/LRA/bed</th></tr>
+<tr><td>A great quote (#shorts)</td><td>-17.36 / -3.26 / 1.9 / -29.3</td><td>-21.93 / -7.14 / 3.1 / -36.85</td><td>-15.99 / -1.97 / 1.6 / -28.05</td></tr>
+<tr><td>Motorcycle audio with wind noise</td><td>-13.72 / 0.38 / 3.7 / -17.17</td><td>-22.04 / -6.71 / 22 / -45.41</td><td>-19.98 / -0.99 / 8.5 / -94.17</td></tr>
+<tr><td>Cristiano Ronaldo - Live The Present</td><td>-15.86 / 0.06 / 4 / -29.27</td><td>-22.45 / -4.51 / 3.9 / -53.32</td><td>-17.93 / -1 / 3.2 / -83.21</td></tr>
+<tr><td>Italian food no-nos! (Stanley Tucci)</td><td>-12.8 / -0.23 / 2.8 / -38.46</td><td>-19.38 / -4.68 / 3.8 / -57.08</td><td>-16 / -4.24 / 2.9 / -76.85</td></tr>
+<tr><td>Live an INTENTIONAL life</td><td>-13.97 / 0.35 / 12.1 / -21.03</td><td>-19 / -4.57 / 10.9 / -49.86</td><td>-16 / -4.35 / 22.4 / -72.51</td></tr>
+<tr><td>Happiness (#shorts)</td><td>-16.13 / -3.63 / 3 / -35.01</td><td>-20.57 / -7.48 / 3.1 / -42.79</td><td>-16 / -4.12 / 3.3 / -36.42</td></tr>
+<tr><td>Noise-free vocals in Times Square</td><td>-11.52 / 0.89 / 5.2 / -20.47</td><td>-18.1 / -4.87 / 5.5 / -47.92</td><td>-16.04 / -5.67 / 7 / -48.81</td></tr>
+<tr><td>Why 2-minute podcast clips dominate</td><td>-10.87 / 0.31 / 4.7 / -22.23</td><td>-18.06 / -4.58 / 4.8 / -30.81</td><td>-16.01 / -8.83 / 3.7 / -24.6</td></tr>
+<tr><td>Why most listeners drop off in 2 minutes</td><td>-22.32 / -8.55 / 1.8 / -30.04</td><td>-24.36 / -10.83 / 1.8 / -33.39</td><td>-16 / -2.04 / 2 / -23.87</td></tr>
+<tr><td>How to create an audio-only podcast</td><td>-16.64 / 0.38 / 2.3 / -22.17</td><td>-22.02 / -5.43 / 2.8 / -31.18</td><td>-16.08 / -0.92 / 3 / -23.58</td></tr>
+<tr><td>Tips for podcast beginners</td><td>-18.82 / -2.53 / 2.1 / -25.99</td><td>-22.78 / -5.91 / 2.3 / -34.33</td><td>-16.22 / -0.94 / 3.1 / -26.26</td></tr>
+<tr><td>Client recording (supplied Adobe ref)</td><td>-20.45 / 0.04 / 7.7 / -33.86</td><td>-21.45 / -6.69 / 3.5 / -50.02</td><td>-19.05 / -0.96 / 8.9 / -46.38</td></tr>
+</table>
+<p class="note" style="margin-top:8px">What stands out: Adobe's free tier consistently lands quieter (I -18 to -24) with heavy true-peak margin (-4.5 to -10.8), while the AuK candidate sits near -16 LUFS with peaks under -0.9. Quiet floors differ most on the noisiest recordings (moto, cr7, tucci, intentional): the unblended full-strength candidate drives pause floors far down (e.g. moto bed -94 dBFS vs Adobe -45). Whether that sounds clean or hollow is a listening question, not a numbers question.</p>
+</div>
+
+<div class="card">
+<p class="note"><strong>Integrity checks (pass/fail, all 12 rows pass):</strong> durations agree within 0.05 s on every triple (max delta 0.050 s); no processed output clips - every Adobe and AuK file keeps at least 0.9 dB true-peak headroom. Some originals themselves hit 0 dBTP (they are raw uploads). Client row checks are on the deep-dive page.</p>
+</div>
+
+<h2>Client pause windows, incl. toneA experiment</h2>
+<div class="card">
+<p class="note">Ten inter-word pauses on the client recording, RMS dBFS per window. toneA is an <strong>experimental variant</strong>: it applies tone/dynamics shaping to the candidate's mp3 after mastering (post-master processing of a lossy source), inspired by what measurements show of Adobe's output. It is not a true premaster change, it is not selected, and it exists to test one hypothesis.</p>
+<table>
+<tr><th>Window (s)</th><th>Original</th><th>Adobe (supplied)</th><th>AuK candidate</th><th>toneA (experimental)</th></tr>
+<tr><td>214.06-214.60</td><td>-20.8</td><td>-44.4</td><td>-85.5</td><td>-64.1</td></tr>
+<tr><td>221.40-222.18 (breath, kept by both)</td><td>-21.1</td><td>-22.0</td><td>-19.2</td><td>-19.6</td></tr>
+<tr><td>239.54-240.08</td><td>-26.7</td><td>-28.7</td><td>-26.1</td><td>-23.1</td></tr>
+<tr><td>103.30-103.82</td><td>-27.0</td><td>-50.6</td><td>-44.3</td><td>-38.7</td></tr>
+<tr><td>35.36-35.86</td><td>-28.0</td><td>-34.1</td><td>-25.8</td><td>-26.9</td></tr>
+<tr><td>77.06-77.94</td><td>-29.2</td><td>-36.1</td><td>-36.3</td><td>-31.2</td></tr>
+<tr><td>193.86-194.38</td><td>-29.4</td><td>-30.7</td><td>-31.1</td><td>-26.0</td></tr>
+<tr><td>20.06-20.56</td><td>-30.9</td><td>-34.5</td><td>-32.0</td><td>-27.8</td></tr>
+<tr><td>178.34-178.94</td><td>-34.5</td><td>-35.1</td><td>-37.3</td><td>-32.1</td></tr>
+<tr><td>105.98-106.70</td><td>-36.8</td><td>-50.9</td><td>-57.5</td><td>-51.1</td></tr>
+</table>
+<p class="note" style="margin-top:8px">toneA's overall levels: I -19.04 LUFS (matched to candidate), TP -1.03 dBTP, LRA 4.6 LU (candidate: 8.9; Adobe: 3.5). Its quieter pauses sit between the candidate and Adobe; the loud breath at 3:41 stays at source level (-19.6 dB), as it does on both others.</p>
+</div>
+
+<footer>
+<p>Provenance: originals are the 12 owner-provided inputs (Drive folder, Aug 4). Adobe free-tier outputs were captured Nov 17, 2026 from Adobe Podcast Enhance on a free account (30 min/file cap; 9.3 min of audio processed), one file at a time; the client recording's primary Adobe reference is the owner-supplied file from Nov 16, 2026. AuK candidates are the current production pipeline at full strength, unblended (rb7 batch for 5 recordings, rb8 batch for 6, client batch for the client recording; seed 42, pinned repo commits recorded in the run manifests).</p>
+<p>Honesty notes: listening is UNSCORED - no one has rated any of this by ear yet. Measurements are diagnostics and did not select, tune, or approve anything. Adobe free-tier outputs are lossy mp3 at reduced loudness; their quietest readings may be limited by the codec. No parity or superiority claim is made or implied.</p>
+<p>Unreviewed: the listening decision is the owner's.</p>
+</footer>
+</body></html>
