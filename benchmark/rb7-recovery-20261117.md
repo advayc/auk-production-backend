@@ -50,9 +50,21 @@ screen fitting) was reconciled against it: identical except one misread digit
 (happy full-strength window 5: -22.2 in the original, transcribed as -22.7).
 The Drive original is authoritative; the transcription is superseded.
 
-## Save-path repair (validated pattern)
+## Save-path repair (validated pattern, now wired)
 Drive-free GPU run + separate idempotent upload cell (240 s bounded auth thread,
 per-file printed IDs) + independent Drive API listing verification. For future
 runs: auth-first inside the run cell with per-output upload as each WAV finishes,
 this upload cell as the safety net, and a dummy-artifact CPU preflight of the
 upload cell before any GPU work.
+
+Wired 2026-11-17 (no GPU): `benchmark/colab_durable_save.py` implements the
+pattern as reusable code - `require_drive()` (auth or raise; no Drive-free
+continuation, unlike the RB6/RB7 cells where upload() silently no-opped when
+auth failed), `DurableSaver.upload()` (immediate per-artifact upload with
+Drive-side size read-back, retry x3, raise on failure), and
+`DurableSaver.preflight()` (upload + verify + delete a tiny probe before heavy
+compute). Module logic unit-verified locally (success / size-mismatch-retry /
+transient-retry / preflight-delete, 4/4). The same Drive API path was
+live-validated on a fresh CPU-only runtime (PREFLIGHT_UPLOAD_OK above). The
+exec notebook carries a DURABLE SAVE TEMPLATE cell that future run cells use;
+RB5/RB6/RB7 cells are left untouched as historical record.
