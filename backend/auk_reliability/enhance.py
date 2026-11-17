@@ -45,6 +45,23 @@ class EnhanceConfig:
     adaptive_full_wet: bool = False
     full_wet_bed_ref_db: float = -35.0   # beds at/below this keep full_wet unchanged
     full_wet_bed_slope_db: float = 0.03  # wet added per dB of bed above the reference
+    # Candidate repair (2026-11-17, default OFF pending listening quality gate): suppress
+    # discrete non-speech events (breaths, movement, clicks) inside pauses, post-blend.
+    # Evidence: vs the owner-supplied Adobe output on the client recording, Adobe is
+    # cleaner in 5 of 10 measured inter-word windows - mostly windows holding breaths and
+    # movement, by 2.5-8 dB - while the candidate already takes stationary pauses much
+    # lower (3:34 pause: candidate -85.5 dB, Adobe -44.4 dB). Strength settings do not
+    # close this (two variants tested Nov 16, no change). Measurements only; no listening
+    # verdict yet.
+    discrete_event_suppress: bool = False
+    des_frame_ms: float = 25.0         # analysis frame
+    des_speech_margin_db: float = 12.0 # frames this far above the global bed are speech-candidate
+    des_speech_range_db: float = 25.0  # frames within this of the p95 level are also speech-candidate
+    des_event_min_db: float = 6.0      # event frames must exceed the local bed by at least this
+    des_max_atten_db: float = 20.0     # per-event attenuation cap
+    des_fade_ms: float = 10.0          # raised-cosine edge fade
+    des_min_event_ms: float = 60.0     # shorter blips are left alone
+    des_max_event_ms: float = 800.0    # longer elevated spans are content, not events
     max_chunk_seconds: float = 12.0
     overlap_seconds: float = 0.5
     target_lufs: float = -16.0
@@ -176,6 +193,89 @@ def restore_length(y, n_target, max_drift):
 def blend_dry_wet(dry, wet, g):
     n = min(len(dry), len(wet))
     return (1.0 - g) * dry[:n] + g * wet[:n]
+
+def _frame_db(y, sr, frame_ms):
+    fl = max(1, int(sr * frame_ms / 1000.0))
+    n = (len(y) // fl) * fl
+    if n == 0:
+        return np.array([]), fl
+    frames = y[:n].reshape(-1, fl)
+    rms = np.sqrt(np.mean(frames ** 2, axis=1))
+    return 20.0 * np.log10(np.maximum(rms, 1e-12)), fl
+
+def suppress_discrete_events(y, sr, cfg):
+    """Duck short loud events inside pauses toward the local bed. Never touches speech.
+
+    Speech-candidate frames (above the global bed by cfg.des_speech_margin_db) are
+    excluded first; within the remaining non-speech spans, a contiguous segment of
+    frames exceeding the local bed by cfg.des_event_min_db, lasting between
+    des_min_event_ms and des_max_event_ms, is attenuated toward that bed (capped at
+    des_max_atten_db) with raised-cosine edge fades. Returns (signal, stats).
+    """
+    stats = {'events': 0, 'attenuated_seconds': 0.0, 'max_atten_db': 0.0}
+    if y.ndim != 1 or len(y) == 0:
+        return y, stats
+    db, fl = _frame_db(y, sr, cfg.des_frame_ms)
+    if db.size < 4:
+        return y, stats
+    bed = float(np.percentile(db, 20))
+    # Speech-candidate: clearly above the bed OR within the speech dynamic range of the
+    # p95 level. The second criterion keeps mid-level breaths (pauses crushed far below
+    # them) eligible while protecting anything near actual speech level.
+    p95 = float(np.percentile(db, 95))
+    speech = db > max(bed + cfg.des_speech_margin_db, p95 - cfg.des_speech_range_db)
+    out = y.copy()
+    n_frames = db.size
+    fade_n = max(1, int(sr * cfg.des_fade_ms / 1000.0))
+    # +1 frame: an unaligned event of exactly min_event_ms spans one extra frame, and a
+    # sub-minimum blip must never round up into eligibility.
+    min_len = max(1, int(cfg.des_min_event_ms / cfg.des_frame_ms) + 1)
+    max_len = max(min_len, int(round(cfg.des_max_event_ms / cfg.des_frame_ms)))
+    f = 0
+    while f < n_frames:
+        if speech[f]:
+            f += 1
+            continue
+        r0 = f
+        while f < n_frames and not speech[f]:
+            f += 1
+        region = db[r0:f]
+        if region.size < min_len + 2:
+            continue
+        local_bed = float(np.percentile(region, 25))
+        ev = db[r0:f] > local_bed + cfg.des_event_min_db
+        g = 0
+        while g < region.size:
+            if not ev[g]:
+                g += 1
+                continue
+            s0 = g
+            while g < region.size and ev[g]:
+                g += 1
+            seg_len = g - s0
+            if not (min_len <= seg_len <= max_len):
+                continue
+            a, b = (r0 + s0) * fl, min(len(out), (r0 + g) * fl)
+            seg = out[a:b]
+            if seg.size == 0:
+                continue
+            seg_db = 20.0 * np.log10(max(float(np.sqrt(np.mean(seg ** 2))), 1e-12))
+            atten = min(seg_db - local_bed, cfg.des_max_atten_db)
+            if atten <= 0:
+                continue
+            gain = 10.0 ** (-atten / 20.0)
+            env = np.full(seg.size, gain)
+            fn = min(fade_n, seg.size // 2)
+            if fn > 0:
+                ramp = 0.5 - 0.5 * np.cos(np.linspace(0, np.pi, fn))
+                env[:fn] = 1.0 + (gain - 1.0) * ramp
+                env[-fn:] = 1.0 + (gain - 1.0) * ramp[::-1]
+            out[a:b] = seg * env
+            stats['events'] += 1
+            stats['attenuated_seconds'] += seg.size / float(sr)
+            stats['max_atten_db'] = max(stats['max_atten_db'], round(atten, 2))
+    stats['attenuated_seconds'] = round(stats['attenuated_seconds'], 3)
+    return out, stats
 
 # ---------- loudness mastering (measured, true-peak limited) ----------
 def measure_loudness(path, timeout=120):
@@ -399,6 +499,9 @@ def run_voice_enhancer(worker, source, folder, rid, plan, profile, p, limits, re
             record['generative'] = {'chunks': len(spans),
                 'max_length_drift': round(max(drift_max, drift_s, drift_f), 6)}
         mixed = blend_dry_wet(mid, enhanced_mid, g)
+        if cfg.discrete_event_suppress:
+            mixed, des = suppress_discrete_events(mixed, sr, cfg)
+            record['discrete_event_suppress'] = des
         out_sig = np.stack([mixed + side, mixed - side], axis=1) if side is not None else mixed
         premaster = folder / 'enh-premaster.wav'
         write_wav(premaster, out_sig, sr)
