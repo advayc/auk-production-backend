@@ -123,8 +123,9 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <div class="players" style="margin-top:14px">
 <figure><figcaption>Adobe free tier v2 (secondary)</figcaption><audio controls preload="metadata" src="132-client-adobefv2-matched.mp3"></audio><div><a href="132-client-adobefv2-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-client-adobe-freev2.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK toneA EXPERIMENTAL (see label)</figcaption><audio controls preload="metadata" src="132-client-toneA-matched.mp3"></audio><div><a href="132-client-toneA-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-client-auk-toneA-EXPERIMENTAL.mp3">raw mp3</a></div></figure>
+<figure><figcaption>AuK toneB EXPERIMENTAL (see label)</figcaption><audio controls preload="metadata" src="132-client-toneb-matched.mp3"></audio><div><a href="132-client-toneb-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-client-toneb.mp3">raw mp3</a></div></figure>
 </div>
-<p class="note" style="margin-top:10px">Match note: four of the five client players sit at -22.9 LUFS; the free-tier v2 secondary sits 0.45 LU lower. Its raw file already equals the row target, so matching it exactly would require amplification, which this page does not do.</p>
+<p class="note" style="margin-top:10px">Match note: five of the six client players sit at -22.9 LUFS; the free-tier v2 secondary sits 0.45 LU lower. Its raw file already equals the row target, so matching it exactly would require amplification, which this page does not do.</p>
 </div>
 
 <h2>Raw measurements (diagnostics, not listening)</h2>
@@ -149,30 +150,30 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 </div>
 
 <div class="card">
-<p class="note"><strong>Integrity checks (pass/fail, all rows pass):</strong> raw durations agree within 0.05 s on every triple (max delta 0.050 s); matched renders are sample-rate-exact with their raw sources (duration delta 0.000 s); matched levels verified against their targets after rendering (within 0.1 LU, one noted exception); matched renders are attenuation-only (max applied gain 0.0 dB, max true peak -2.4 dBTP); no processed output clips - every Adobe and AuK file keeps at least 0.9 dB true-peak headroom. Some originals themselves hit 0 dBTP (they are raw uploads). Client row checks are on the deep-dive page.</p>
+<p class="note"><strong>Integrity checks (pass/fail, all rows pass):</strong> raw durations agree within 0.05 s on every triple (max delta 0.050 s); matched renders are sample-rate-exact with their raw sources (duration delta 0.000 s); matched levels verified against their targets after rendering (within 0.1 LU, one noted exception); matched renders are attenuation-only (max applied gain 0.0 dB, max true peak -2.4 dBTP; the toneB matched player verified at its row target of -22.9 LUFS with -3.6 dB applied); no processed output clips - every Adobe and AuK file keeps at least 0.9 dB true-peak headroom. Some originals themselves hit 0 dBTP (they are raw uploads). Client row checks are on the deep-dive page.</p>
 </div>
 
-<h2>Client pause windows, incl. toneA experiment</h2>
+<h2>Client pause windows, incl. tone experiments</h2>
 <div class="card">
-<p class="note">Ten inter-word pauses on the client recording, RMS dBFS per window. toneA is an <strong>experimental variant</strong>: it applies tone/dynamics shaping to the candidate's mp3 after mastering (post-master processing of a lossy source), inspired by what measurements show of Adobe's output. It is not a true premaster change, it is not selected, and it exists to test one hypothesis.</p>
+<p class="note">Ten inter-word pauses on the client recording, RMS dBFS per window. toneA and toneB are <strong>experimental variants</strong>, built to test one hypothesis (that Adobe-like tone/dynamics shaping of the AuK candidate is achievable). Neither is selected or production-approved. toneA applies the shaping to the candidate's mp3 after mastering (post-master processing of a lossy source). toneB applies a refined chain to the exact premaster, rebuilt from the run's durable chunk exports and verified against the run record (rebuilt premaster measures I -18.86 LUFS / TP -0.77 dBTP / LRA 8.9 LU, matching the recorded pre-master values), then runs through the same production mastering stage. toneB is the cleaner test of the hypothesis.</p>
 <table>
-<tr><th>Window (s)</th><th>Original</th><th>Adobe (supplied)</th><th>AuK candidate</th><th>toneA (experimental)</th></tr>
-<tr><td>214.06-214.60</td><td>-20.8</td><td>-44.4</td><td>-85.5</td><td>-64.1</td></tr>
-<tr><td>221.40-222.18 (breath, kept by both)</td><td>-21.1</td><td>-22.0</td><td>-19.2</td><td>-19.6</td></tr>
-<tr><td>239.54-240.08</td><td>-26.7</td><td>-28.7</td><td>-26.1</td><td>-23.1</td></tr>
-<tr><td>103.30-103.82</td><td>-27.0</td><td>-50.6</td><td>-44.3</td><td>-38.7</td></tr>
-<tr><td>35.36-35.86</td><td>-28.0</td><td>-34.1</td><td>-25.8</td><td>-26.9</td></tr>
-<tr><td>77.06-77.94</td><td>-29.2</td><td>-36.1</td><td>-36.3</td><td>-31.2</td></tr>
-<tr><td>193.86-194.38</td><td>-29.4</td><td>-30.7</td><td>-31.1</td><td>-26.0</td></tr>
-<tr><td>20.06-20.56</td><td>-30.9</td><td>-34.5</td><td>-32.0</td><td>-27.8</td></tr>
-<tr><td>178.34-178.94</td><td>-34.5</td><td>-35.1</td><td>-37.3</td><td>-32.1</td></tr>
-<tr><td>105.98-106.70</td><td>-36.8</td><td>-50.9</td><td>-57.5</td><td>-51.1</td></tr>
+<tr><th>Window (s)</th><th>Original</th><th>Adobe (supplied)</th><th>AuK candidate</th><th>toneA (experimental)</th><th>toneB (experimental)</th></tr>
+<tr><td>214.06-214.60</td><td>-20.8</td><td>-44.4</td><td>-85.5</td><td>-64.1</td><td>-76.4</td></tr>
+<tr><td>221.40-222.18 (breath, kept by both)</td><td>-21.1</td><td>-22.0</td><td>-19.2</td><td>-19.6</td><td>-19.5</td></tr>
+<tr><td>239.54-240.08</td><td>-26.7</td><td>-28.7</td><td>-26.1</td><td>-23.1</td><td>-22.6</td></tr>
+<tr><td>103.30-103.82</td><td>-27.0</td><td>-50.6</td><td>-44.3</td><td>-38.7</td><td>-36.0</td></tr>
+<tr><td>35.36-35.86</td><td>-28.0</td><td>-34.1</td><td>-25.8</td><td>-26.9</td><td>-27.7</td></tr>
+<tr><td>77.06-77.94</td><td>-29.2</td><td>-36.1</td><td>-36.3</td><td>-31.2</td><td>-31.0</td></tr>
+<tr><td>193.86-194.38</td><td>-29.4</td><td>-30.7</td><td>-31.1</td><td>-26.0</td><td>-25.8</td></tr>
+<tr><td>20.06-20.56</td><td>-30.9</td><td>-34.5</td><td>-32.0</td><td>-27.8</td><td>-27.4</td></tr>
+<tr><td>178.34-178.94</td><td>-34.5</td><td>-35.1</td><td>-37.3</td><td>-32.1</td><td>-32.0</td></tr>
+<tr><td>105.98-106.70</td><td>-36.8</td><td>-50.9</td><td>-57.5</td><td>-51.1</td><td>-51.5</td></tr>
 </table>
-<p class="note" style="margin-top:8px">toneA's overall levels: I -19.04 LUFS (matched to candidate), TP -1.03 dBTP, LRA 4.6 LU (candidate: 8.9; Adobe: 3.5). Its quieter pauses sit between the candidate and Adobe; the loud breath at 3:41 stays at source level (-19.6 dB), as it does on both others.</p>
+<p class="note" style="margin-top:8px">toneA's overall levels: I -19.04 LUFS (matched to candidate), TP -1.03 dBTP, LRA 4.6 LU (candidate: 8.9; Adobe: 3.5 on the owner-supplied file). toneB: I -18.84, TP -1.00, LRA 4.2. On loudness-normalized band shape vs Adobe's output, toneB lands within +/-1.3 dB of Adobe on every band from 60 Hz to 12 kHz except the 20-60 Hz sub band (-4.2 dB; matching Adobe's deep-sub level would mean amplifying non-speech content, so the chain stops there); toneA's largest gap outside the sub band was +4.8 dB at 2-4 kHz. Compression lifts some quieter pauses above the candidate; the loud breath at 3:41 stays at source level on all variants. A fixed chain tuned on this recording does not match Adobe's per-clip behavior on the other 11 recordings (Adobe's own measured dynamics range from LRA 3.1 to 22.0 across them), so this stays a client-scoped experiment, not a global change.</p>
 </div>
 
 <footer>
-<p>Provenance: originals are the 12 owner-provided inputs (Drive folder, Aug 4). Adobe free-tier outputs were captured Nov 17, 2026 from Adobe Podcast Enhance on a free account (30 min/file cap; 9.3 min of audio processed), one file at a time; the client recording's primary Adobe reference is the owner-supplied file from Nov 16, 2026. AuK candidates are the current production pipeline at full strength, unblended (rb7 batch for 5 recordings, rb8 batch for 6, client batch for the client recording; seed 42, pinned repo commits recorded in the run manifests). Level-matched players are produced by attenuation only and verified after rendering.</p>
+<p>Provenance: originals are the 12 owner-provided inputs (Drive folder, Aug 4). Adobe free-tier outputs were captured Nov 17, 2026 from Adobe Podcast Enhance on a free account (30 min/file cap; 9.3 min of audio processed), one file at a time; the client recording's primary Adobe reference is the owner-supplied file from Nov 16, 2026. AuK candidates are the current production pipeline at full strength, unblended (rb7 batch for 5 recordings, rb8 batch for 6, client batch for the client recording; seed 42, pinned repo commits recorded in the run manifests). Level-matched players are produced by attenuation only and verified after rendering. toneB (Nov 17) is built from the client run's exact premaster, reconstructed from the 23 durable per-chunk exports and verified against the run record before any shaping; its lossless FLAC is archived in the benchmark Drive folder.</p>
 <p>Honesty notes: listening is UNSCORED - no one has rated any of this by ear yet. Measurements are diagnostics and did not select, tune, or approve anything. Adobe free-tier outputs are lossy mp3 at reduced loudness; their quietest readings may be limited by the codec. No parity or superiority claim is made or implied.</p>
 <p>Unreviewed: the listening decision is the owner's.</p>
 </footer>
