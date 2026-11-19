@@ -54,6 +54,13 @@ class EnhanceConfig:
     # close this (two variants tested Nov 16, no change). Measurements only; no listening
     # verdict yet.
     discrete_event_suppress: bool = False
+    # Experimental (2026-11-19, default OFF): fixed "fuller-tone" EQ+compression chain applied
+    # to the premaster before mastering. Evidence: the owner listened to this exact chain on
+    # the client clip (built from the run's durable per-chunk outputs) and said it sounded
+    # better - directional feedback on ONE clip, not production approval. Cross-clip it is
+    # mixed: on already-compressed sources (LRA 2-3) it lands near Adobe's LRA, on dynamic
+    # sources it compresses well past Adobe (moto: 3.5 vs Adobe 22.0). Listening material only.
+    tone_fuller_experimental: bool = False
     des_frame_ms: float = 25.0         # analysis frame
     des_speech_margin_db: float = 12.0 # frames this far above the global bed are speech-candidate
     des_speech_range_db: float = 25.0  # frames within this of the p95 level are also speech-candidate
@@ -276,6 +283,25 @@ def suppress_discrete_events(y, sr, cfg):
             stats['max_atten_db'] = max(stats['max_atten_db'], round(atten, 2))
     stats['attenuated_seconds'] = round(stats['attenuated_seconds'], 3)
     return out, stats
+
+# ---------- experimental fuller-tone chain (default OFF, see EnhanceConfig) ----------
+TONE_FULLER_EXPERIMENTAL_CHAIN = (
+    'bass=g=2:f=60,'
+    'equalizer=f=100:t=q:w=1.0:g=-1.5,'
+    'bass=g=1:f=180,'
+    'equalizer=f=1500:t=q:w=1.0:g=2.5,'
+    'equalizer=f=3000:t=q:w=1.0:g=-4.5,'
+    'treble=g=-3:f=3000,'
+    'treble=g=2:f=8000,'
+    'acompressor=threshold=-22dB:ratio=3:attack=20:release=200:makeup=0dB')
+
+def apply_tone_fuller_experimental(in_path, out_path, timeout=180):
+    """Fixed experimental fuller-tone chain, premaster -> shaped premaster (float wav).
+    Exact chain of the client-clip v2 experiment archived in toneB-PROVENANCE-v2.md."""
+    subprocess.run(['ffmpeg', '-v', 'error', '-nostdin', '-y', '-i', str(in_path),
+        '-af', TONE_FULLER_EXPERIMENTAL_CHAIN, '-c:a', 'pcm_f32le', str(out_path)],
+        check=True, timeout=timeout)
+    return out_path
 
 # ---------- loudness mastering (measured, true-peak limited) ----------
 def measure_loudness(path, timeout=120):
@@ -505,7 +531,13 @@ def run_voice_enhancer(worker, source, folder, rid, plan, profile, p, limits, re
         out_sig = np.stack([mixed + side, mixed - side], axis=1) if side is not None else mixed
         premaster = folder / 'enh-premaster.wav'
         write_wav(premaster, out_sig, sr)
-        master = master_loudness(premaster, final, cfg, out_sr=sr, out_channels=meas['channels'], n_target=meas['samples'])
+        master_in = premaster
+        if cfg.tone_fuller_experimental:
+            master_in = folder / 'enh-premaster-tonefuller-exp.wav'
+            apply_tone_fuller_experimental(premaster, master_in)
+            record['tone_fuller_experimental'] = True
+            record['artifact_paths'] += [str(master_in)]
+        master = master_loudness(master_in, final, cfg, out_sr=sr, out_channels=meas['channels'], n_target=meas['samples'])
         record['loudness'] = master
         record['artifact_paths'] += [str(premaster), str(final)]
         checks = validate_enhanced(final, meas, cfg)

@@ -90,6 +90,26 @@ class AnalysisTests(unittest.TestCase):
         self.assertEqual(wet_gain_for('full', cfg), 0.85)                         # no measurements supplied
         mid = wet_gain_for('full', cfg, {'bed_dbfs': -32.0})
         self.assertTrue(0.85 < mid < 1.0)
+    def test_tone_fuller_experimental_default_off(self):
+        self.assertFalse(EnhanceConfig().tone_fuller_experimental)
+    def test_tone_fuller_chain_preserves_format_and_reduces_lra(self):
+        from auk_reliability.enhance import apply_tone_fuller_experimental
+        rng = np.random.default_rng(3)
+        t = np.arange(3 * SR) / SR
+        tone = np.sin(2 * np.pi * 220 * t)
+        # alternating 3 s loud/quiet segments: loudnorm short-term windows resolve the contrast
+        y = np.concatenate([tone * a for a in (0.6, 0.05) * 3]) + rng.normal(0, 0.001, 18 * SR)
+        src = wav_write(self.root / 'src.wav', y, channels=2)
+        out = self.root / 'shaped.wav'
+        apply_tone_fuller_experimental(src, out)
+        y_in, sr_in, _ = decode_float(src)
+        y_out, sr_out, _ = decode_float(out)
+        self.assertEqual(y_in.shape, y_out.shape)   # samples and channels preserved
+        self.assertEqual(sr_in, sr_out)
+        lra_before = measure_loudness(src)['lra_lu']
+        lra_after = measure_loudness(out)['lra_lu']
+        self.assertGreater(lra_before, 15.0)          # fixture is genuinely dynamic (~21.6 LU)
+        self.assertLess(lra_after, lra_before - 5.0)  # chain compresses dynamics as designed (~halves LRA)
 
 class DspTests(unittest.TestCase):
     def test_chunk_stitch_is_sample_exact(self):
