@@ -33,7 +33,7 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <div class="keyline"><b class="lead">Level-matched players</b>All players on this page are <strong>level-matched by default</strong>: within each recording, every version is attenuated to the same integrated loudness (the quietest version's level). Attenuation only - nothing is amplified, so peaks never grow and tonal and dynamics differences are preserved. Raw (unmatched) files are linked under each player, and the measurement table below reports raw levels.</div>
 
 <h2>The 12 recordings</h2>
-<p class="note">Ordered shortest to longest. Matched players land within 0.1 LU of their row's target (one exception, noted on the client row). Web files are 128 kbps mp3; the pipeline wav originals are archived. On the client row the Adobe column is the owner-supplied file (the agreed reference); the free-tier capture is shown separately below it.</p>
+<p class="note">Ordered shortest to longest. Every matched player was re-verified on the encoded mp3 Nov 19: 51 of 52 land within 0.04 LU of their row's target; the one exception (0.45 LU) is noted on the client row. Web files are 128 kbps mp3; the pipeline wav originals are archived. On the client row the Adobe column is the owner-supplied file (the agreed reference); the free-tier capture is shown separately below it.</p>
 
 <div class="card">
 <div class="rowlab">A great quote (#shorts) &middot; 11s</div>
@@ -161,7 +161,7 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 </div>
 
 <div class="card">
-<p class="note"><strong>Integrity checks (pass/fail, all rows pass):</strong> raw durations agree within 0.05 s on every triple (max delta 0.050 s); matched renders are sample-rate-exact with their raw sources (duration delta 0.000 s); matched levels verified against their targets after rendering (within 0.1 LU, one noted exception); matched renders are attenuation-only (max applied gain 0.0 dB, max true peak -2.4 dBTP; the listened fuller-tone matched player verified at its row target of -22.9 LUFS with -3.6 dB applied); no processed output clips - every Adobe and AuK file keeps at least 0.9 dB true-peak headroom. Some originals themselves hit 0 dBTP (they are raw uploads). Client row checks are on the deep-dive page.</p>
+<p class="note"><strong>Integrity checks (pass/fail, all rows pass):</strong> raw durations agree within 0.05 s on every triple (max delta 0.050 s); matched renders are sample-rate-exact with their raw sources (duration delta 0.000 s); matched levels verified against their targets on the encoded mp3 (51 of 52 within 0.04 LU, max residual +0.04/-0.04; one noted exception at -0.45); matched renders are attenuation-only (max applied gain 0.0 dB, max true peak -2.4 dBTP; the listened fuller-tone matched player verified at its row target of -22.9 LUFS with -3.6 dB applied); no processed output clips - every Adobe and AuK file keeps at least 0.9 dB true-peak headroom. Some originals themselves hit 0 dBTP (they are raw uploads). Client row checks are on the deep-dive page.</p>
 </div>
 
 <h2>Client pause windows, incl. tone experiments</h2>
