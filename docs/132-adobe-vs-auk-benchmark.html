@@ -26,9 +26,9 @@ th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-alig
 th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
 </style></head><body>
 <h1>Adobe vs AuK benchmark</h1>
-<p class="note">Twelve recordings with different noise problems, each in three versions: the original, Adobe Podcast Enhance (free tier, captured Nov 17, 2026), and the AuK candidate (current pipeline at <strong>forced</strong> full strength, wet 1.0). The production automatic decision would pick a lighter blend on 6 of these 12 inputs (strength audit, Nov 16), so these players show the candidate at maximum cleanup, not what auto mode currently ships. "AuK fuller-tone EXPERIMENTAL" players appear in the client deep-dive section below (the version the owner listened to and said sounded better) and on every grid row (new, unreviewed): the grid variant is the same tone chain with its compressor threshold set relative to each clip's own level instead of one fixed value, a repair of the original chain's uneven cross-clip behavior - it reproduces the heard client version by calibration and measurably tracks Adobe's per-clip dynamics more evenly (mean LRA distance to Adobe on the 5 comparable clips: 1.66 -> 1.24 LU); it is not adopted and not a quality claim. 5 of the grid players were added Nov 19 from durably regenerated premasters (sha256-verified transfer, rebuilds correlate r > 0.9999 with the published candidates). Built Nov 17, 2026. Related: <a href="131-original-vs-adobe-vs-candidate.html">client recording deep-dive</a> (breath analysis, earlier experiments), <a href="130-full-vs-light-cleanup-listening.html">full-vs-light strength pairs</a>.</p>
+<p class="note">Twelve recordings with different noise problems, each in three versions: the original, Adobe Podcast Enhance (free tier, captured Nov 17, 2026), and the AuK candidate (current pipeline at <strong>forced</strong> full strength, wet 1.0). The production automatic decision would pick a lighter blend on 6 of these 12 inputs (strength audit, Nov 16), so these players show the candidate at maximum cleanup, not what auto mode currently ships. Which AuK version is best is not established - that is a listening call, and it is what this page is for. "AuK fuller-tone EXPERIMENTAL" players are collected in their own section below the grid, separate from the main comparison (the client version is the one the owner listened to and said sounded better; the rest are new and unreviewed): the grid variant is the same tone chain with its compressor threshold set relative to each clip's own level instead of one fixed value, a repair of the original chain's uneven cross-clip behavior - it reproduces the heard client version by calibration and measurably tracks Adobe's per-clip dynamics more evenly (mean LRA distance to Adobe on the 5 comparable clips: 1.66 -> 1.24 LU); it is not adopted and not a quality claim. 5 of the grid players were added Nov 19 from durably regenerated premasters (sha256-verified transfer, rebuilds correlate r > 0.9999 with the published candidates). Built Nov 17, 2026. Related: <a href="131-original-vs-adobe-vs-candidate.html">client recording deep-dive</a> (breath analysis, earlier experiments), <a href="130-full-vs-light-cleanup-listening.html">full-vs-light strength pairs</a>.</p>
 
-<div class="keyline warn"><b class="lead">Status</b><strong>Partially reviewed.</strong> The owner listened to the client fuller-tone experiment and said it sounded better (one clip, directional). The fuller-tone players on the other 11 recordings are new and unreviewed. This page is a listening bench and a measurement record, not a quality claim. Nothing here is adopted or production-approved, and measurements alone did not select or approve anything.</div>
+<div class="keyline warn"><b class="lead">Status</b><strong>Partially reviewed.</strong> The owner listened to the client fuller-tone experiment and said it sounded better (one clip, directional). The fuller-tone players on the other 11 recordings (experimental section below) are new and unreviewed. This page is a listening bench and a measurement record, not a quality claim. Nothing here is adopted or production-approved, and measurements alone did not select or approve anything.</div>
 
 <div class="keyline"><b class="lead">Level-matched players</b>All players on this page are <strong>level-matched by default</strong>: within each recording, every version is attenuated to the same integrated loudness (the quietest version's level). Attenuation only - nothing is amplified, so peaks never grow and tonal and dynamics differences are preserved. Raw (unmatched) files are linked under each player, and the measurement table below reports raw levels.</div>
 
@@ -41,7 +41,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-quote-original-matched.mp3"></audio><div><a href="132-quote-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-quote-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-quote-adobe-matched.mp3"></audio><div><a href="132-quote-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-quote-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-quote-auk-matched.mp3"></audio><div><a href="132-quote-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-quote-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-quote-auk-fullertone3-matched.mp3"></audio><div><a href="132-quote-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Motorcycle audio with wind noise &middot; 12s</div>
@@ -49,7 +48,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-moto-original-matched.mp3"></audio><div><a href="132-moto-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-moto-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-moto-adobe-matched.mp3"></audio><div><a href="132-moto-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-moto-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-moto-auk-matched.mp3"></audio><div><a href="132-moto-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-moto-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-moto-auk-fullertone3-matched.mp3"></audio><div><a href="132-moto-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Cristiano Ronaldo - Live The Present &middot; 15s</div>
@@ -57,7 +55,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-cr7-original-matched.mp3"></audio><div><a href="132-cr7-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-cr7-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-cr7-adobe-matched.mp3"></audio><div><a href="132-cr7-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-cr7-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-cr7-auk-matched.mp3"></audio><div><a href="132-cr7-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-cr7-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-cr7-auk-fullertone3-matched.mp3"></audio><div><a href="132-cr7-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Italian food no-nos! (Stanley Tucci) &middot; 23s</div>
@@ -65,7 +62,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tucci-original-matched.mp3"></audio><div><a href="132-tucci-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tucci-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tucci-adobe-matched.mp3"></audio><div><a href="132-tucci-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tucci-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tucci-auk-matched.mp3"></audio><div><a href="132-tucci-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tucci-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-tucci-auk-fullertone3-matched.mp3"></audio><div><a href="132-tucci-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Live an INTENTIONAL life &middot; 24s</div>
@@ -73,7 +69,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-intentional-original-matched.mp3"></audio><div><a href="132-intentional-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-intentional-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-intentional-adobe-matched.mp3"></audio><div><a href="132-intentional-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-intentional-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-intentional-auk-matched.mp3"></audio><div><a href="132-intentional-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-intentional-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-intentional-auk-fullertone3-matched.mp3"></audio><div><a href="132-intentional-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Happiness (#shorts) &middot; 24s</div>
@@ -81,7 +76,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-happy-original-matched.mp3"></audio><div><a href="132-happy-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-happy-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-happy-adobe-matched.mp3"></audio><div><a href="132-happy-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-happy-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-happy-auk-matched.mp3"></audio><div><a href="132-happy-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-happy-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-happy-auk-fullertone3-matched.mp3"></audio><div><a href="132-happy-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Noise-free vocals in Times Square &middot; 27s</div>
@@ -89,7 +83,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-timessq-original-matched.mp3"></audio><div><a href="132-timessq-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-timessq-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-timessq-adobe-matched.mp3"></audio><div><a href="132-timessq-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-timessq-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-timessq-auk-matched.mp3"></audio><div><a href="132-timessq-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-timessq-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-timessq-auk-fullertone3-matched.mp3"></audio><div><a href="132-timessq-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Why 2-minute podcast clips dominate &middot; 35s</div>
@@ -97,7 +90,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dominate-original-matched.mp3"></audio><div><a href="132-dominate-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dominate-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dominate-adobe-matched.mp3"></audio><div><a href="132-dominate-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dominate-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dominate-auk-matched.mp3"></audio><div><a href="132-dominate-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dominate-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-dominate-auk-fullertone3-matched.mp3"></audio><div><a href="132-dominate-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Why most listeners drop off in 2 minutes &middot; 34s</div>
@@ -105,7 +97,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-dropoff-original-matched.mp3"></audio><div><a href="132-dropoff-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dropoff-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-dropoff-adobe-matched.mp3"></audio><div><a href="132-dropoff-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dropoff-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-dropoff-auk-matched.mp3"></audio><div><a href="132-dropoff-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-dropoff-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-dropoff-auk-fullertone3-matched.mp3"></audio><div><a href="132-dropoff-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">How to create an audio-only podcast &middot; 39s</div>
@@ -113,7 +104,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-audiopod-original-matched.mp3"></audio><div><a href="132-audiopod-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-audiopod-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-audiopod-adobe-matched.mp3"></audio><div><a href="132-audiopod-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-audiopod-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-audiopod-auk-matched.mp3"></audio><div><a href="132-audiopod-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-audiopod-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-audiopod-auk-fullertone3-matched.mp3"></audio><div><a href="132-audiopod-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 <div class="card">
 <div class="rowlab">Tips for podcast beginners &middot; 59s</div>
@@ -121,7 +111,6 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Original</figcaption><audio controls preload="metadata" src="132-tips-original-matched.mp3"></audio><div><a href="132-tips-original-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tips-original.mp3">raw mp3</a></div></figure>
 <figure><figcaption>Adobe Podcast Enhance (free tier)</figcaption><audio controls preload="metadata" src="132-tips-adobe-matched.mp3"></audio><div><a href="132-tips-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tips-adobe.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-tips-auk-matched.mp3"></audio><div><a href="132-tips-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-tips-auk.mp3">raw mp3</a></div></figure>
-<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-tips-auk-fullertone3-matched.mp3"></audio><div><a href="132-tips-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
 </div></div>
 
 <div class="card">
@@ -131,6 +120,56 @@ th{background:#fafaf8;font-size:11px;letter-spacing:.06em;text-transform:upperca
 <figure><figcaption>Adobe Enhance (owner-supplied reference)</figcaption><audio controls preload="metadata" src="132-client-adobe-matched.mp3"></audio><div><a href="132-client-adobe-matched.mp3">Download level-matched mp3</a> &middot; <a href="129-client-adobe-reference.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK candidate</figcaption><audio controls preload="metadata" src="132-client-auk-matched.mp3"></audio><div><a href="132-client-auk-matched.mp3">Download level-matched mp3</a> &middot; <a href="129-client-candidate-wet100.mp3">raw mp3</a></div></figure>
 </div>
+</div>
+
+<h2>Experimental fuller-tone variants (separate from the main comparison)</h2>
+<div class="card">
+<p class="note">Everything below is an unreviewed tone experiment, kept out of the main three-version comparison above. The chain adds fixed EQ plus level-relative compression before mastering, aiming at the fuller, more studio-like sound. The owner listened to one client version and said it sounded better (one clip, directional); every other player here is new and unreviewed. None of these is adopted, selected as best, or production-approved.</p>
+<div class="rowlab">A great quote (#shorts)</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-quote-auk-fullertone3-matched.mp3"></audio><div><a href="132-quote-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Motorcycle audio with wind noise</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-moto-auk-fullertone3-matched.mp3"></audio><div><a href="132-moto-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Cristiano Ronaldo - Live The Present</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-cr7-auk-fullertone3-matched.mp3"></audio><div><a href="132-cr7-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Italian food no-nos! (Stanley Tucci)</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-tucci-auk-fullertone3-matched.mp3"></audio><div><a href="132-tucci-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Live an INTENTIONAL life</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-intentional-auk-fullertone3-matched.mp3"></audio><div><a href="132-intentional-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Happiness (#shorts)</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-happy-auk-fullertone3-matched.mp3"></audio><div><a href="132-happy-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Noise-free vocals in Times Square</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-timessq-auk-fullertone3-matched.mp3"></audio><div><a href="132-timessq-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Why 2-minute podcast clips dominate</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-dominate-auk-fullertone3-matched.mp3"></audio><div><a href="132-dominate-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Why most listeners drop off in 2 minutes</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-dropoff-auk-fullertone3-matched.mp3"></audio><div><a href="132-dropoff-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">How to create an audio-only podcast</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-audiopod-auk-fullertone3-matched.mp3"></audio><div><a href="132-audiopod-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Tips for podcast beginners</div>
+<div class="players">
+<figure><figcaption>AuK fuller-tone EXPERIMENTAL (new, unreviewed)</figcaption><audio controls preload="metadata" src="132-tips-auk-fullertone3-matched.mp3"></audio><div><a href="132-tips-auk-fullertone3-matched.mp3">Download level-matched mp3</a></div></figure>
+</div>
+<div class="rowlab">Client recording (Magic Hour) - earlier experiments and secondary Adobe capture</div>
 <div class="players" style="margin-top:14px">
 <figure><figcaption>Adobe free tier v2 (secondary)</figcaption><audio controls preload="metadata" src="132-client-adobefv2-matched.mp3"></audio><div><a href="132-client-adobefv2-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-client-adobe-freev2.mp3">raw mp3</a></div></figure>
 <figure><figcaption>AuK fuller-tone EXPERIMENTAL (earlier draft)</figcaption><audio controls preload="metadata" src="132-client-toneA-matched.mp3"></audio><div><a href="132-client-toneA-matched.mp3">Download level-matched mp3</a> &middot; <a href="132-client-auk-toneA-EXPERIMENTAL.mp3">raw mp3</a></div></figure>
