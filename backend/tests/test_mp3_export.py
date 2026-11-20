@@ -13,7 +13,7 @@ class FinalMP3(unittest.TestCase):
  def test_mp3_final_preserves_internal_wav_and_result(self):
   before=self.wav.read_bytes();result=(self.r/'result.json').read_bytes();r=export_mp3_final(self.r)
   self.assertEqual(self.wav.read_bytes(),before);self.assertEqual((self.r/'result.json').read_bytes(),result)
-  self.assertTrue(Path(r['output_path']).is_file());self.assertEqual(r['format'],'mp3');self.assertTrue(r['lossy']);self.assertEqual(r['sample_rate'],48000)
+  self.assertTrue(Path(r['output_path']).is_file());self.assertEqual(r['format'],'mp3');self.assertEqual(json.loads((self.r/'final-result.json').read_text())['output_path'],r['output_path']);self.assertTrue(r['lossy']);self.assertEqual(r['sample_rate'],48000)
   import subprocess
   meta=json.loads(subprocess.run(['ffprobe','-v','error','-show_streams','-of','json',r['output_path']],capture_output=True,text=True,check=True).stdout)['streams'][0]
   self.assertEqual(int(meta['bit_rate']),320000);self.assertEqual(int(meta['sample_rate']),48000)

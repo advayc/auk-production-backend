@@ -43,6 +43,13 @@ def export_mp3_final(request_dir):
                   'human_listening':'unscored; export does not approve quality',
                   'note':'MP3 is the final delivery file. WAV is retained for lossless processing and QA.'}
         atomic_json(root/'final-export.json',record)
+        atomic_json(root/'final-result.json', {
+            'output_path': str(target), 'format': 'mp3', 'mime_type': 'audio/mpeg',
+            'technical_success': True, 'processing_automatic_qa_pass': True,
+            'encoded_file_decode_pass': True, 'lossy': True,
+            'semantic_success': result.get('semantic_success'),
+            'quality_review_required': True,
+            'export_record': str(root/'final-export.json')})
         return record
     finally:
         temp.unlink(missing_ok=True)
