@@ -18,8 +18,8 @@ locate corrected words it never recognized:
   anchors) and renders each candidate as an actual PCM slice of the source for
   the user to hear. Confirming a candidate issues a one-time token bound to the
   exact span text, transcript state, byte hash of the reviewed audio slice and
-  the confirmed range. An edit whose span boundaries are not measured requires a
-  valid token; otherwise it fails closed. Interpolation proposes candidates -
+  the confirmed range. Every selected span requires a valid token, even when its timestamps
+  are measured and its words have high fit scores; otherwise it fails closed. Interpolation proposes candidates -
   it is never treated as established timing.
 - Low-confidence ASR words inside a span (probability below LOW_CONFIDENCE) also
   force review, because the words themselves may be wrong.
@@ -46,7 +46,7 @@ Honesty contract:
   outside-interval PCM gates still run in the worker.
 """
 from __future__ import annotations
-import dataclasses, difflib, hashlib, json, shutil, uuid, wave
+import dataclasses, difflib, hashlib, json, math, shutil, uuid, wave
 from pathlib import Path
 from .core import EditorError, Limits, atomic_json, normalized_tokens, sha256_file, utc_now, flow_key_create, flow_mac
 
@@ -87,6 +87,8 @@ class TranscriptSession:
         self.source = Path(source_audio).resolve()
         if not self.source.is_file():
             raise EditorError('missing_source', 'Session source audio does not exist.')
+        self._source_sha256 = sha256_file(self.source)
+        self._issued_candidates: dict[str, dict] = {}
         self.transcriber = transcriber
         # aligner: forcedalign.setup_aligner callable (audio, text) -> measured word
         # timings for KNOWN text. None = acoustic alignment unavailable; corrected
@@ -189,6 +191,7 @@ class TranscriptSession:
         self.corrected = True
         self._previews.clear()
         self._confirmations.clear()  # stale confirmations must never survive a correction
+        self._issued_candidates.clear()
         aligned = 0
         if self.aligner is not None and any(not w.timing_established for w in self.words):
             # Preferred path: measure the corrected words against the audio itself.
@@ -292,12 +295,21 @@ class TranscriptSession:
             w.setparams(params)
             w.writeframes(frames[first:last])
 
-    def review_candidates(self, span_text: str) -> list[dict]:
+    def review_candidates(self, span_text: str, *, start_adjust_seconds: float = 0.0,
+                          end_adjust_seconds: float = 0.0) -> list[dict]:
         """Render candidate span boundaries as real audio slices for human listening.
         Spans with fully measured, confident edges return a single measured candidate."""
         span = self._locate_span(span_text)
         duration = self._duration()
-        base_start, base_end = span[0].start, span[-1].end
+        if sha256_file(self.source) != self._source_sha256:
+            raise EditorError('source_changed', 'Source changed since transcription; start a new session.')
+        if not all(isinstance(v, (float, int)) and math.isfinite(v)
+                   for v in (start_adjust_seconds, end_adjust_seconds)):
+            raise EditorError('invalid_boundary_adjustment', 'Boundary adjustments must be finite seconds.')
+        base_start = span[0].start + start_adjust_seconds
+        base_end = span[-1].end + end_adjust_seconds
+        if not 0 <= base_start < base_end <= duration:
+            raise EditorError('candidate_out_of_range', 'Adjusted boundaries must stay inside the recording.')
         starts = {round(min(max(base_start + off, 0.0), duration), 6) for off in
                   (EDGE_OFFSETS if not span[0].timing_established else (0.0,))}
         ends = {round(min(max(base_end + off, 0.0), duration), 6) for off in
@@ -312,13 +324,20 @@ class TranscriptSession:
             manifest.append({'id': path.stem, 'start': s, 'end': e, 'path': str(path),
                              'slice_sha256': sha256_file(path),
                              'span_text': span_text, 'transcript_sha256': self._transcript_digest()})
+        for entry in manifest:
+            self._issued_candidates[entry['id']] = dict(entry)
         self._record('review_candidates', {'span': span_text, 'candidates': len(manifest)})
         return manifest
 
     def confirm_span(self, manifest_entry: dict) -> str:
         """Bind the human's choice to the exact audio slice, text and range reviewed."""
+        if sha256_file(self.source) != self._source_sha256:
+            raise EditorError('source_changed', 'Source changed since transcription; start a new session.')
         if manifest_entry.get('transcript_sha256') != self._transcript_digest():
             raise EditorError('confirmation_stale', 'The transcript changed after these candidates were rendered; re-review.')
+        issued = self._issued_candidates.get(manifest_entry.get('id', ''))
+        if issued is None or issued != manifest_entry:
+            raise EditorError('confirmation_unbound', 'Candidate was not issued by this session or was changed; render it again.')
         if not Path(manifest_entry.get('path', '')).is_file() or \
            sha256_file(manifest_entry['path']) != manifest_entry.get('slice_sha256'):
             raise EditorError('confirmation_unbound', 'Reviewed audio slice is missing or changed; re-review.')
@@ -344,21 +363,15 @@ class TranscriptSession:
                               'This session has no worker flow registry; session span edits cannot be issued.')
         span = self._locate_span(span_text)
         flagged = self.span_needs_review(span_text)
-        if flagged:
-            conf = self._confirmations.get(confirmation_token or '')
-            if conf is None or conf['span_text'] != span_text or \
-               conf['transcript_sha256'] != self._transcript_digest():
-                raise EditorError('span_review_required',
-                                  'Span boundaries or words are not established (' + ', '.join(flagged) +
-                                  '); review the rendered candidates and confirm before editing.')
-            # One-time token: issuing params consumes the confirmation. A further edit
-            # of the same span needs a fresh review-and-confirm, so a held token cannot
-            # be replayed into unlimited param sets. Params already issued stay valid
-            # for preview retries; preview/finalize are idempotent (same params/bytes).
-            del self._confirmations[confirmation_token or '']
-            start, end = conf['start'], conf['end']
-        else:
-            start, end = span[0].start, span[-1].end
+        conf = self._confirmations.get(confirmation_token or '')
+        if conf is None or conf['span_text'] != span_text or \
+           conf['transcript_sha256'] != self._transcript_digest():
+            raise EditorError('span_review_required',
+                              'Every selected span needs a listening confirmation, including confident timings. '
+                              'Listen to the rendered cut, adjust boundaries if needed, then confirm.')
+        if sha256_file(self.source) != self._source_sha256:
+            raise EditorError('source_changed', 'Source changed since transcription; start a new session.')
+        start, end = conf['start'], conf['end']
         if end - start < _MIN_SEGMENT_SECONDS:
             options = self._context_options(span_text)
             hint = (' Wider selections that meet the floor and contain this span: '
@@ -368,6 +381,7 @@ class TranscriptSession:
                               f'The selected span is {end - start:.2f}s; the application segment floor is '
                               f'{_MIN_SEGMENT_SECONDS:g}s (preserved, never silently widened). Select a wider '
                               'span explicitly - it goes through the same review gates as any selection.' + hint)
+        del self._confirmations[confirmation_token or '']
         params = {'segment_start_seconds': repr(round(start, 6)),
                   'segment_end_seconds': repr(round(end, 6)),
                   'segment_text': span_text, 'source_text': self.text,
@@ -393,7 +407,7 @@ class TranscriptSession:
             suf += 1
         changed_words = span[pre:len(span) - suf] if suf else span[pre:]
         measured = None
-        if changed_words and all(w.timing_established for w in changed_words):
+        if changed_words and all(w.timing_established and start <= w.start < w.end <= end for w in changed_words):
             measured = [{'word': w.word, 'start': repr(round(w.start, 6)), 'end': repr(round(w.end, 6))}
                         for w in changed_words]
         params['changed_span_words'] = measured
@@ -413,7 +427,7 @@ class TranscriptSession:
         params['flow_mac'] = flow_mac(key, payload)
         self._record('span', {'span': span_text, 'flagged_words': flagged,
                               'range': [start, end], 'alignment_source': params['alignment_source'],
-                              'confirmed': bool(flagged)})
+                              'confirmed': True})
         return params
 
     # -- step 6: preview, then save ------------------------------------------------------
@@ -424,8 +438,8 @@ class TranscriptSession:
         stored as a named preview; finalize() is the only way to turn it into a
         saved output, and any later correction invalidates it.
         """
-        if params.get('alignment_source') == 'user_corrected' and params.get('span_confirmed') is not True:
-            raise EditorError('span_review_required', 'Corrected spans must be confirmed before preview.')
+        if params.get('span_confirmed') is not True:
+            raise EditorError('span_review_required', 'Every selected span must be confirmed before preview.')
         result = run_edit(str(self.source), 'transcript_editor', operation, dict(params))
         pid = uuid.uuid4().hex[:12]
         out = getattr(result, 'output_path', None) or (result.get('output_path') if isinstance(result, dict) else None)

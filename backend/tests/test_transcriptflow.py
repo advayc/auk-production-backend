@@ -35,6 +35,12 @@ class FakeResult:
     output_path: str | None
 
 
+def reviewed_params(session, span, edited):
+    # Test-only simulated listening acknowledgement, never a human-review claim.
+    token = session.confirm_span(session.review_candidates(span)[0])
+    return session.span_params(span, edited, confirmation_token=token)
+
+
 class TranscriptFlow(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -99,9 +105,12 @@ class TranscriptFlow(unittest.TestCase):
             s.span_params('hello', 'goodbye')
         self.assertEqual(ctx.exception.code, 'span_not_unique')
 
-    def test_measured_confident_span_needs_no_review(self):
+    def test_measured_confident_span_still_requires_listening(self):
         self.assertEqual(self.session.span_needs_review('visitors'), [])
-        params = self.session.span_params('visitors', 'guests')
+        with self.assertRaises(EditorError) as ctx:
+            self.session.span_params('visitors', 'guests')
+        self.assertEqual(ctx.exception.code, 'span_review_required')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         self.assertEqual(params['alignment_source'], 'asr_accepted')
         self.assertEqual(params['segment_start_seconds'], '0.2')
         self.assertEqual(params['segment_end_seconds'], '0.8')
@@ -149,7 +158,7 @@ class TranscriptFlow(unittest.TestCase):
         self.assertEqual(params['segment_start_seconds'], '1.7')
 
     def test_preview_then_finalize(self):
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         artifact = Path(self.tmp.name) / 'preview.wav'
         artifact.write_bytes(b'RIFF-preview')
 
@@ -164,7 +173,7 @@ class TranscriptFlow(unittest.TestCase):
         self.assertEqual(record['listening_review'], 'unscored')
 
     def test_correction_invalidates_preview(self):
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         artifact = Path(self.tmp.name) / 'preview.wav'
         artifact.write_bytes(b'x')
         pv = self.session.preview(lambda *a: FakeResult(True, True, str(artifact)), 'replace', params)
@@ -174,14 +183,14 @@ class TranscriptFlow(unittest.TestCase):
         self.assertEqual(ctx.exception.code, 'preview_unknown_or_stale')
 
     def test_finalize_failed_preview_refused(self):
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         pv = self.session.preview(lambda *a: FakeResult(False, False, None), 'replace', params)
         with self.assertRaises(EditorError) as ctx:
             self.session.finalize(pv['preview_id'], Path(self.tmp.name) / 'final.wav')
         self.assertEqual(ctx.exception.code, 'preview_not_usable')
 
     def test_finalize_never_overwrites_source(self):
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         artifact = Path(self.tmp.name) / 'preview.wav'
         artifact.write_bytes(b'x')
         pv = self.session.preview(lambda *a: FakeResult(True, True, str(artifact)), 'replace', params)
@@ -387,7 +396,7 @@ class AcceptAsIsAlignmentGate(unittest.TestCase):
         # The regression this covers: a normalized no-op correct() left corrected=False,
         # no evidence was issued, and nothing could set alignment_verified - the
         # accept-as-is path could never reach generation.
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         self.assertEqual(params['alignment_source'], 'asr_accepted')
         self.assertIn('flow_evidence', params)
         self.assertTrue(params['flow_mac'])
@@ -398,7 +407,7 @@ class AcceptAsIsAlignmentGate(unittest.TestCase):
                          lambda p: {'text': 'visitors'}, flow_registry=self.registry)
 
     def test_accept_as_is_segment_mismatch_fails_closed(self):
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         with self.assertRaises(EditorError) as ctx:
             verify_alignment(Path('/nonexistent.wav'), params,
                              lambda p: {'text': 'tourists'}, flow_registry=self.registry)
@@ -406,12 +415,12 @@ class AcceptAsIsAlignmentGate(unittest.TestCase):
 
     def test_accept_as_is_requires_transcriber(self):
         with self.assertRaises(EditorError) as ctx:
-            verify_alignment(Path('/nonexistent.wav'), self.session.span_params('visitors', 'guests'),
+            verify_alignment(Path('/nonexistent.wav'), reviewed_params(self.session, 'visitors', 'guests'),
                              None, flow_registry=self.registry)
         self.assertEqual(ctx.exception.code, 'alignment_qa_unavailable')
 
     def test_accept_as_is_tampered_range_rejected(self):
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         params['segment_start_seconds'] = repr(float(params['segment_start_seconds']) + 0.25)
         with self.assertRaises(EditorError) as ctx:
             verify_alignment(Path('/nonexistent.wav'), params,
@@ -419,7 +428,7 @@ class AcceptAsIsAlignmentGate(unittest.TestCase):
         self.assertEqual(ctx.exception.code, 'flow_evidence_invalid')
 
     def test_accept_as_is_tampered_text_rejected(self):
-        params = self.session.span_params('visitors', 'guests')
+        params = reviewed_params(self.session, 'visitors', 'guests')
         params['segment_text'] = 'however'
         with self.assertRaises(EditorError) as ctx:
             verify_alignment(Path('/nonexistent.wav'), params,
@@ -460,12 +469,12 @@ class SpanDurationFloor(unittest.TestCase):
 
     def test_short_span_fails_with_explicit_context_options(self):
         with self.assertRaises(EditorError) as ctx:  # 'are' is 0.2s
-            self.session.span_params('are', 'were')
+            reviewed_params(self.session, 'are', 'were')
         self.assertEqual(ctx.exception.code, 'span_below_duration_floor')
         self.assertIn('"are however"', str(ctx.exception))
 
     def test_explicit_wider_selection_meets_floor(self):
-        params = self.session.span_params('are however', 'were however')
+        params = reviewed_params(self.session, 'are however', 'were however')
         self.assertEqual(params['segment_start_seconds'], '0.8')
         self.assertEqual(params['segment_end_seconds'], '1.5')
         self.assertEqual(params['alignment_source'], 'asr_accepted')
@@ -561,7 +570,7 @@ class WorkerIntegration(unittest.TestCase):
                                         Path(self.tmp.name) / 'session-asis',
                                         flow_registry=worker.flow_registry)
             session.transcribe()
-            params = session.span_params('visitors', 'guests')
+            params = reviewed_params(session, 'visitors', 'guests')
             params.update({'rights_confirmed': True, 'seed': 9})
             pv = session.preview(worker.edit_audio, 'replace', params)
             self.assertTrue(pv['technical_success'])
@@ -596,3 +605,66 @@ class WorkerIntegration(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class UniversalCutReview(unittest.TestCase):
+    """No acoustic accuracy claim: require an exact rendered-cut acknowledgement."""
+    setUp = TranscriptFlow.setUp
+    tearDown = TranscriptFlow.tearDown
+    def test_confident_timing_fault_cannot_issue_without_listening(self):
+        self.session.words[1].start += 0.35  # controlled upstream timing fault
+        self.assertEqual(self.session.span_needs_review('visitors'), [])
+        with self.assertRaises(EditorError) as ctx:
+            self.session.span_params('visitors', 'guests')
+        self.assertEqual(ctx.exception.code, 'span_review_required')
+
+    def test_confident_candidate_modified_range_refused(self):
+        entry = self.session.review_candidates('visitors')[0]
+        entry['start'] += .1
+        with self.assertRaises(EditorError) as ctx:
+            self.session.confirm_span(entry)
+        self.assertEqual(ctx.exception.code, 'confirmation_unbound')
+
+    def test_unissued_candidate_refused(self):
+        entry = self.session.review_candidates('visitors')[0]
+        entry['id'] = 'not-issued'
+        with self.assertRaises(EditorError) as ctx:
+            self.session.confirm_span(entry)
+        self.assertEqual(ctx.exception.code, 'confirmation_unbound')
+
+    def test_explicit_adjustment_is_rendered_bound_and_usable(self):
+        entries = self.session.review_candidates('visitors', start_adjust_seconds=-.1,
+                                                  end_adjust_seconds=.2)
+        self.assertEqual(len(entries), 1)
+        token = self.session.confirm_span(entries[0])  # simulated acknowledgement
+        params = self.session.span_params('visitors', 'guests', confirmation_token=token)
+        self.assertAlmostEqual(float(params['segment_start_seconds']), .1)
+        self.assertAlmostEqual(float(params['segment_end_seconds']), 1.0)
+        with wave.open(entries[0]['path']) as w:
+            self.assertAlmostEqual(w.getnframes()/24000, .9)
+
+    def test_nonfinite_adjustment_refused(self):
+        for value in (float('nan'), float('inf')):
+            with self.assertRaises(EditorError) as ctx:
+                self.session.review_candidates('visitors', start_adjust_seconds=value)
+            self.assertEqual(ctx.exception.code, 'invalid_boundary_adjustment')
+
+    def test_outside_recording_adjustment_refused(self):
+        with self.assertRaises(EditorError) as ctx:
+            self.session.review_candidates('visitors', start_adjust_seconds=-2)
+        self.assertEqual(ctx.exception.code, 'candidate_out_of_range')
+
+    def test_changed_source_invalidates_confirmation(self):
+        entry = self.session.review_candidates('visitors')[0]
+        write_wav(self.src, seconds=5)
+        with self.assertRaises(EditorError) as ctx:
+            self.session.confirm_span(entry)
+        self.assertEqual(ctx.exception.code, 'source_changed')
+
+    def test_confident_token_is_single_use(self):
+        entry = self.session.review_candidates('visitors')[0]
+        token = self.session.confirm_span(entry)
+        self.session.span_params('visitors', 'guests', confirmation_token=token)
+        with self.assertRaises(EditorError) as ctx:
+            self.session.span_params('visitors', 'guests', confirmation_token=token)
+        self.assertEqual(ctx.exception.code, 'span_review_required')
