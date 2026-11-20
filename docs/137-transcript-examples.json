@@ -420,7 +420,102 @@
         0.012482,
         0.011169,
         0.002319
-      ]
+      ],
+      "descript": {
+        "text": "Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain",
+        "words": [
+          {
+            "word": "Aristotle",
+            "start": 0.538,
+            "end": 1.322
+          },
+          {
+            "word": "thought",
+            "start": 1.331,
+            "end": 1.676
+          },
+          {
+            "word": "that",
+            "start": 1.708,
+            "end": 1.906
+          },
+          {
+            "word": "the",
+            "start": 1.91,
+            "end": 2.02
+          },
+          {
+            "word": "rainbow",
+            "start": 2.021,
+            "end": 2.4610000000000003
+          },
+          {
+            "word": "was",
+            "start": 2.4619999999999997,
+            "end": 2.6799999999999997
+          },
+          {
+            "word": "caused",
+            "start": 2.6799999999999997,
+            "end": 3.0330000000000004
+          },
+          {
+            "word": "by",
+            "start": 3.0330000000000004,
+            "end": 3.208
+          },
+          {
+            "word": "reflection",
+            "start": 3.21,
+            "end": 3.786
+          },
+          {
+            "word": "of",
+            "start": 3.787,
+            "end": 3.928
+          },
+          {
+            "word": "the",
+            "start": 3.928,
+            "end": 4.021
+          },
+          {
+            "word": "sun's",
+            "start": 4.021,
+            "end": 4.39
+          },
+          {
+            "word": "rays",
+            "start": 4.39,
+            "end": 4.8
+          },
+          {
+            "word": "by",
+            "start": 4.8229999999999995,
+            "end": 5.01
+          },
+          {
+            "word": "the",
+            "start": 5.016,
+            "end": 5.122
+          },
+          {
+            "word": "rain",
+            "start": 5.124,
+            "end": 5.537999999999999
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.0,
+          "word_error_rate": 0.0,
+          "exact_normalized_match": true,
+          "status": "no_text_discrepancy_detected"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English",
+        "mean_absolute_boundary_difference_ms": 110.3
+      }
     },
     {
       "number": 2,
@@ -870,7 +965,127 @@
         0.06311,
         0.03418,
         0.036316
-      ]
+      ],
+      "descript": {
+        "text": "This is a very common type of bow one showing mainly red and yellow with little or no green or blue",
+        "words": [
+          {
+            "word": "This",
+            "start": 0.928,
+            "end": 1.137
+          },
+          {
+            "word": "is",
+            "start": 1.142,
+            "end": 1.252
+          },
+          {
+            "word": "a",
+            "start": 1.253,
+            "end": 1.292
+          },
+          {
+            "word": "very",
+            "start": 1.294,
+            "end": 1.532
+          },
+          {
+            "word": "common",
+            "start": 1.534,
+            "end": 1.793
+          },
+          {
+            "word": "type",
+            "start": 1.8010000000000002,
+            "end": 1.993
+          },
+          {
+            "word": "of",
+            "start": 1.993,
+            "end": 2.118
+          },
+          {
+            "word": "bow",
+            "start": 2.118,
+            "end": 2.486
+          },
+          {
+            "word": "one",
+            "start": 2.769,
+            "end": 3.026
+          },
+          {
+            "word": "showing",
+            "start": 3.028,
+            "end": 3.313
+          },
+          {
+            "word": "mainly",
+            "start": 3.313,
+            "end": 3.645
+          },
+          {
+            "word": "red",
+            "start": 3.646,
+            "end": 3.819
+          },
+          {
+            "word": "and",
+            "start": 3.819,
+            "end": 3.931
+          },
+          {
+            "word": "yellow",
+            "start": 3.932,
+            "end": 4.2299999999999995
+          },
+          {
+            "word": "with",
+            "start": 4.2299999999999995,
+            "end": 4.426
+          },
+          {
+            "word": "little",
+            "start": 4.428,
+            "end": 4.729
+          },
+          {
+            "word": "or",
+            "start": 4.746,
+            "end": 4.867
+          },
+          {
+            "word": "no",
+            "start": 4.869,
+            "end": 5.121
+          },
+          {
+            "word": "green",
+            "start": 5.122,
+            "end": 5.3950000000000005
+          },
+          {
+            "word": "or",
+            "start": 5.3950000000000005,
+            "end": 5.481
+          },
+          {
+            "word": "blue",
+            "start": 5.481,
+            "end": 5.844
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.0,
+          "word_error_rate": 0.0,
+          "exact_normalized_match": true,
+          "status": "no_text_discrepancy_detected"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English",
+        "mean_absolute_boundary_difference_ms": 68.3
+      }
     },
     {
       "number": 3,
@@ -1308,7 +1523,117 @@
         0.003571,
         0.005066,
         0.006073
-      ]
+      ],
+      "descript": {
+        "text": "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain",
+        "words": [
+          {
+            "word": "The",
+            "start": 0.34400000000000003,
+            "end": 0.439
+          },
+          {
+            "word": "Greeks",
+            "start": 0.44,
+            "end": 0.5920000000000001
+          },
+          {
+            "word": "used",
+            "start": 0.5920000000000001,
+            "end": 0.708
+          },
+          {
+            "word": "to",
+            "start": 0.7090000000000001,
+            "end": 0.756
+          },
+          {
+            "word": "imagine",
+            "start": 0.756,
+            "end": 1.004
+          },
+          {
+            "word": "that",
+            "start": 1.004,
+            "end": 1.857
+          },
+          {
+            "word": "it",
+            "start": 1.859,
+            "end": 1.889
+          },
+          {
+            "word": "was",
+            "start": 1.889,
+            "end": 1.899
+          },
+          {
+            "word": "a",
+            "start": 1.899,
+            "end": 1.909
+          },
+          {
+            "word": "sign",
+            "start": 1.909,
+            "end": 1.919
+          },
+          {
+            "word": "from",
+            "start": 1.919,
+            "end": 1.929
+          },
+          {
+            "word": "the",
+            "start": 1.929,
+            "end": 1.939
+          },
+          {
+            "word": "gods",
+            "start": 1.939,
+            "end": 1.949
+          },
+          {
+            "word": "to",
+            "start": 1.949,
+            "end": 1.959
+          },
+          {
+            "word": "foretell",
+            "start": 1.959,
+            "end": 2.149
+          },
+          {
+            "word": "war",
+            "start": 2.149,
+            "end": 2.341
+          },
+          {
+            "word": "or",
+            "start": 2.353,
+            "end": 2.423
+          },
+          {
+            "word": "heavy",
+            "start": 2.423,
+            "end": 2.581
+          },
+          {
+            "word": "rain",
+            "start": 2.5820000000000003,
+            "end": 2.781
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.0,
+          "word_error_rate": 0.0,
+          "exact_normalized_match": true,
+          "status": "no_text_discrepancy_detected"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English",
+        "mean_absolute_boundary_difference_ms": 257.0
+      }
     },
     {
       "number": 4,
@@ -1788,7 +2113,152 @@
         0.150421,
         0.148804,
         0.093781
-      ]
+      ],
+      "descript": {
+        "text": "When a man looks for something beyond his reach his friends say he is looking for the pot of gold at the end of the rainbow",
+        "words": [
+          {
+            "word": "When",
+            "start": 0.957,
+            "end": 1.114
+          },
+          {
+            "word": "a",
+            "start": 1.116,
+            "end": 1.172
+          },
+          {
+            "word": "man",
+            "start": 1.172,
+            "end": 1.372
+          },
+          {
+            "word": "looks",
+            "start": 1.373,
+            "end": 1.5779999999999998
+          },
+          {
+            "word": "for",
+            "start": 1.579,
+            "end": 1.7
+          },
+          {
+            "word": "something",
+            "start": 1.701,
+            "end": 2.016
+          },
+          {
+            "word": "beyond",
+            "start": 2.018,
+            "end": 2.307
+          },
+          {
+            "word": "his",
+            "start": 2.307,
+            "end": 2.479
+          },
+          {
+            "word": "reach",
+            "start": 2.479,
+            "end": 2.848
+          },
+          {
+            "word": "his",
+            "start": 3.0309999999999997,
+            "end": 3.2219999999999995
+          },
+          {
+            "word": "friends",
+            "start": 3.2219999999999995,
+            "end": 3.5490000000000004
+          },
+          {
+            "word": "say",
+            "start": 3.551,
+            "end": 3.758
+          },
+          {
+            "word": "he",
+            "start": 3.76,
+            "end": 3.859
+          },
+          {
+            "word": "is",
+            "start": 3.859,
+            "end": 4.008
+          },
+          {
+            "word": "looking",
+            "start": 4.009,
+            "end": 4.276
+          },
+          {
+            "word": "for",
+            "start": 4.277,
+            "end": 4.386
+          },
+          {
+            "word": "the",
+            "start": 4.386,
+            "end": 4.476
+          },
+          {
+            "word": "pot",
+            "start": 4.477,
+            "end": 4.673
+          },
+          {
+            "word": "of",
+            "start": 4.68,
+            "end": 4.797
+          },
+          {
+            "word": "gold",
+            "start": 4.797,
+            "end": 5.04
+          },
+          {
+            "word": "at",
+            "start": 5.041,
+            "end": 5.132000000000001
+          },
+          {
+            "word": "the",
+            "start": 5.132000000000001,
+            "end": 5.237
+          },
+          {
+            "word": "end",
+            "start": 5.237,
+            "end": 5.362
+          },
+          {
+            "word": "of",
+            "start": 5.362,
+            "end": 5.4830000000000005
+          },
+          {
+            "word": "the",
+            "start": 5.4830000000000005,
+            "end": 5.561
+          },
+          {
+            "word": "rainbow",
+            "start": 5.563000000000001,
+            "end": 5.961
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.0,
+          "word_error_rate": 0.0,
+          "exact_normalized_match": true,
+          "status": "no_text_discrepancy_detected"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English",
+        "mean_absolute_boundary_difference_ms": 51.6
+      }
     },
     {
       "number": 5,
@@ -2178,7 +2648,77 @@
         0.111877,
         0.096252,
         0.08786
-      ]
+      ],
+      "descript": {
+        "text": "Throughout the centuries people have explained the rainbow in various ways",
+        "words": [
+          {
+            "word": "Throughout",
+            "start": 0.853,
+            "end": 1.299
+          },
+          {
+            "word": "the",
+            "start": 1.3,
+            "end": 1.419
+          },
+          {
+            "word": "centuries",
+            "start": 1.421,
+            "end": 2.182
+          },
+          {
+            "word": "people",
+            "start": 2.408,
+            "end": 2.761
+          },
+          {
+            "word": "have",
+            "start": 2.772,
+            "end": 2.993
+          },
+          {
+            "word": "explained",
+            "start": 3.027,
+            "end": 3.757
+          },
+          {
+            "word": "the",
+            "start": 3.831,
+            "end": 3.972
+          },
+          {
+            "word": "rainbow",
+            "start": 3.972,
+            "end": 4.519
+          },
+          {
+            "word": "in",
+            "start": 4.54,
+            "end": 4.698
+          },
+          {
+            "word": "various",
+            "start": 4.703,
+            "end": 5.260000000000001
+          },
+          {
+            "word": "ways",
+            "start": 5.261,
+            "end": 5.65
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.0,
+          "word_error_rate": 0.0,
+          "exact_normalized_match": true,
+          "status": "no_text_discrepancy_detected"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English",
+        "mean_absolute_boundary_difference_ms": 116.1
+      }
     },
     {
       "number": 6,
@@ -2616,7 +3156,117 @@
         0.012665,
         0.013702,
         0.014496
-      ]
+      ],
+      "descript": {
+        "text": "The Greeks used to imagine that it was a sign from the gods to foretell war or heavy rain",
+        "words": [
+          {
+            "word": "The",
+            "start": 0.977,
+            "end": 1.049
+          },
+          {
+            "word": "Greeks",
+            "start": 1.05,
+            "end": 1.422
+          },
+          {
+            "word": "used",
+            "start": 1.4329999999999998,
+            "end": 1.666
+          },
+          {
+            "word": "to",
+            "start": 1.689,
+            "end": 1.821
+          },
+          {
+            "word": "imagine",
+            "start": 1.821,
+            "end": 2.2569999999999997
+          },
+          {
+            "word": "that",
+            "start": 2.2569999999999997,
+            "end": 2.389
+          },
+          {
+            "word": "it",
+            "start": 2.3899999999999997,
+            "end": 2.492
+          },
+          {
+            "word": "was",
+            "start": 2.492,
+            "end": 2.629
+          },
+          {
+            "word": "a",
+            "start": 2.629,
+            "end": 2.695
+          },
+          {
+            "word": "sign",
+            "start": 2.6959999999999997,
+            "end": 3.0410000000000004
+          },
+          {
+            "word": "from",
+            "start": 3.045,
+            "end": 3.194
+          },
+          {
+            "word": "the",
+            "start": 3.1950000000000003,
+            "end": 3.2910000000000004
+          },
+          {
+            "word": "gods",
+            "start": 3.292,
+            "end": 3.595
+          },
+          {
+            "word": "to",
+            "start": 3.595,
+            "end": 3.708
+          },
+          {
+            "word": "foretell",
+            "start": 3.709,
+            "end": 4.213
+          },
+          {
+            "word": "war",
+            "start": 4.218,
+            "end": 4.58
+          },
+          {
+            "word": "or",
+            "start": 4.614,
+            "end": 4.725
+          },
+          {
+            "word": "heavy",
+            "start": 4.735,
+            "end": 5.064
+          },
+          {
+            "word": "rain",
+            "start": 5.065,
+            "end": 5.458
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.0,
+          "word_error_rate": 0.0,
+          "exact_normalized_match": true,
+          "status": "no_text_discrepancy_detected"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English",
+        "mean_absolute_boundary_difference_ms": 81.0
+      }
     },
     {
       "number": 7,
@@ -3060,7 +3710,122 @@
         0.003174,
         0.005768,
         0.001923
-      ]
+      ],
+      "descript": {
+        "text": "She can scoop these things into three red bags and we will go meet her Wednesday at the train station",
+        "words": [
+          {
+            "word": "She",
+            "start": 0.538,
+            "end": 0.6990000000000001
+          },
+          {
+            "word": "can",
+            "start": 0.7,
+            "end": 0.8260000000000001
+          },
+          {
+            "word": "scoop",
+            "start": 0.8280000000000001,
+            "end": 1.031
+          },
+          {
+            "word": "these",
+            "start": 1.034,
+            "end": 1.194
+          },
+          {
+            "word": "things",
+            "start": 1.197,
+            "end": 1.415
+          },
+          {
+            "word": "into",
+            "start": 1.415,
+            "end": 1.58
+          },
+          {
+            "word": "three",
+            "start": 1.58,
+            "end": 1.763
+          },
+          {
+            "word": "red",
+            "start": 1.763,
+            "end": 1.924
+          },
+          {
+            "word": "bags",
+            "start": 1.925,
+            "end": 2.282
+          },
+          {
+            "word": "and",
+            "start": 2.338,
+            "end": 2.457
+          },
+          {
+            "word": "we",
+            "start": 2.457,
+            "end": 2.5380000000000003
+          },
+          {
+            "word": "will",
+            "start": 2.5380000000000003,
+            "end": 2.623
+          },
+          {
+            "word": "go",
+            "start": 2.6239999999999997,
+            "end": 2.732
+          },
+          {
+            "word": "meet",
+            "start": 2.7350000000000003,
+            "end": 2.8979999999999997
+          },
+          {
+            "word": "her",
+            "start": 2.901,
+            "end": 3
+          },
+          {
+            "word": "Wednesday",
+            "start": 3,
+            "end": 3.349
+          },
+          {
+            "word": "at",
+            "start": 3.353,
+            "end": 3.4539999999999997
+          },
+          {
+            "word": "the",
+            "start": 3.4539999999999997,
+            "end": 3.502
+          },
+          {
+            "word": "train",
+            "start": 3.502,
+            "end": 3.658
+          },
+          {
+            "word": "station",
+            "start": 3.658,
+            "end": 4.009
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.0,
+          "word_error_rate": 0.0,
+          "exact_normalized_match": true,
+          "status": "no_text_discrepancy_detected"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English",
+        "mean_absolute_boundary_difference_ms": 59.7
+      }
     },
     {
       "number": 8,
@@ -3661,6 +4426,80 @@
             "end_error_ms": -361.07
           }
         ]
+      },
+      "descript": {
+        "text": "I just got the project announcement about what the project is about",
+        "words": [
+          {
+            "word": "I",
+            "start": 0.797,
+            "end": 0.8140000000000001
+          },
+          {
+            "word": "just",
+            "start": 0.8200000000000001,
+            "end": 1.038
+          },
+          {
+            "word": "got",
+            "start": 1.04,
+            "end": 1.238
+          },
+          {
+            "word": "the",
+            "start": 1.3050000000000002,
+            "end": 1.4220000000000002
+          },
+          {
+            "word": "project",
+            "start": 1.4220000000000002,
+            "end": 1.746
+          },
+          {
+            "word": "announcement",
+            "start": 1.783,
+            "end": 2.4000000000000004
+          },
+          {
+            "word": "about",
+            "start": 2.504,
+            "end": 2.737
+          },
+          {
+            "word": "what",
+            "start": 2.737,
+            "end": 2.878
+          },
+          {
+            "word": "the",
+            "start": 2.878,
+            "end": 2.961
+          },
+          {
+            "word": "project",
+            "start": 2.962,
+            "end": 3.301
+          },
+          {
+            "word": "is",
+            "start": 3.566,
+            "end": 3.711
+          },
+          {
+            "word": "about",
+            "start": 3.717,
+            "end": 4.218999999999999
+          }
+        ],
+        "comparison": {
+          "metric": "word_error_rate",
+          "error_rate": 0.1667,
+          "word_error_rate": 0.1667,
+          "exact_normalized_match": false,
+          "status": "review_required"
+        },
+        "captured_at": "2026-11-20T20:12:55.285Z",
+        "method": "Descript web, original SpeechRecognition alignment, unedited; language auto-detected as English"
       }
     }
   ],
