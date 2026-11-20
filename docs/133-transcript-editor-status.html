@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Transcript editor status - Nov 20, 2026 (no audio yet)</title>
+<title>Transcript editor status - Nov 20, 2026 (one fresh fixture)</title>
 <style>
 :root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -19,17 +19,17 @@ footer{border-top:1px solid var(--line);margin:30px 0 60px;padding-top:16px;font
 footer p{margin:8px 0}
 </style></head><body>
 <h1>Transcript editor status</h1>
-<p class="note">Status page, Nov 20, 2026. The transcript editor is the correctable-transcript flow: transcribe once, correct the words, align, review, preview, save. There are no audio players on this page on purpose: no verified output exists yet.</p>
+<p class="note">Status page, Nov 20, 2026. The transcript editor is the correctable-transcript flow: transcribe once, correct the words, align, review, preview, save. One explicit 2x-speed fixture now has a fresh v0.6.6 L4 generation, test save and final MP3 export. Listening quality remains unscored.</p>
 
-<div class="keyline warn"><b>Not a finished feature.</b> One real representative edit through actual GPU generation has not run yet. Everything below is code-level and alignment-level verification, not listening verification.</div>
+<div class="keyline warn"><b>Not a finished feature.</b> One fixture passes automatic checks, not broad reliability or listening approval. Quiet-source localized edits, multilingual and natural slurred-speech performance remain unresolved.</div>
 
 <div class="card">
-<h2>What changed (backend v0.6.0)</h2>
+<h2>Current backend v0.6.6</h2>
 <ul>
 <li>Accept-ASR-as-is spans now carry worker-registry-bound evidence, same as corrected spans. The worker verifies the MAC and still re-checks the cut segment against ASR; a mismatch fails closed.</li>
 <li>Measured-timing transplants now compute the base-cut fit. They previously always failed closed.</li>
 <li>The 0.5s segment duration floor is preserved: shorter selections are refused with explicit wider context options, never silently widened.</li>
-<li>534/534 CPU tests pass on the current tree (Linux, 2026-11-20), including the fail-closed gates.</li>
+<li>594/594 CPU tests pass on the current tree (Linux, 2026-11-20), including the fail-closed gates.</li>
 </ul>
 </div>
 
@@ -42,16 +42,16 @@ footer p{margin:8px 0}
 </div>
 
 <div class="card">
-<h2>What is not verified</h2>
+<h2>Final output: MP3</h2><p>The notebook now plays and downloads MP3 across edit paths. Final MP3 is mono 48 kHz, verified 320 kbps; internal 24 kHz WAV stays for lossless processing and QA. Resampling adds no source detail.</p><p><audio controls preload="metadata" style="width:100%" src="139-fresh066-fast-final.mp3"></audio></p><p><a href="139-fresh066-fast-final.mp3" download>Download fresh fast-fixture MP3</a> · <a href="139-fresh066-verification.json">Fresh-run evidence</a> · <a href="134-transcript-cut-repair-20261120.html?v=descript9fcc7ba">Actual 8-clip AuK/Descript comparison</a></p><p>This technical test modifies dataset speech, not a statement or endorsement by its speaker. VCTK 0.92: Yamagishi, Veaux and MacDonald (2019), University of Edinburgh, CC BY 4.0. Source resampled and synthetically sped up 2x; edited name replaced.</p><h2>What is not verified</h2>
 <ul>
-<li>No audio has been generated for this new flow. The gaps fixed in v0.6.0 meant earlier runs could never reach generation on these paths.</li>
+<li>Fresh L4 fixture: VCTK p228_018 at synthetic 2x speed, explicitly reviewed 0-1.32s phrase, Aristotle to Plato. Automatic transcript match and speaker 0.9516 pass; source/output both 67,288 PCM frames and outside audio is byte-exact. This does not silently widen the earlier three-word selection.</li>
 <li>Whole-sentence replacement still fails the strict speaker-similarity gate (12/12 attempts on the Oct 27 L4 run), so it correctly produces no output.</li>
 <li>Nothing on this page has been listened to as a product verdict.</li>
 </ul>
 </div>
 
 <footer>
-<p>Evidence: <a href="https://github.com/advayc/auk-production-backend">github.com/advayc/auk-production-backend</a> (v0.6.0) and backend/reports/77-STATUS_DETAIL_2026-11-20.md in that repo.</p>
+<p>Evidence: <a href="https://github.com/advayc/auk-production-backend">github.com/advayc/auk-production-backend</a> (current v0.6.6). Older backend/reports/77-STATUS_DETAIL_2026-11-20.md is a dated historical snapshot, not the current status.</p>
 <p>Measurements on these pages are diagnostics, not listening verdicts.</p>
 </footer>
 </body></html>

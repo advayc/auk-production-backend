@@ -1,0 +1,62 @@
+{
+  "backend_pin": "5e1b02f4ffc86ddb8bd01df75a96a850933327a6",
+  "generation_started_at": "2026-11-20T21:53:53.658619+00:00",
+  "model_timing": {
+    "server_start_seconds": 0.925,
+    "inference_seconds": 7.905,
+    "first_request_after_start": true,
+    "memory_saver": true
+  },
+  "automatic_qa_pass": true,
+  "semantic_success": null,
+  "speaker": {
+    "score": 0.9515586495399475,
+    "threshold": 0.75,
+    "passed": true
+  },
+  "final_transcript": "Plato thought that the rainbow was caused by reflection of the sun's rays by the rain.",
+  "mp3_decoded_transcript": "Plato thought that the rainbow was caused by reflection of the sun's rays by the rain.",
+  "frames": 67288,
+  "outside_after_1_32s_pcm_exact": true,
+  "internal_saved_wav_identical": true,
+  "mp3_stream": {
+    "index": 0,
+    "codec_name": "mp3",
+    "codec_long_name": "MP3 (MPEG audio layer 3)",
+    "codec_type": "audio",
+    "codec_tag_string": "[0][0][0][0]",
+    "codec_tag": "0x0000",
+    "sample_fmt": "fltp",
+    "sample_rate": "48000",
+    "channels": 1,
+    "channel_layout": "mono",
+    "bits_per_sample": 0,
+    "r_frame_rate": "0/0",
+    "avg_frame_rate": "0/0",
+    "time_base": "1/14112000",
+    "start_pts": 324870,
+    "start_time": "0.023021",
+    "duration_ts": 39965184,
+    "duration": "2.832000",
+    "bit_rate": "320000",
+    "disposition": {
+      "default": 0,
+      "dub": 0,
+      "original": 0,
+      "comment": 0,
+      "lyrics": 0,
+      "karaoke": 0,
+      "forced": 0,
+      "hearing_impaired": 0,
+      "visual_impaired": 0,
+      "clean_effects": 0,
+      "attached_pic": 0,
+      "timed_thumbnails": 0
+    }
+  },
+  "mp3_sha256": "5b375b115c5fbefa5a28774f3cc47f41c38d7eeea5accdf5efe1052a969d100f",
+  "human_listening": "unscored",
+  "source_case": "vctk-p228_018-mic1-very-fast-2x, explicit0-1.32sreviewedtestfixture",
+  "old_3_word_selection_not_silently_widened": true,
+  "archive_sha256": "7b5703ea790a1a80c72c6f6f957e3f461a9b5420c285389e43a5c24aa0fb841b"
+}
