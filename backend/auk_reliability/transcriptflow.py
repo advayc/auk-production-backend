@@ -481,6 +481,26 @@ class TranscriptSession:
             measured[-1]['next_word_start'] = (repr(round(self.words[last_index].start, 6))
                                                if last_index < len(self.words) else repr(round(self._duration(), 6)))
         params['changed_span_words'] = measured
+        # Bind the explicitly reviewed context too. It may supply trailing equal
+        # words for a frame-exact donor fit, never audio outside this selection.
+        # Corrected words keep their established session timings, not source ASR.
+        if measured and len(span) > len(changed_words) and all(
+                w.timing_established and len(normalized_tokens(w.word)) == 1
+                and start <= w.start < w.end <= end for w in span):
+            selection_index = next(i for i, w in enumerate(self.words) if w is span[0])
+            context = [{'word': w.word, 'start': repr(round(w.start, 6)),
+                        'end': repr(round(w.end, 6))} for w in span]
+            # A reviewed changed edge must agree in both pieces of evidence.
+            for i, w in enumerate(measured):
+                context[pre + i]['start'] = w['start']
+                context[pre + i]['end'] = w['end']
+            params['reviewed_span_words'] = {
+                'source_token_start': len(normalized_tokens(' '.join(
+                    w.word for w in self.words[:selection_index]))),
+                'words': context,
+                'previous_word_end': repr(round(self.words[selection_index-1].end, 6)) if selection_index else '0.0',
+                'next_word_start': (repr(round(self.words[selection_index+len(span)].start, 6))
+                                    if selection_index+len(span) < len(self.words) else repr(round(self._duration(), 6)))}
         # Bound session evidence: HMAC over the exact parameters the worker will see.
         # The key lives in the worker's own flow registry (never in this session's
         # caller-visible directory), so a caller cannot self-issue evidence from an
@@ -493,6 +513,8 @@ class TranscriptSession:
                    'start': params['segment_start_seconds'], 'end': params['segment_end_seconds'],
                    'alignment_source': params['alignment_source'],
                    'changed_span_words': measured}
+        if 'reviewed_span_words' in params:
+            payload['reviewed_span_words'] = params['reviewed_span_words']
         params['flow_evidence'] = {'session_id': self.session_id}
         params['flow_mac'] = flow_mac(key, payload)
         self._record('span', {'span': span_text, 'flagged_words': flagged,

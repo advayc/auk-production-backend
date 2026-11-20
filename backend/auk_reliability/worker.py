@@ -207,7 +207,7 @@ class ReliabilityWorker:
     elif mode=='transcript_editor':
      final=ad/'spliced.wav'
      _measured=p.get('changed_span_words') if p.get('alignment_source') in ('user_corrected','asr_accepted') else None
-     record['splice']=localized_transplant(full,out,self.gate.transcriber,float(start),float(end),src_txt,full_edited,final,measured_span=_measured)
+     record['splice']=localized_transplant(full,out,self.gate.transcriber,float(start),float(end),src_txt,full_edited,final,measured_span=_measured,reviewed_span= p.get('reviewed_span_words') if _measured else None)
      record['artifact_paths'].append(str(final))
      try:
       _seam_bounds=record['splice'].get('source_cut_seconds',[float(start),float(end)])

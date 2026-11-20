@@ -34,6 +34,8 @@ def verify_alignment(source_segment, parameters, transcriber, flow_registry=None
            'start':parameters.get('segment_start_seconds'),'end':parameters.get('segment_end_seconds'),
            'alignment_source':'user_corrected',
            'changed_span_words':parameters.get('changed_span_words')}
+  if 'reviewed_span_words' in parameters:
+   payload['reviewed_span_words']=parameters['reviewed_span_words']
   if not flow_evidence_verify(flow_registry,evidence.get('session_id'),payload,parameters.get('flow_mac')):
    raise EditorError('flow_evidence_invalid','Corrected-flow edits need worker-registry session evidence matching these exact parameters.')
   return
@@ -55,6 +57,8 @@ def verify_alignment(source_segment, parameters, transcriber, flow_registry=None
            'start':parameters.get('segment_start_seconds'),'end':parameters.get('segment_end_seconds'),
            'alignment_source':'asr_accepted',
            'changed_span_words':parameters.get('changed_span_words')}
+  if 'reviewed_span_words' in parameters:
+   payload['reviewed_span_words']=parameters['reviewed_span_words']
   if not flow_evidence_verify(flow_registry,evidence.get('session_id'),payload,parameters.get('flow_mac')):
    raise EditorError('flow_evidence_invalid','Session edits need worker-registry session evidence matching these exact parameters.')
  elif parameters.get('segment_scope')=='whole_clip':

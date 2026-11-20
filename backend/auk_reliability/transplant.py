@@ -294,7 +294,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                          pad_post: float = DEFAULT_PAD_POST_SECONDS,
                          crossfade_ms: int = DEFAULT_CROSSFADE_MS,
                          allow_borrowed_room: bool = False,
-                         measured_span: list | None = None) -> dict:
+                         measured_span: list | None = None,
+                         reviewed_span: dict | None = None) -> dict:
     """Localized edit with a full-context donor.
 
     The generation is produced from the WHOLE clip (speaker context intact);
@@ -376,6 +377,51 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
             # the alignment score upstream (low scores forced human review), and the
             # cut stays clamped inside the verified interval either way.
             source_words = None
+            if reviewed_span is not None:
+                # The worker has MAC-verified this selected context. Independently
+                # check token positions and acoustic bounds before using it for fit.
+                def invalid_context():
+                    raise EditorError('transplant_span_ambiguous',
+                                      'Reviewed context does not match the selected source words and bounds.')
+                if not isinstance(reviewed_span, dict):
+                    invalid_context()
+                offset = reviewed_span.get('source_token_start')
+                entries = reviewed_span.get('words')
+                if type(offset) is not int or offset < 0 or not isinstance(entries, list) or not entries:
+                    invalid_context()
+                context_words = []
+                for entry in entries:
+                    if not isinstance(entry, dict):
+                        invalid_context()
+                    tokens = normalized_tokens(str(entry.get('word', '')))
+                    try:
+                        a, b = float(entry['start']), float(entry['end'])
+                    except (KeyError, TypeError, ValueError):
+                        invalid_context()
+                    if len(tokens) != 1 or not start <= a < b <= end:
+                        invalid_context()
+                    if context_words and a < context_words[-1]['end']:
+                        invalid_context()
+                    context_words.append({'token': tokens[0], 'start': a, 'end': b})
+                if [w['token'] for w in context_words] != source_tokens[offset:offset + len(entries)]:
+                    invalid_context()
+                s0i = prefix - offset
+                s1i = s0i + len(changed_source)
+                if not 0 <= s0i < s1i <= len(context_words):
+                    invalid_context()
+                for actual, bound in zip(context_words[s0i:s1i], measured_span):
+                    if actual['start'] != float(bound['start']) or actual['end'] != float(bound['end']):
+                        invalid_context()
+                try:
+                    outer_prev = float(reviewed_span['previous_word_end'])
+                    outer_next = float(reviewed_span['next_word_start'])
+                except (KeyError, ValueError, TypeError):
+                    invalid_context()
+                if not (0 <= outer_prev <= context_words[0]['start'] and
+                        context_words[-1]['end'] <= outer_next <= total / SAMPLE_RATE):
+                    invalid_context()
+                source_words = context_words
+                w0, w1 = source_words[s0i], source_words[s1i - 1]
         else:
             source_words = _flat_word_tokens(transcriber(Path(source)))
             stokens = [w['token'] for w in source_words]
@@ -386,8 +432,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                               'Changed words are not inside the verified interval.')
         lo_f, hi_f = int(start * SAMPLE_RATE), int(end * SAMPLE_RATE)
         if source_words is not None:
-            prev_end = source_words[s0i - 1]['end'] if s0i else 0.0
-            next_start = source_words[s1i]['start'] if s1i < len(source_words) else total / SAMPLE_RATE
+            prev_end = source_words[s0i - 1]['end'] if s0i else (outer_prev if reviewed_span is not None else 0.0)
+            next_start = source_words[s1i]['start'] if s1i < len(source_words) else (outer_next if reviewed_span is not None else total / SAMPLE_RATE)
         else:
             # Without ASR neighbor words, the verified interval boundaries are the
             # only neighbor protection: padding never extends past them.
@@ -466,7 +512,7 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                     if sw1['end'] > end + 0.05:
                         break  # span would leave the interval; a longer one only gets worse
                     w1f_e = int(sw1['end'] * SAMPLE_RATE)
-                    nxt = source_words[s1e]['start'] if s1e < len(source_words) else total / SAMPLE_RATE
+                    nxt = source_words[s1e]['start'] if s1e < len(source_words) else (min(end, outer_next) if reviewed_span is not None else end)
                     next_f_e = int(nxt * SAMPLE_RATE)
                     cut0_e = max(w0f - int(pad_pre * SAMPLE_RATE), lo_f, prev_f)
                     cut1_e = min(w1f_e + int(pad_post * SAMPLE_RATE), hi_f, next_f_e)
@@ -530,7 +576,7 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                     lo_f, hi_f, prev_f, w0f, pad_pre, pad_post, crossfade)
             if fitted is None:
                 raise EditorError('transplant_duration_mismatch',
-                                  'Replacement words are longer than the source span inside the verified interval, even allowing in-interval neighbor words to be re-generated; widen the interval or use whole_clip scope.')
+                                  'The donor speech and safe surrounding room cannot fit inside the verified interval without clipping words or changing protected audio. Review a different interval explicitly, try another donor, or choose whole_clip scope; no boundaries were changed.')
             borrowed = isinstance(fitted, dict)
             room_evidence = {k: fitted[k] for k in ('room_source_seconds', 'room_rms_ratio', 'strict_room_validation', 'room_peak_pcm16') if k in fitted} if borrowed else {}
             if borrowed:
