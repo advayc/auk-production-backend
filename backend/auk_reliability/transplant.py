@@ -281,7 +281,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                          pad_pre: float = DEFAULT_PAD_PRE_SECONDS,
                          pad_post: float = DEFAULT_PAD_POST_SECONDS,
                          crossfade_ms: int = DEFAULT_CROSSFADE_MS,
-                         allow_borrowed_room: bool = False) -> dict:
+                         allow_borrowed_room: bool = False,
+                         measured_span: list | None = None) -> dict:
     """Localized edit with a full-context donor.
 
     The generation is produced from the WHOLE clip (speaker context intact);
@@ -339,21 +340,46 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
     crossfade = int(SAMPLE_RATE * crossfade_ms / 1000)
     if changed_source:
         # The verified interval authorizes the edit region; the cut is
-        # narrowed to the ASR-aligned changed words inside it so unchanged
+        # narrowed to the changed words inside it so unchanged
         # words that share the interval (e.g. 'team' next to 'better') keep
         # their original PCM. The cut - words plus join padding - is clamped
         # strictly inside the interval and never clips a neighboring word.
         # Any ambiguity fails closed.
-        source_words = _flat_word_tokens(transcriber(Path(source)))
-        stokens = [w['token'] for w in source_words]
-        s0i, s1i = _find_unique_span(stokens, changed_source, 'The changed source words')
-        w0, w1 = source_words[s0i], source_words[s1i - 1]
+        if measured_span is not None:
+            # Corrected-transcript flow: the bound session evidence carries the
+            # aligner-MEASURED timings of the changed words (MAC-verified upstream).
+            # ASR re-transcription cannot locate these words when its
+            # misrecognition is the very reason for the correction, so measured
+            # timings replace the ASR search. Token identity is still checked.
+            if len(measured_span) != len(changed_source):
+                raise EditorError('transplant_span_ambiguous',
+                                  'Measured span word count differs from the changed source words.')
+            for tok, entry in zip(changed_source, measured_span):
+                if normalized_tokens(str(entry.get('word', ''))) != [tok]:
+                    raise EditorError('transplant_span_ambiguous',
+                                      'Measured span words diverge from the changed source words.')
+            w0 = {'start': float(measured_span[0]['start']), 'end': float(measured_span[0]['end'])}
+            w1 = {'start': float(measured_span[-1]['start']), 'end': float(measured_span[-1]['end'])}
+            # Neighbor PCM protection without ASR words: the measured timings carry
+            # the alignment score upstream (low scores forced human review), and the
+            # cut stays clamped inside the verified interval either way.
+            source_words = None
+        else:
+            source_words = _flat_word_tokens(transcriber(Path(source)))
+            stokens = [w['token'] for w in source_words]
+            s0i, s1i = _find_unique_span(stokens, changed_source, 'The changed source words')
+            w0, w1 = source_words[s0i], source_words[s1i - 1]
         if w0['start'] < start - 0.05 or w1['end'] > end + 0.05:
             raise EditorError('transplant_span_ambiguous',
                               'Changed words are not inside the verified interval.')
-        prev_end = source_words[s0i - 1]['end'] if s0i else 0.0
-        next_start = source_words[s1i]['start'] if s1i < len(source_words) else total / SAMPLE_RATE
         lo_f, hi_f = int(start * SAMPLE_RATE), int(end * SAMPLE_RATE)
+        if source_words is not None:
+            prev_end = source_words[s0i - 1]['end'] if s0i else 0.0
+            next_start = source_words[s1i]['start'] if s1i < len(source_words) else total / SAMPLE_RATE
+        else:
+            # Without ASR neighbor words, the verified interval boundaries are the
+            # only neighbor protection: padding never extends past them.
+            prev_end, next_start = start, end
         prev_f, next_f = int(prev_end * SAMPLE_RATE), int(next_start * SAMPLE_RATE)
         w0f, w1f = int(w0['start'] * SAMPLE_RATE), int(w1['end'] * SAMPLE_RATE)
         cut0 = max(w0f - int(pad_pre * SAMPLE_RATE), lo_f, prev_f)
@@ -379,52 +405,91 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
             # candidate still faces the unchanged full QA gate. The smallest
             # fitting span wins; anything that cannot fit fails closed.
             fitted = None
-            for extra in range(0, suffix + 1):
-                s1e = s1i + extra
-                e1 = m - suffix + extra
-                if s1e > len(source_words) or e1 > m:
-                    break
-                sw1 = source_words[s1e - 1]
-                if sw1['end'] > end + 0.05:
-                    break  # span would leave the interval; a longer one only gets worse
-                w1f_e = int(sw1['end'] * SAMPLE_RATE)
-                nxt = source_words[s1e]['start'] if s1e < len(source_words) else total / SAMPLE_RATE
-                next_f_e = int(nxt * SAMPLE_RATE)
-                cut0_e = max(w0f - int(pad_pre * SAMPLE_RATE), lo_f, prev_f)
-                cut1_e = min(w1f_e + int(pad_post * SAMPLE_RATE), hi_f, next_f_e)
-                if cut0_e > w0f or cut1_e < w1f_e or cut1_e <= cut0_e:
-                    break
-                cut_frames_e = cut1_e - cut0_e
-                dw0e, dw1e = gen_words[prefix], gen_words[e1 - 1]
-                d0, d1 = int(dw0e['start'] * SAMPLE_RATE), int(dw1e['end'] * SAMPLE_RATE)
+            if source_words is None:
+                # Measured-timing mode has no ASR neighbor words, so widening into a
+                # trailing equal word is unavailable. The BASE cut still gets the full
+                # fit computation: donor words plus as much surrounding donor room tone
+                # as fits inside the interval-clamped cut (neighbor protection here is
+                # the verified interval itself: prev_f/next_f are the interval bounds).
+                # Donor words longer than the interval allows fail closed below -
+                # never trimmed, stretched or padded.
+                d0 = int(gen_words[prefix]['start'] * SAMPLE_RATE)
+                d1 = int(gen_words[m - suffix - 1]['end'] * SAMPLE_RATE)
                 word_frames = d1 - d0
-                if word_frames > cut_frames_e:
-                    grow = word_frames - cut_frames_e
-                    add = min(grow, min(hi_f, next_f_e) - cut1_e)
-                    cut1_e += add; grow -= add
-                    add = min(grow, cut0_e - max(lo_f, prev_f))
-                    cut0_e -= add; grow -= add
+                cut0_b, cut1_b = cut0, cut1
+                cut_frames_b = cut_frames
+                grow = 0
+                if word_frames > cut_frames_b:
+                    grow = word_frames - cut_frames_b
+                    add = min(grow, min(hi_f, next_f) - cut1_b)
+                    cut1_b += add; grow -= add
+                    add = min(grow, cut0_b - max(lo_f, prev_f))
+                    cut0_b -= add; grow -= add
+                    cut_frames_b = cut1_b - cut0_b
+                if grow <= 0:
+                    slack = cut_frames_b - word_frames
+                    prev_g_end = int(gen_words[prefix - 1]['end'] * SAMPLE_RATE) if prefix else 0
+                    next_g_start = int(gen_words[m - suffix]['start'] * SAMPLE_RATE) if m - suffix < m else len(generation_samples)
+                    room_pre = d0 - prev_g_end
+                    room_post = next_g_start - d1
+                    if slack <= room_pre + room_post:
+                        # Same slack distribution as the ASR path: pad_pre is capped
+                        # by slack so pad_post never goes negative (a negative pad_post
+                        # would silently clip the donor word tail).
+                        pad_pre_f = min(int(pad_pre * SAMPLE_RATE), room_pre, slack)
+                        if slack - pad_pre_f > room_post:
+                            pad_pre_f = slack - room_post
+                        pad_post_f = slack - pad_pre_f
+                        p0 = d0 - pad_pre_f
+                        fitted = (cut0_b, cut1_b, p0, 0,
+                                  [round(p0 / SAMPLE_RATE, 3), round((p0 + cut_frames_b) / SAMPLE_RATE, 3)])
+            else:
+                for extra in range(0, suffix + 1):
+                    s1e = s1i + extra
+                    e1 = m - suffix + extra
+                    if s1e > len(source_words) or e1 > m:
+                        break
+                    sw1 = source_words[s1e - 1]
+                    if sw1['end'] > end + 0.05:
+                        break  # span would leave the interval; a longer one only gets worse
+                    w1f_e = int(sw1['end'] * SAMPLE_RATE)
+                    nxt = source_words[s1e]['start'] if s1e < len(source_words) else total / SAMPLE_RATE
+                    next_f_e = int(nxt * SAMPLE_RATE)
+                    cut0_e = max(w0f - int(pad_pre * SAMPLE_RATE), lo_f, prev_f)
+                    cut1_e = min(w1f_e + int(pad_post * SAMPLE_RATE), hi_f, next_f_e)
+                    if cut0_e > w0f or cut1_e < w1f_e or cut1_e <= cut0_e:
+                        break
                     cut_frames_e = cut1_e - cut0_e
-                    if grow > 0:
-                        continue  # try a longer span
-                slack = cut_frames_e - word_frames
-                prev_g_end = int(gen_words[prefix - 1]['end'] * SAMPLE_RATE) if prefix else 0
-                next_g_start = int(gen_words[e1]['start'] * SAMPLE_RATE) if e1 < m else len(generation_samples)
-                room_pre = d0 - prev_g_end
-                room_post = next_g_start - d1
-                if slack > room_pre + room_post:
-                    continue  # not enough donor room for this span; a longer one may differ
-                # Distribute slack as room-tone padding around the donor words.
-                # pad_pre is capped by slack so pad_post never goes negative:
-                # a negative pad_post would silently clip the donor word tail.
-                pad_pre_f = min(int(pad_pre * SAMPLE_RATE), room_pre, slack)
-                if slack - pad_pre_f > room_post:
-                    pad_pre_f = slack - room_post
-                pad_post_f = slack - pad_pre_f
-                p0 = d0 - pad_pre_f
-                fitted = (cut0_e, cut1_e, p0, extra,
-                          [round(p0 / SAMPLE_RATE, 3), round((p0 + cut_frames_e) / SAMPLE_RATE, 3)])
-                break
+                    dw0e, dw1e = gen_words[prefix], gen_words[e1 - 1]
+                    d0, d1 = int(dw0e['start'] * SAMPLE_RATE), int(dw1e['end'] * SAMPLE_RATE)
+                    word_frames = d1 - d0
+                    if word_frames > cut_frames_e:
+                        grow = word_frames - cut_frames_e
+                        add = min(grow, min(hi_f, next_f_e) - cut1_e)
+                        cut1_e += add; grow -= add
+                        add = min(grow, cut0_e - max(lo_f, prev_f))
+                        cut0_e -= add; grow -= add
+                        cut_frames_e = cut1_e - cut0_e
+                        if grow > 0:
+                            continue  # try a longer span
+                    slack = cut_frames_e - word_frames
+                    prev_g_end = int(gen_words[prefix - 1]['end'] * SAMPLE_RATE) if prefix else 0
+                    next_g_start = int(gen_words[e1]['start'] * SAMPLE_RATE) if e1 < m else len(generation_samples)
+                    room_pre = d0 - prev_g_end
+                    room_post = next_g_start - d1
+                    if slack > room_pre + room_post:
+                        continue  # not enough donor room for this span; a longer one may differ
+                    # Distribute slack as room-tone padding around the donor words.
+                    # pad_pre is capped by slack so pad_post never goes negative:
+                    # a negative pad_post would silently clip the donor word tail.
+                    pad_pre_f = min(int(pad_pre * SAMPLE_RATE), room_pre, slack)
+                    if slack - pad_pre_f > room_post:
+                        pad_pre_f = slack - room_post
+                    pad_post_f = slack - pad_pre_f
+                    p0 = d0 - pad_pre_f
+                    fitted = (cut0_e, cut1_e, p0, extra,
+                              [round(p0 / SAMPLE_RATE, 3), round((p0 + cut_frames_e) / SAMPLE_RATE, 3)])
+                    break
             if fitted is None and allow_borrowed_room:
                 # EXPERIMENTAL (unqualified): borrowed-room assembly for packed
                 # donors whose words fit lengthwise but carry no natural room

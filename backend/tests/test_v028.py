@@ -40,7 +40,7 @@ class WallClockTests(test_scope.ScopeTests):
   self.adapter.run=run_timeout;self.worker.set_deadline(3600)
   with self.assertRaises(WallClockAbort):
    self.worker.edit_audio(str(self.source),'voice_editor','emotion',dict(self.p))
-  folders=[f for f in (self.root/'runs').iterdir() if f.is_dir()]
+  folders=[f for f in (self.root/'runs').iterdir() if f.is_dir() and not f.name.startswith('.')]
   self.assertEqual(len(folders),1)
   attempts=json.loads((folders[0]/'attempts.json').read_text())
   self.assertEqual(len(attempts),1);self.assertEqual(attempts[0]['failure_reason'],'inference_timeout')

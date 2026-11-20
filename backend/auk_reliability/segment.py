@@ -1,7 +1,7 @@
 """Fixed-duration segment replacement. No whole-recording model regeneration."""
 import wave, math, array, sys
 from pathlib import Path
-from .core import EditorError, command, probe_audio, compare_transcript, normalized_tokens
+from .core import EditorError, command, probe_audio, compare_transcript, normalized_tokens, flow_evidence_verify
 
 def normalize_recording(source, output, limits):
  meta=probe_audio(source,limits)
@@ -12,8 +12,52 @@ def normalize_recording(source, output, limits):
  if abs(actual-meta['duration_seconds'])>.06: raise EditorError('truncated_input','Full recording failed decode-duration check.')
  return actual
 
-def verify_alignment(source_segment, parameters, transcriber):
- if parameters.get('segment_scope')=='whole_clip':
+def verify_alignment(source_segment, parameters, transcriber, flow_registry=None):
+ if parameters.get('alignment_source')=='user_corrected':
+  # Correctable-transcript flow (transcriptflow.py): the user's corrected text is the
+  # authority, so ASR exact-match would reject legitimate corrections. Correctness comes
+  # from human review of the corrected transcript plus explicit span confirmation; the
+  # session gates estimated timings and low-confidence words upstream. All splice,
+  # duration and output gates still run downstream. Repeatability is not correctness -
+  # this path trusts the review, not the ASR.
+  if parameters.get('span_confirmed') is not True:
+   raise EditorError('span_review_required','User-corrected span edits require explicit span confirmation.')
+  # Bound session evidence: the session that ran the review issues an HMAC over the
+  # exact span parameters. The key lives in the WORKER'S OWN flow registry (its runs
+  # root), never in caller-supplied storage: a caller cannot point verification at a
+  # directory it controls, so self-issued keys and arbitrary paths are meaningless
+  # here. Flipping alignment_source/span_confirmed or moving the range fails the MAC.
+  if flow_registry is None:
+   raise EditorError('flow_evidence_invalid','Worker has no flow registry; corrected-flow edits are not accepted.')
+  evidence=parameters.get('flow_evidence') or {}
+  payload={'span_text':parameters.get('segment_text'),'source_text':parameters.get('source_text'),
+           'start':parameters.get('segment_start_seconds'),'end':parameters.get('segment_end_seconds'),
+           'alignment_source':'user_corrected',
+           'changed_span_words':parameters.get('changed_span_words')}
+  if not flow_evidence_verify(flow_registry,evidence.get('session_id'),payload,parameters.get('flow_mac')):
+   raise EditorError('flow_evidence_invalid','Corrected-flow edits need worker-registry session evidence matching these exact parameters.')
+  return
+ if parameters.get('alignment_source')=='asr_accepted':
+  # Accept-as-is session flow (transcriptflow.py): the human read the ASR transcript
+  # unchanged and selected the span from it. The session forced audio-slice review
+  # for any low-confidence word or unmeasured boundary upstream and binds the exact
+  # parameters with worker-registry evidence (same construction as user_corrected).
+  # Unlike user_corrected, this path FALLS THROUGH to the segment ASR re-verification
+  # below: the cut audio must read back the selected words exactly. If it does not,
+  # the edit fails closed - the route is to correct the transcript (which then takes
+  # the user_corrected path), never to relax the match.
+  if parameters.get('span_confirmed') is not True:
+   raise EditorError('span_review_required','Session span edits require explicit span confirmation.')
+  if flow_registry is None:
+   raise EditorError('flow_evidence_invalid','Worker has no flow registry; session edits are not accepted.')
+  evidence=parameters.get('flow_evidence') or {}
+  payload={'span_text':parameters.get('segment_text'),'source_text':parameters.get('source_text'),
+           'start':parameters.get('segment_start_seconds'),'end':parameters.get('segment_end_seconds'),
+           'alignment_source':'asr_accepted',
+           'changed_span_words':parameters.get('changed_span_words')}
+  if not flow_evidence_verify(flow_registry,evidence.get('session_id'),payload,parameters.get('flow_mac')):
+   raise EditorError('flow_evidence_invalid','Session edits need worker-registry session evidence matching these exact parameters.')
+ elif parameters.get('segment_scope')=='whole_clip':
   # No timestamps involved: the window is the entire clip, whose transcript was human-checked.
   # Alignment is NOT marked human-verified; ASR must still match the whole clip exactly below.
   if parameters['segment_text'].strip()!=parameters.get('source_text','').strip():

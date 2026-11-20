@@ -415,6 +415,50 @@ def decode_response(response: dict, limits: Limits) -> bytes:
     return content
 
 
+FLOW_SESSION_ID = re.compile(r'^[0-9a-f]{16}$')
+
+
+def flow_key_create(registry_root, session_id: str) -> str:
+    """Create (or return) the per-session HMAC key in the WORKER-CONTROLLED flow
+    registry. The registry root must be storage the verifying worker owns (inside
+    its runs root), never a caller-supplied session directory: a session id only
+    becomes trustworthy because the worker finds the key in its own registry."""
+    import secrets
+    if not FLOW_SESSION_ID.match(session_id or ''):
+        raise EditorError('flow_session_invalid', 'Flow session id must be 16 lowercase hex chars.')
+    root = Path(registry_root)
+    root.mkdir(parents=True, exist_ok=True)
+    try:
+        os.chmod(root, 0o700)
+    except OSError:
+        pass
+    path = root / (session_id + '.key')
+    if not path.exists():
+        path.write_text(secrets.token_hex(32))
+        os.chmod(path, 0o600)
+    return path.read_text().strip()
+
+
+def flow_mac(key: str, payload: dict) -> str:
+    import hmac
+    body = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+    return hmac.new(bytes.fromhex(key), body, hashlib.sha256).hexdigest()
+
+
+def flow_evidence_verify(registry_root, session_id: str, payload: dict, mac: str) -> bool:
+    """Verify corrected-flow evidence against the WORKER'S OWN registry. A caller
+    cannot point verification at an arbitrary directory: the session id is looked
+    up only inside registry_root, so self-issued keys elsewhere are meaningless."""
+    import hmac
+    if not isinstance(session_id, str) or not FLOW_SESSION_ID.match(session_id) or not isinstance(mac, str):
+        return False
+    path = Path(registry_root) / (session_id + '.key')
+    if not path.is_file():
+        return False
+    expected = flow_mac(path.read_text().strip(), payload)
+    return hmac.compare_digest(expected, mac)
+
+
 def normalized_tokens(text: str) -> list[str]:
     # A documented heuristic, not a multilingual semantic equivalence metric.
     text = unicodedata.normalize('NFKC', text).casefold()

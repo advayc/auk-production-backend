@@ -3,7 +3,7 @@ from pathlib import Path
 import json, os, shutil, hashlib, datetime
 from .core import atomic_json, sha256_file
 
-SKIP_PARTS={'venv','models','model-cache','__pycache__','.git','shared-runtime'}
+SKIP_PARTS={'venv','models','model-cache','__pycache__','.git','shared-runtime','.flow-registry'}
 class Checkpoint:
  def __init__(self, destination, roots):
   self.destination=Path(destination);self.destination.mkdir(parents=True,exist_ok=True)

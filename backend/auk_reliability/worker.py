@@ -1,5 +1,5 @@
 from __future__ import annotations
-import dataclasses, time, uuid, threading, math, wave, fcntl
+import dataclasses, os, time, uuid, threading, math, wave, fcntl
 from pathlib import Path
 from .core import (Limits, EditorError, WallClockAbort, LocalAuKServer, atomic_json, atomic_bytes, sha256_file,
  scoped_limits, probe_audio, prepare_audio, validate_output, decode_response, command, utc_now, normalized_tokens)
@@ -35,6 +35,11 @@ class ReliabilityWorker:
   self.adapter=adapter;self.root=Path(root);self.root.mkdir(parents=True,exist_ok=True)
   self.limits=limits;self.gate=semantic_gate or SemanticQAGate();self.runtime_profile=runtime_profile or {}
   self.max_attempts=max_attempts;self.lock=threading.Lock();self.deadline=None
+  # Worker-owned flow registry: corrected-transcript session keys live here, inside
+  # the worker's runs root, so verification never follows a caller-supplied path.
+  self.flow_registry=self.root/'.flow-registry';self.flow_registry.mkdir(exist_ok=True)
+  try:os.chmod(self.flow_registry,0o700)
+  except OSError:pass
   self.lockfile=(self.root/'.worker.lock').open('a+')
   try:fcntl.flock(self.lockfile,fcntl.LOCK_EX|fcntl.LOCK_NB)
   except BlockingIOError as exc:
@@ -79,7 +84,7 @@ class ReliabilityWorker:
    prep=prepare_audio(source,prepared,start,end,limits)
    plan=plan_request(mode,operation,p,prep['signal']['duration_seconds'],limits)
    if sha256_file(source)!=digest:raise EditorError('source_changed','Source changed during preparation.')
-   if mode=='transcript_editor':verify_alignment(prepared,p,self.gate.transcriber)
+   if mode=='transcript_editor':verify_alignment(prepared,p,self.gate.transcriber,flow_registry=self.flow_registry)
   except Exception as exc:
    atomic_json(folder/'preflight_failure.json',{'reason':getattr(exc,'code',type(exc).__name__),'message':str(exc)})
    exc.request_dir=str(folder)
@@ -201,7 +206,8 @@ class ReliabilityWorker:
      final=out;record['splice']={'skipped':'whole_clip scope: the output replaces the entire clip; unchanged-region identity is not applicable'}
     elif mode=='transcript_editor':
      final=ad/'spliced.wav'
-     record['splice']=localized_transplant(full,out,self.gate.transcriber,float(start),float(end),src_txt,full_edited,final)
+     _measured=p.get('changed_span_words') if p.get('alignment_source') in ('user_corrected','asr_accepted') else None
+     record['splice']=localized_transplant(full,out,self.gate.transcriber,float(start),float(end),src_txt,full_edited,final,measured_span=_measured)
      record['artifact_paths'].append(str(final))
      try:
       _seam_bounds=record['splice'].get('source_cut_seconds',[float(start),float(end)])
