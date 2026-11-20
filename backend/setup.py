@@ -1,3 +1,3 @@
 from setuptools import setup, find_packages
-setup(name='auk-reliability',version='0.6.2',packages=find_packages(),python_requires='>=3.10',
+setup(name='auk-reliability',version='0.6.3',packages=find_packages(),python_requires='>=3.10',
  description='AuK single-worker reliability and evaluation candidate')

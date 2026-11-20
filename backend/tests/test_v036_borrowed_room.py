@@ -126,3 +126,53 @@ class BorrowedRoomTests(unittest.TestCase):
         self.assertEqual(info['span_strategy'],'changed_only')
 
 if __name__=='__main__':unittest.main()
+
+
+class MeasuredRoomFitTests(BorrowedRoomTests):
+    def test_bound_measured_path_uses_room_without_touching_neighbor(self):
+        measured=[dict(word='better',start='1.39',end='1.75',
+                       previous_word_end='1.07',next_word_start='1.79')]
+        def tx(path):
+            self.assertEqual(Path(path),self.gen)
+            return words_obs('the good team on night',
+                [('the',.15,.40),('good',.40,.54),('team',.54,.80),('on',.80,1.14),('night',1.14,1.50)])
+        out=self.root/'measured.wav'
+        info=localized_transplant(self.src,self.gen,tx,1.34,2.2,
+                                  self.SRC_T,'the good team on night',out,measured_span=measured)
+        self.assertEqual(info['span_strategy'],'changed_only_borrowed_room')
+        n,s=_frames(self.src);m,o=_frames(out)
+        self.assertEqual(n,m)
+        self.assertEqual(s[:int(1.34*24000)*2],o[:int(1.34*24000)*2])
+        self.assertEqual(s[int(1.79*24000)*2:],o[int(1.79*24000)*2:])
+
+    def test_unbound_measured_path_cannot_borrow_room(self):
+        def tx(path):
+            return words_obs('the good team on night',
+                [('the',.15,.40),('good',.40,.54),('team',.54,.80),('on',.80,1.14),('night',1.14,1.50)])
+        with self.assertRaises(EditorError):
+            localized_transplant(self.src,self.gen,tx,1.34,2.2,
+                self.SRC_T,'the good team on night',self.root/'unbound.wav',
+                measured_span=[dict(word='better',start='1.39',end='1.75')])
+
+    def test_strict_room_excludes_low_energy_inside_aligned_speech(self):
+        from auk_reliability.transplant import _borrowed_room_fit, _read_mono, _flat_word_tokens
+        words=_flat_word_tokens(words_obs('the good team on night',
+            [('the',.0,.40),('good',.40,.54),('team',.54,.80),('on',.80,1.14),('night',1.14,1.90)]))
+        fit=_borrowed_room_fit([dict(start=1.39,end=1.75)],words,_read_mono(self.gen),
+                              1,3,1,5,1.34,2.2,32160,42960,32160,33360,
+                              .06,.12,600,strict_outer_room=True)
+        self.assertIsNone(fit)
+
+    def test_quantization_floor_leadin_can_be_inside_first_word_timestamp(self):
+        from auk_reliability.transplant import _borrowed_room_fit, _read_mono, _flat_word_tokens
+        donor=tone(self.root/'floor.wav',1.9,quiet_head=.15)
+        with wave.open(str(donor)) as w: a=array.array('h',w.readframes(w.getnframes()))
+        a[:3600]=array.array('h',(1 if i%2 else -1 for i in range(3600)))
+        with wave.open(str(donor),'wb') as w:
+            w.setnchannels(1);w.setsampwidth(2);w.setframerate(24000);w.writeframes(a.tobytes())
+        words=_flat_word_tokens(words_obs('good team', [('good',0,.2),('team',.2,1.9)]))
+        fit=_borrowed_room_fit([dict(start=1.39,end=1.75)],words,_read_mono(donor),
+            0,1,1,2,1.34,2.2,32160,42960,32160,33360,.06,.12,600,strict_outer_room=True)
+        self.assertIsNotNone(fit)
+        self.assertLessEqual(fit['room_peak_pcm16'],2)
+        self.assertTrue(fit['strict_room_validation'])

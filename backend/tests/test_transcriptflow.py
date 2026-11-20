@@ -401,7 +401,7 @@ class AcceptAsIsAlignmentGate(unittest.TestCase):
         self.assertIn('flow_evidence', params)
         self.assertTrue(params['flow_mac'])
         self.assertEqual(params['changed_span_words'],
-                         [{'word': 'visitors', 'start': '0.2', 'end': '0.8'}])
+                         [{'word': 'visitors', 'start': '0.2', 'end': '0.8', 'previous_word_end': '0.2', 'next_word_start': '0.8'}])
         # Segment ASR agrees with the selected words: the gate passes.
         verify_alignment(Path('/nonexistent.wav'), params,
                          lambda p: {'text': 'visitors'}, flow_registry=self.registry)
@@ -479,7 +479,7 @@ class SpanDurationFloor(unittest.TestCase):
         self.assertEqual(params['segment_end_seconds'], '1.5')
         self.assertEqual(params['alignment_source'], 'asr_accepted')
         self.assertEqual(params['changed_span_words'],
-                         [{'word': 'are', 'start': '0.8', 'end': '1.0'}])
+                         [{'word': 'are', 'start': '0.8', 'end': '1.0', 'previous_word_end': '0.8', 'next_word_start': '1.0'}])
 
 
 class WorkerIntegration(unittest.TestCase):
@@ -690,6 +690,8 @@ class ReviewedEdgePropagation(unittest.TestCase):
         session = TranscriptSession(src, fake_transcriber, Path(self.tmp.name)/'tone-session',
                                     flow_registry=self.registry)
         session.transcribe()
+        session.words[0].end = .1
+        session.words[2].start = 1.0
         entry = session.review_candidates('visitors', start_adjust_seconds=-.1,
                                           end_adjust_seconds=.2)[0]
         params = session.span_params('visitors', 'guests',
@@ -719,7 +721,7 @@ class ReviewedEdgePropagation(unittest.TestCase):
                                                end_adjust_seconds=.1)[0]
         p = self.session.span_params('The visitors are', 'The guests are',
                                      confirmation_token=self.session.confirm_span(entry))
-        self.assertEqual(p['changed_span_words'], [dict(word='visitors', start='0.2', end='0.8')])
+        self.assertEqual(p['changed_span_words'], [dict(word='visitors', start='0.2', end='0.8', previous_word_end='0.2', next_word_start='0.8')])
 
     def test_reviewed_edge_cannot_invert_changed_word(self):
         entry = self.session.review_candidates('visitors are however',
@@ -728,3 +730,10 @@ class ReviewedEdgePropagation(unittest.TestCase):
             self.session.span_params('visitors are however', 'guests are however',
                                      confirmation_token=self.session.confirm_span(entry))
         self.assertEqual(ctx.exception.code, 'reviewed_word_range_invalid')
+
+    def test_neighbor_metadata_is_bound_to_worker_evidence(self):
+        params=reviewed_params(self.session,'visitors','guests')
+        params['changed_span_words'][0]['next_word_start']='2.0'
+        with self.assertRaises(EditorError) as ctx:
+            verify_alignment(self.src,params,lambda p:{'text':'visitors'},flow_registry=self.registry)
+        self.assertEqual(ctx.exception.code,'flow_evidence_invalid')

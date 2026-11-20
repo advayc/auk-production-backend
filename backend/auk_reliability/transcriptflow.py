@@ -422,6 +422,13 @@ class TranscriptSession:
                 raise EditorError('reviewed_word_range_invalid',
                                   'Reviewed edges do not contain the changed words in order. '
                                   'Select the changed phrase and review its boundaries again.')
+        if measured:
+            # Bound source-neighbor protection accompanies the changed words.
+            first_index = next(i for i, w in enumerate(self.words) if w is changed_words[0])
+            last_index = first_index + len(changed_words)
+            measured[0]['previous_word_end'] = repr(round(self.words[first_index-1].end, 6)) if first_index else '0.0'
+            measured[-1]['next_word_start'] = (repr(round(self.words[last_index].start, 6))
+                                               if last_index < len(self.words) else repr(round(self._duration(), 6)))
         params['changed_span_words'] = measured
         # Bound session evidence: HMAC over the exact parameters the worker will see.
         # The key lives in the worker's own flow registry (never in this session's

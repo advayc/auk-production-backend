@@ -69,9 +69,12 @@ def _word_tokens(observed: dict) -> list[dict]:
 
 def _borrowed_room_fit(source_words, gen_words, generation_samples,
                        prefix, suffix, s1i, m, start, end,
-                       lo_f, hi_f, prev_f, w0f, pad_pre, pad_post, crossfade):
-    """EXPERIMENTAL (unqualified, opt-in): fit a packed donor whose words are
-    shorter than the in-interval cut but lack surrounding natural room tone.
+                       lo_f, hi_f, prev_f, w0f, pad_pre, pad_post, crossfade, *, strict_outer_room=False):
+    """Fit a packed donor whose words are
+    shorter than the in-interval cut but lack adjacent natural room tone.
+
+    The legacy broad search remains experimental and opt-in. Session-measured
+    use requires bound neighbor limits and strict_outer_room validation.
 
     Assembles patch = verified_room(pre) + donor words + verified_room(post).
     The donor word region is copied byte-exact (never faded, never clipped);
@@ -106,7 +109,12 @@ def _borrowed_room_fit(source_words, gen_words, generation_samples,
     runs = []
     cur = None
     for i, r in enumerate(prof):
-        if 0 < r <= thresh:
+        outside_speech = (i + 1) * win <= g_all0 or i * win >= g_all1
+        # A timestamp may absorb the donor's silent lead-in. Only quantization-
+        # floor samples (peak <= 2 PCM16 units, below -84 dBFS) may override
+        # that speech exclusion. Quiet consonants at normal levels cannot.
+        quantization_floor = bool(_np.max(_np.abs(gen[i*win:(i+1)*win])) <= 2)
+        if 0 < r <= thresh and (not strict_outer_room or outside_speech or quantization_floor):
             if cur is None:
                 cur = i
         else:
@@ -114,7 +122,7 @@ def _borrowed_room_fit(source_words, gen_words, generation_samples,
                 runs.append((cur * win, i * win)); cur = None
     if cur is not None:
         runs.append((cur * win, len(prof) * win))
-    runs = [(a, b) for a, b in runs if b - a >= xf]
+    runs = [(a, b) for a, b in runs if b - a > xf]
     if not runs:
         return None  # no verified room: refuse
     a, b = max(runs, key=lambda ab: ab[1] - ab[0])
@@ -152,7 +160,11 @@ def _borrowed_room_fit(source_words, gen_words, generation_samples,
             return None  # external crossfades would touch word audio: refuse
         patch = _np.concatenate([_room(pre), gen[d0:d1], _room(post)]).tolist()
         return {'cut0': cut0_e, 'cut1': cut1_e, 'extra': extra, 'patch': patch,
-                'g_span': [round(d0 / SR, 3), round(d1 / SR, 3)]}
+                'g_span': [round(d0 / SR, 3), round(d1 / SR, 3)],
+                'room_source_seconds': [a / SR, b / SR],
+                'room_rms_ratio': float(_np.sqrt((room_src ** 2).mean())) / speech_rms,
+                'strict_room_validation': strict_outer_room,
+                'room_peak_pcm16': int(_np.max(_np.abs(room_src)))}
     return None
 
 
@@ -379,7 +391,8 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
         else:
             # Without ASR neighbor words, the verified interval boundaries are the
             # only neighbor protection: padding never extends past them.
-            prev_end, next_start = start, end
+            prev_end = max(start, float(measured_span[0].get('previous_word_end', start)))
+            next_start = min(end, float(measured_span[-1].get('next_word_start', end)))
         prev_f, next_f = int(prev_end * SAMPLE_RATE), int(next_start * SAMPLE_RATE)
         w0f, w1f = int(w0['start'] * SAMPLE_RATE), int(w1['end'] * SAMPLE_RATE)
         cut0 = max(w0f - int(pad_pre * SAMPLE_RATE), lo_f, prev_f)
@@ -490,7 +503,21 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                     fitted = (cut0_e, cut1_e, p0, extra,
                               [round(p0 / SAMPLE_RATE, 3), round((p0 + cut_frames_e) / SAMPLE_RATE, 3)])
                     break
-            if fitted is None and allow_borrowed_room:
+            if fitted is None and source_words is None:
+                # Session-measured changed words may have a packed donor with no
+                # adjacent room. Reuse verified low-energy DONOR room only when
+                # bound neighbor limits are available. Spoken donor PCM is copied
+                # intact; no time stretching, speech padding or shifted tail.
+                if ('previous_word_end' in measured_span[0] and
+                        'next_word_start' in measured_span[-1]):
+                    protected_words = [dict(start=float(w['start']), end=float(w['end']))
+                                       for w in measured_span]
+                    fitted = _borrowed_room_fit(
+                        protected_words, gen_words, generation_samples,
+                        prefix, suffix, len(protected_words), m, start, end,
+                        lo_f, min(hi_f, next_f), prev_f, w0f,
+                        pad_pre, pad_post, crossfade, strict_outer_room=True)
+            if fitted is None and allow_borrowed_room and source_words is not None:
                 # EXPERIMENTAL (unqualified): borrowed-room assembly for packed
                 # donors whose words fit lengthwise but carry no natural room
                 # tone. Word audio is never faded or clipped; padding is
@@ -505,6 +532,7 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
                 raise EditorError('transplant_duration_mismatch',
                                   'Replacement words are longer than the source span inside the verified interval, even allowing in-interval neighbor words to be re-generated; widen the interval or use whole_clip scope.')
             borrowed = isinstance(fitted, dict)
+            room_evidence = {k: fitted[k] for k in ('room_source_seconds', 'room_rms_ratio', 'strict_room_validation', 'room_peak_pcm16') if k in fitted} if borrowed else {}
             if borrowed:
                 cut0, cut1, extra_words, g_span = fitted['cut0'], fitted['cut1'], fitted['extra'], fitted['g_span']
                 patch = fitted['patch']
@@ -588,6 +616,7 @@ def localized_transplant(source: Path, generation: Path, transcriber, start: flo
             'source_cut_seconds': [round(cut0 / SAMPLE_RATE, 3), round(cut1 / SAMPLE_RATE, 3)],
             'changed_source_words': ' '.join(source_tokens[prefix:len(source_tokens) - suffix]),
             'span_strategy': span_strategy,
+            'room_evidence': locals().get('room_evidence', {}),
             'regenerated_neighbor_words': regen_words,
             'changed_edited_words': ' '.join(edited_tokens[prefix:m - suffix]),
             'pad_pre_seconds': pad_pre, 'pad_post_seconds': pad_post, 'crossfade_ms': crossfade_ms,
