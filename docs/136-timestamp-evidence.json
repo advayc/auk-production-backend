@@ -46,7 +46,7 @@
     "one recovered clean-speech example",
     "not a fresh-generation reliability rate",
     "fast source-cut mismatch remains",
-    "quiet natural-speech output remains",
+    "low-level AMI source/output pair remains; source -57.60 dBFS RMS, output -56.10",
     "no Descript comparison",
     "no validated slurred-speech coverage"
   ]
