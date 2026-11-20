@@ -668,3 +668,63 @@ class UniversalCutReview(unittest.TestCase):
         with self.assertRaises(EditorError) as ctx:
             self.session.span_params('visitors', 'guests', confirmation_token=token)
         self.assertEqual(ctx.exception.code, 'span_review_required')
+
+
+class ReviewedEdgePropagation(unittest.TestCase):
+    setUp = TranscriptFlow.setUp
+    tearDown = TranscriptFlow.tearDown
+
+    def test_adjusted_changed_edge_reaches_actual_transplant(self):
+        from auk_reliability.transplant import localized_transplant
+        import math, array
+        # Actual PCM splice, deterministic donor and recognizer fixture, no AI
+        # generation or human-listening claim.
+        for name, freq in [('source-tone.wav', .08), ('donor-tone.wav', .11)]:
+            path = Path(self.tmp.name) / name
+            with wave.open(str(path), 'wb') as w:
+                w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000)
+                w.writeframes(array.array('h', (int(6000*math.sin(i*freq))
+                                                for i in range(4*24000))).tobytes())
+        src = Path(self.tmp.name) / 'source-tone.wav'
+        donor = Path(self.tmp.name) / 'donor-tone.wav'
+        session = TranscriptSession(src, fake_transcriber, Path(self.tmp.name)/'tone-session',
+                                    flow_registry=self.registry)
+        session.transcribe()
+        entry = session.review_candidates('visitors', start_adjust_seconds=-.1,
+                                          end_adjust_seconds=.2)[0]
+        params = session.span_params('visitors', 'guests',
+                                     confirmation_token=session.confirm_span(entry))
+        self.assertEqual(float(params['changed_span_words'][0]['start']), .1)
+        self.assertEqual(float(params['changed_span_words'][0]['end']), 1.0)
+        def donor_asr(path):
+            self.assertEqual(Path(path), donor)  # stale source ASR not used
+            return {'text': TEXT.replace('visitors', 'guests'), 'words': [
+                dict(w, word='guests', start=.3, end=.7) if w['word']=='visitors' else
+                dict(w, end=.1) if w['word']=='The' else
+                dict(w, start=1.2, end=1.3) if w['word']=='are' else dict(w)
+                for w in WORDS]}
+        out = Path(self.tmp.name)/'actual-splice.wav'
+        record = localized_transplant(src, donor, donor_asr, .1, 1.0, TEXT,
+                                      TEXT.replace('visitors', 'guests'), out,
+                                      measured_span=params['changed_span_words'])
+        self.assertEqual(record['source_cut_seconds'], [.1, 1.0])
+        with wave.open(str(src)) as w: original = w.readframes(w.getnframes())
+        with wave.open(str(out)) as w: result = w.readframes(w.getnframes())
+        self.assertEqual(len(original), len(result))
+        self.assertEqual(original[:4800], result[:4800])
+        self.assertEqual(original[48000:], result[48000:])
+
+    def test_wider_phrase_edge_does_not_move_internal_changed_word(self):
+        entry = self.session.review_candidates('The visitors are',
+                                               end_adjust_seconds=.1)[0]
+        p = self.session.span_params('The visitors are', 'The guests are',
+                                     confirmation_token=self.session.confirm_span(entry))
+        self.assertEqual(p['changed_span_words'], [dict(word='visitors', start='0.2', end='0.8')])
+
+    def test_reviewed_edge_cannot_invert_changed_word(self):
+        entry = self.session.review_candidates('visitors are however',
+                                               start_adjust_seconds=.7)[0]
+        with self.assertRaises(EditorError) as ctx:
+            self.session.span_params('visitors are however', 'guests are however',
+                                     confirmation_token=self.session.confirm_span(entry))
+        self.assertEqual(ctx.exception.code, 'reviewed_word_range_invalid')

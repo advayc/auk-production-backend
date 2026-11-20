@@ -407,9 +407,21 @@ class TranscriptSession:
             suf += 1
         changed_words = span[pre:len(span) - suf] if suf else span[pre:]
         measured = None
-        if changed_words and all(w.timing_established and start <= w.start < w.end <= end for w in changed_words):
+        if changed_words and all(w.timing_established for w in changed_words):
             measured = [{'word': w.word, 'start': repr(round(w.start, 6)), 'end': repr(round(w.end, 6))}
                         for w in changed_words]
+            # A listener-adjusted selected edge overrides the stale acoustic edge
+            # only when the changed words touch that edge. Internal unchanged
+            # words never become part of the changed span merely by reviewing a
+            # wider phrase. These reviewed values remain MAC-bound below.
+            if pre == 0 and abs(start - span[0].start) > 0.000001:
+                measured[0]['start'] = repr(round(start, 6))
+            if suf == 0 and abs(end - span[-1].end) > 0.000001:
+                measured[-1]['end'] = repr(round(end, 6))
+            if not all(start <= float(w['start']) < float(w['end']) <= end for w in measured):
+                raise EditorError('reviewed_word_range_invalid',
+                                  'Reviewed edges do not contain the changed words in order. '
+                                  'Select the changed phrase and review its boundaries again.')
         params['changed_span_words'] = measured
         # Bound session evidence: HMAC over the exact parameters the worker will see.
         # The key lives in the worker's own flow registry (never in this session's
