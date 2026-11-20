@@ -737,3 +737,72 @@ class ReviewedEdgePropagation(unittest.TestCase):
         with self.assertRaises(EditorError) as ctx:
             verify_alignment(self.src,params,lambda p:{'text':'visitors'},flow_registry=self.registry)
         self.assertEqual(ctx.exception.code,'flow_evidence_invalid')
+
+class CandidateInspection(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.src = self.root / 'source.wav'
+        write_wav(self.src)
+        self.s = TranscriptSession(self.src, fake_transcriber, self.root / 'session',
+                                   flow_registry=self.root / 'registry')
+        self.s.transcribe()
+        self.c = self.s.review_candidates('visitors')[0]
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_mismatch_suggests_explicit_context_without_confirmation(self):
+        self.s.transcriber = lambda p: {'text': 'tourists'}
+        before = self.s.transcript()
+        r = self.s.inspect_candidate(self.c)
+        self.assertEqual(r['source_asr_status'], 'mismatch')
+        self.assertTrue(r['context_options'])
+        self.assertTrue(all('visitors' in x for x in r['context_options']))
+        self.assertEqual(before, self.s.transcript())
+        self.assertFalse(self.s._confirmations)
+        self.assertFalse(r['confirmation_issued'])
+        self.assertFalse(r['generation_run'])
+        with self.assertRaises(EditorError) as e:
+            self.s.span_params('visitors', 'guests')
+        self.assertEqual(e.exception.code, 'span_review_required')
+
+    def test_match_does_not_verify_timing(self):
+        self.s.transcriber = lambda p: {'text': 'visitors'}
+        r = self.s.inspect_candidate(self.c)
+        self.assertEqual(r['source_asr_status'], 'match')
+        self.assertFalse(r['timing_verified'])
+        self.assertEqual(r['context_options'], [])
+
+    def test_quiet_source_is_measured_not_modified(self):
+        before = self.src.read_bytes()
+        r = self.s.inspect_candidate(self.c)
+        self.assertTrue(r['low_level_warning'])
+        self.assertLess(r['source_rms_dbfs'], -55)
+        self.assertEqual(before, self.src.read_bytes())
+        self.assertIn('No gain was applied', r['level_guidance'])
+
+    def test_tampered_candidate_rejected(self):
+        c = dict(self.c, end=2.0)
+        with self.assertRaises(EditorError): self.s.inspect_candidate(c)
+
+    def test_tampered_slice_rejected(self):
+        Path(self.c['path']).write_bytes(b'changed')
+        with self.assertRaises(EditorError): self.s.inspect_candidate(self.c)
+
+    def test_changed_source_rejected(self):
+        write_wav(self.src, seconds=3)
+        with self.assertRaises(EditorError): self.s.inspect_candidate(self.c)
+
+    def test_correction_invalidates_old_inspection_candidate(self):
+        self.s.correct(TEXT.replace('visitors', 'guests'))
+        with self.assertRaises(EditorError): self.s.inspect_candidate(self.c)
+
+    def test_corrected_path_does_not_use_asr_to_overrule_review(self):
+        self.s.correct(TEXT.replace('visitors', 'guests'))
+        c = self.s.review_candidates('guests')[0]
+        def forbidden(p): raise AssertionError('corrected text must not be overruled by ASR')
+        self.s.transcriber = forbidden
+        r = self.s.inspect_candidate(c)
+        self.assertEqual(r['source_asr_status'], 'not_required_user_corrected')
+        self.assertFalse(self.s._confirmations)

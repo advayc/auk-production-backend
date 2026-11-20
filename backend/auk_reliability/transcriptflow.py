@@ -46,9 +46,9 @@ Honesty contract:
   outside-interval PCM gates still run in the worker.
 """
 from __future__ import annotations
-import dataclasses, difflib, hashlib, json, math, shutil, uuid, wave
+import array, dataclasses, difflib, hashlib, json, math, shutil, sys, uuid, wave
 from pathlib import Path
-from .core import EditorError, Limits, atomic_json, normalized_tokens, sha256_file, utc_now, flow_key_create, flow_mac
+from .core import EditorError, Limits, atomic_json, compare_transcript, normalized_tokens, sha256_file, utc_now, flow_key_create, flow_mac
 
 # Words below this ASR probability are flagged for review before their span can
 # be edited. Documented heuristic, not a calibrated confidence measure.
@@ -328,6 +328,57 @@ class TranscriptSession:
             self._issued_candidates[entry['id']] = dict(entry)
         self._record('review_candidates', {'span': span_text, 'candidates': len(manifest)})
         return manifest
+
+    def inspect_candidate(self, manifest_entry: dict) -> dict:
+        """CPU-only recovery hints, never confirmation or permission to widen a cut.
+
+        Checks one issued audio slice. Crop ASR can disagree because it lost context;
+        a match is not proof of accurate boundaries. The worker repeats its own gate.
+        """
+        if sha256_file(self.source) != self._source_sha256:
+            raise EditorError('source_changed', 'Source changed; start a new session.')
+        issued = self._issued_candidates.get(manifest_entry.get('id', ''))
+        if issued is None or issued != manifest_entry or manifest_entry.get('transcript_sha256') != self._transcript_digest():
+            raise EditorError('candidate_unbound', 'Inspect a current candidate issued by this session.')
+        path = Path(manifest_entry['path'])
+        if not path.is_file() or sha256_file(path) != manifest_entry['slice_sha256']:
+            raise EditorError('candidate_unbound', 'Candidate audio changed; render it again.')
+        def rms_dbfs(audio):
+            with wave.open(str(audio)) as w:
+                if w.getnchannels() != 1 or w.getsampwidth() != 2 or w.getframerate() != SR:
+                    raise EditorError('unsupported_source_format', 'Inspection needs mono PCM16 24kHz.')
+                samples = array.array('h', w.readframes(w.getnframes()))
+            if sys.byteorder != 'little': samples.byteswap()
+            if not samples: raise EditorError('bad_pcm', 'Empty audio cannot be inspected.')
+            return 20 * math.log10(max(math.sqrt(math.fsum(x*x for x in samples) / len(samples)) / 32768, 1e-12))
+        source_level, slice_level = rms_dbfs(self.source), rms_dbfs(path)
+        quiet = min(source_level, slice_level) < -55
+        out = {'generation_run': False, 'confirmation_issued': False,
+               'source_rms_dbfs': source_level, 'selected_rms_dbfs': slice_level,
+               'low_level_warning': quiet, 'timing_verified': False,
+               'expected_text': manifest_entry['span_text'], 'context_options': []}
+        if quiet:
+            out['level_guidance'] = ('Source or selected audio is below -55 dBFS RMS. Output below that level is rejected. '
+                'No gain was applied. If needed, explicitly prepare a louder source copy, then transcribe and review it again; '
+                'changing only the replacement level is not a whole-recording fix.')
+        if self.corrected:
+            out.update(source_asr_status='not_required_user_corrected',
+                       guidance='Corrected text remains the authority. Listen to this exact cut; inspection does not confirm it.')
+        else:
+            observed = self.transcriber(path)
+            text = observed.get('text', '') if isinstance(observed, dict) else observed
+            match = compare_transcript(manifest_entry['span_text'], text)['error_rate'] == 0
+            out.update(observed_text=text, source_asr_status='match' if match else 'mismatch')
+            if match:
+                out['guidance'] = 'Source crop text matches. This does not establish correct timing. Listen before confirming.'
+            else:
+                out['context_options'] = self._context_options(manifest_entry['span_text'], limit=8)
+                out['guidance'] = ('The short crop does not read back the selected words. Context loss or incorrect words/timing may cause this. '
+                    'No edit or selection change was made. Explicitly select a wider context option and listen again, '
+                    'or correct genuinely wrong text. Do not mark correct text as corrected just to bypass this check.')
+        self._record('inspect_candidate', {'candidate_id': manifest_entry['id'],
+                     'source_asr_status': out['source_asr_status'], 'low_level_warning': quiet})
+        return out
 
     def confirm_span(self, manifest_entry: dict) -> str:
         """Bind the human's choice to the exact audio slice, text and range reviewed."""
