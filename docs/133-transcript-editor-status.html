@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transcript editor status - Nov 20, 2026 (no audio yet)</title>
+<style>
+:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;max-width:760px;margin:0 auto;padding:0 18px}
+h1{font-size:clamp(24px,3.6vw,32px);line-height:1.15;margin:34px 0 10px;font-weight:700}
+h2{font-size:19px;margin:26px 0 10px}
+p{margin:0 0 12px}
+ul{margin:0 0 12px 22px}
+li{margin-bottom:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:18px}
+.keyline{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;padding:12px 16px;margin-bottom:12px;font-size:.95rem}
+.keyline.warn{border-left-color:#b8860b}
+.note{font-size:.85rem;color:#555;margin:.2rem 0 .7rem}
+a{color:var(--green)}
+footer{border-top:1px solid var(--line);margin:30px 0 60px;padding-top:16px;font-size:13px;color:var(--mut)}
+footer p{margin:8px 0}
+</style></head><body>
+<h1>Transcript editor status</h1>
+<p class="note">Status page, Nov 20, 2026. The transcript editor is the correctable-transcript flow: transcribe once, correct the words, align, review, preview, save. There are no audio players on this page on purpose: no verified output exists yet.</p>
+
+<div class="keyline warn"><b>Not a finished feature.</b> One real representative edit through actual GPU generation has not run yet. Everything below is code-level and alignment-level verification, not listening verification.</div>
+
+<div class="card">
+<h2>What changed (backend v0.6.0)</h2>
+<ul>
+<li>Accept-ASR-as-is spans now carry worker-registry-bound evidence, same as corrected spans. The worker verifies the MAC and still re-checks the cut segment against ASR; a mismatch fails closed.</li>
+<li>Measured-timing transplants now compute the base-cut fit. They previously always failed closed.</li>
+<li>The 0.5s segment duration floor is preserved: shorter selections are refused with explicit wider context options, never silently widened.</li>
+<li>534/534 CPU tests pass on the current tree (Linux, 2026-11-20), including the fail-closed gates.</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>What is measured</h2>
+<ul>
+<li>Forced alignment (pinned wav2vec2-base-960h) measures corrected words against the audio itself: 14/14 words on real speech on a Colab L4 run (mean uncalibrated fit 0.9054). That run exposed the two lifecycle gaps fixed above.</li>
+<li>Manual audio-slice review remains the labeled fallback when alignment is not enough.</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>What is not verified</h2>
+<ul>
+<li>No audio has been generated for this new flow. The gaps fixed in v0.6.0 meant earlier runs could never reach generation on these paths.</li>
+<li>Whole-sentence replacement still fails the strict speaker-similarity gate (12/12 attempts on the Oct 27 L4 run), so it correctly produces no output.</li>
+<li>Nothing on this page has been listened to as a product verdict.</li>
+</ul>
+</div>
+
+<footer>
+<p>Evidence: <a href="https://github.com/advayc/auk-production-backend">github.com/advayc/auk-production-backend</a> (v0.6.0) and backend/reports/77-STATUS_DETAIL_2026-11-20.md in that repo.</p>
+<p>Measurements on these pages are diagnostics, not listening verdicts.</p>
+</footer>
+</body></html>
