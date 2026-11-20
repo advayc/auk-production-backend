@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-20",
+  "backend": "0.6.3",
+  "backend_commit": "86cadfdba601b2f5283328fd7893358d4f088596",
+  "case": "VCTK p228_018 mic1",
+  "provenance": "Actual L4 donor generated with backend0.6.2; replayed through repaired0.6.3 worker without a fresh model call. Programmatic test cut acknowledgment, not human listening approval.",
+  "edit": "Aristotle -> Plato",
+  "duration_seconds": 5.626375,
+  "cut_seconds": [
+    0.18,
+    0.94
+  ],
+  "outside_cut_pcm_byte_exact": true,
+  "text_qa": {
+    "expected": "Plato thought that the rainbow was caused by reflection of the sun's rays by the rain.",
+    "observed": "Plato thought that the rainbow was caused by reflection of the sun's rays by the rain.",
+    "word_error_rate": 0
+  },
+  "speaker_qa": {
+    "score": 0.9898144006729126,
+    "threshold": 0.75,
+    "passed": true
+  },
+  "room_evidence": {
+    "room_source_seconds": [
+      0.0,
+      0.1
+    ],
+    "room_rms_ratio": 0.00029793868678795087,
+    "strict_room_validation": true,
+    "room_peak_pcm16": 2
+  },
+  "listening_review": "unscored",
+  "cpu_tests": 558,
+  "assets": {
+    "134-timestamp-before.wav": {
+      "sha256": "9bd8f4bee7c1a716d7212a288970ff46f1938f6e6cc0a3e7b1b71e8527e48baa",
+      "bytes": 270144
+    },
+    "135-timestamp-after.wav": {
+      "sha256": "68105dd0ead99ed20f20991363702a806665b5d2ae484ba3f4ddee0d4cda572c",
+      "bytes": 270110
+    }
+  },
+  "limitations": [
+    "one recovered clean-speech example",
+    "not a fresh-generation reliability rate",
+    "fast source-cut mismatch remains",
+    "quiet natural-speech output remains",
+    "no Descript comparison",
+    "no validated slurred-speech coverage"
+  ]
+}

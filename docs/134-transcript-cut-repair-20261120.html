@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Transcript cut repair | AuK</title><style>
+:root{--ink:#17211a;--mut:#5c675f;--bg:#f6f6f4;--card:#ffffff;--line:#e3e3de;--green:#1e6b3c;--greenbg:#e9f4ec;--amber:#8a6d1a;--amberbg:#faf3df;--red:#a52a1e;--redbg:#faeae7;--gray:#6b6b66;--graybg:#efefec;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+header{padding:44px 0 8px}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;font-weight:700}
+.sub{max-width:760px;font-size:15.5px;color:var(--mut)}
+.callout{margin:22px 0 6px;border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:14.5px}
+.callout.amber{background:var(--amberbg);border-color:#e6d9b4}
+h2.section{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:34px 0 4px}
+.secblurb{font-size:13.5px;color:var(--mut);margin-bottom:14px;max-width:760px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:16px}
+.card.failed{background:#fbfaf8}
+.chead{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px}
+.badge{font-size:11.5px;font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:999px;text-transform:uppercase}
+.badge.g{background:var(--greenbg);color:var(--green)}
+.badge.a{background:var(--amberbg);color:var(--amber)}
+.badge.r{background:var(--redbg);color:var(--red)}
+.badge.y{background:var(--graybg);color:var(--gray)}
+.cid{font-size:13px;font-weight:700}
+.cop{font-size:11.5px;color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:2px 7px}
+.cdet{font-size:13px;color:var(--mut);margin-left:auto}
+.edit{font-size:15px;margin:2px 0 14px;color:var(--ink)}
+.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+figure{background:#fafaf8;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+figcaption{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+audio{width:100%;height:36px;display:block}
+audio+div{margin-top:6px;font-size:12px}
+a{color:var(--green)}
+table.rates{width:100%;border-collapse:collapse;font-size:14.5px}
+table.rates th,table.rates td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.rates th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+ul.bullets{margin:4px 0 4px 18px;font-size:14.5px}
+ul.bullets li{margin:8px 0}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;word-break:break-all}
+footer{border-top:1px solid var(--line);margin:34px 0 60px;padding-top:18px;font-size:13px;color:var(--mut)}
+footer p{margin:8px 0}
+
+dl.eval{display:flex;flex-wrap:wrap;gap:.15rem .9rem;margin:.5rem 0 0;font-size:.82rem}
+dl.eval dt{color:#666}dl.eval dd{margin:0;font-weight:600}
+.note{font-size:.85rem;color:#555;margin:.2rem 0 .7rem}
+.badge.a{background:#fff3cd;color:#8a6d00}
+
+.wrap{max-width:860px}audio{height:44px}.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}.facts div{border-top:1px solid var(--line);padding-top:10px}.facts b{display:block;font-size:18px}.facts span{font-size:13px;color:var(--mut)}summary{cursor:pointer;min-height:44px;padding:10px 0}code{overflow-wrap:anywhere}h2{font-size:20px;margin-bottom:12px}.transcript{font-size:14px;margin:12px 0 0}.note{font-size:13px}@media(max-width:440px){.wrap{padding:0 14px}.card{padding:17px 15px}header{padding-top:28px}}
+</style></head><body><main class="wrap">
+<header><div class="kicker">AuK / transcript editing / 20 Nov 2026</div><h1>Transcript cut repair</h1><p class="sub">One localized edit now completes through preview, checks and save. The rest of this recording stays unchanged.</p></header>
+<div class="callout" style="background:var(--greenbg);border-color:#c3ddd0"><b>Automatic checks pass on this repaired example.</b> Replace "Aristotle" with "Plato" while keeping the recording length and the audio outside the cut unchanged. Listen below to judge the join and voice.</div>
+<p class="note" style="margin:12px 0 22px">This reuses an actual L4-generated donor from the earlier failed test, replayed through the repaired backend. It is not a fresh generation run or a listening-quality approval.</p>
+<section class="card"><div class="chead"><h2 style="margin:0">Aristotle → Plato</h2><span class="badge g">Local edit</span><span class="badge a">Listening unscored</span></div><p class="edit">Only the first name changes. The cut is 0.180-0.940 seconds.</p><div class="players">
+<figure><figcaption>1 / Original</figcaption><audio controls preload="metadata" src="134-timestamp-before.wav"></audio><p class="transcript">Aristotle thought that the rainbow was caused by reflection of the sun's rays by the rain.</p><div><a href="134-timestamp-before.wav" download>Download original WAV</a></div></figure>
+<figure><figcaption>2 / Repaired local edit</figcaption><audio controls preload="metadata" src="135-timestamp-after.wav"></audio><p class="transcript">Plato thought that the rainbow was caused by reflection of the sun's rays by the rain.</p><div><a href="135-timestamp-after.wav" download>Download edited WAV</a></div></figure></div>
+<div class="facts" style="margin-top:20px"><div><b>0 word errors</b><span>Fresh ASR vs the requested full sentence</span></div><div><b>0.9898 / 1</b><span>Speaker similarity, pass threshold 0.75</span></div><div><b>5.626 seconds</b><span>Before and after, same PCM frame count</span></div><div><b>Outside cut: exact</b><span>Unmoved, byte-identical mono 24kHz PCM</span></div></div></section>
+<section class="card"><h2>What was fixed</h2><p>The model generated the requested words, but the localized fitter rejected a shorter replacement because it lacked adjacent room tone. The repaired path can use strictly checked quiet samples from that same donor. The spoken replacement is not stretched or clipped.</p><p>Neighbor-word limits now travel with the reviewed cut. The splice cannot consume the next word just to make the replacement fit. Every selected cut still needs a listening acknowledgment before generation; this test used a labeled programmatic acknowledgment.</p><p class="note">558 CPU tests pass across all 26 test modules, run in separate groups. They include simulated cases and are not 558 real model generations. The automatic content and speaker thresholds were not lowered.</p></section>
+<section class="card"><h2>What this does not prove</h2><ul class="bullets"><li>This is one clean-speech repair, not a reliability rate or a production-readiness claim.</li><li>The earlier 2×-speed source-cut mismatch and quiet natural-meeting generation still need separate fixes.</li><li>Naturalness, join quality and instruction quality have no human listening verdict here.</li><li>No Descript parity claim. Multilingual and natural slurred-speech coverage remain incomplete.</li></ul><p class="note">The classic whole-recording transcript route is separate and was not changed by this local fit repair. These localized failures do not invalidate a successful whole-recording test.</p></section>
+<details class="card"><summary>Evidence and source audio</summary><p>Backend 0.6.3, commit <code>86cadfdba601b2f5283328fd7893358d4f088596</code>. Donor generated on L4 with backend 0.6.2, then reused offline in the repaired worker. No new credits were needed for this repair check.</p><p><a href="136-timestamp-evidence.json">Measurements and audio checksums</a></p><p>Source: VCTK p228_018, mic1. Yamagishi, Junichi; Veaux, Christophe; MacDonald, Kirsten (2019), CSTR VCTK Corpus 0.92, University of Edinburgh, <a href="https://datashare.ed.ac.uk/items/30e7453c-9ea8-48b4-8e18-f96d0dc62928/full">dataset and attribution</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Original resampled to mono 24kHz; edited version changes the first name. This is a technical demonstration, not a statement by or endorsement from the recorded speaker.</p></details>
+<footer><p>Separate repair checkpoint. Listen before using the edited audio.</p></footer></main></body></html>
