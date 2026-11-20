@@ -460,9 +460,29 @@ def flow_evidence_verify(registry_root, session_id: str, payload: dict, mac: str
 
 
 def normalized_tokens(text: str) -> list[str]:
-    # A documented heuristic, not a multilingual semantic equivalence metric.
+    # Preserve combining marks belonging to a word. Python's regex \w omits
+    # these marks, so vowel-distinct words in scripts such as Devanagari could
+    # previously collapse to the same token stream and falsely pass output QA.
+    # This is still an orthographic heuristic, not semantic equivalence or a
+    # claim that the speech/forced-alignment models support every script.
     text = unicodedata.normalize('NFKC', text).casefold()
-    return re.findall(r"[^\W_]+(?:['’][^\W_]+)?", text, flags=re.UNICODE)
+    tokens, current = [], []
+    apostrophe_used = False
+    for i, char in enumerate(text):
+        if char.isalnum() or (current and unicodedata.category(char).startswith('M')):
+            current.append(char)
+        elif (char in "'’" and current and not apostrophe_used
+              and i + 1 < len(text) and text[i + 1].isalnum()):
+            current.append(char)
+            apostrophe_used = True
+        else:
+            if current:
+                tokens.append(''.join(current))
+                current = []
+            apostrophe_used = False
+    if current:
+        tokens.append(''.join(current))
+    return tokens
 
 
 def edit_distance(a: list, b: list) -> int:
