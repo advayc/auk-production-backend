@@ -163,9 +163,9 @@ ENHANCER_SCOPE = {'max_input_seconds': 600.0, 'max_output_seconds': 600.0, 'comb
 
 def scoped_limits(limits: Limits, operation: str) -> Limits:
     if operation == 'nonverbal_remove':
-        return dataclasses.replace(limits, **NVDEL_SCOPE)
+        return dataclasses.replace(limits, **{k: max(v, getattr(limits, k)) for k, v in NVDEL_SCOPE.items()})
     if operation in ('enhance', 'denoise', 'dereverb'):
-        return dataclasses.replace(limits, **ENHANCER_SCOPE)
+        return dataclasses.replace(limits, **{k: max(v, getattr(limits, k)) for k, v in ENHANCER_SCOPE.items()})
     return limits
 
 
@@ -195,7 +195,7 @@ def _quote_words(text: str) -> str:
     return json.dumps(text, ensure_ascii=False)
 
 
-TRANSCRIPT_TEXT_MAX = 16000
+TRANSCRIPT_TEXT_MAX = 120000  # ~60 min of speech at ~250 words/min; QA edit distance stays bounded per request
 
 
 def build_plan(spec: EditSpec, duration: float, limits: Limits) -> dict:
@@ -495,13 +495,20 @@ def edit_distance(a: list, b: list) -> int:
     return previous[-1]
 
 
+def _is_unspaced_script(c: str) -> bool:
+    # Scripts written without spaces between words: a word-level comparison is meaningless there.
+    o = ord(c)
+    return (0x3400 <= o <= 0x9fff or 0x3040 <= o <= 0x30ff or 0xf900 <= o <= 0xfaff or 0x20000 <= o <= 0x2fa1f
+            or 0x0e00 <= o <= 0x0eff or 0x1000 <= o <= 0x109f or 0x1780 <= o <= 0x17ff)
+
+
 def compare_transcript(expected: str, observed: str) -> dict:
     a, b = normalized_tokens(expected), normalized_tokens(observed)
     if not a:
         raise EditorError('empty_expected_text', 'Expected transcript has no comparable characters.')
     wer = edit_distance(a, b) / len(a)
     # Use character comparison for CJK text; English word-error rate is not suitable there.
-    is_cjk = any('\u3400' <= c <= '\u9fff' for c in expected)
+    is_cjk = any(_is_unspaced_script(c) for c in expected)
     if is_cjk:
         a, b = list(''.join(a)), list(''.join(b))
     error = edit_distance(a, b) / max(1, len(a))
@@ -1151,8 +1158,13 @@ def setup_asr(root: Path, limits: Limits, language: str = 'auto') -> tuple[Calla
         fd, name = tempfile.mkstemp(suffix='.json', dir=qa_root); os.close(fd)
         out = Path(name)
         try:
+            try:
+                secs = float(command(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(Path(path).resolve())], timeout=30).strip() or 0)
+            except Exception:
+                secs = 0.0
+            # CPU int8 ASR runs near real time or slower; scale the deadline with the audio length.
             command([str(py), str(script), str(model), str(Path(path).resolve()), str(out), language],
-                    timeout=limits.asr_timeout)
+                    timeout=max(limits.asr_timeout, 90.0 + 2.0 * secs))
             value = json.loads(out.read_text())
             if not isinstance(value.get('text'),str): raise EditorError('invalid_asr_result','ASR did not return text.')
             return value
