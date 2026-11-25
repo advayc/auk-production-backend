@@ -1083,6 +1083,13 @@ segments, info = model.transcribe(audio_path, beam_size=3, temperature=0,
     condition_on_previous_text=False, vad_filter=True, word_timestamps=True,
     language=None if language == 'auto' else language)
 segments = list(segments)
+if info.language == 'zh':
+    # Whisper small emits Traditional characters for Mandarin unless primed; the QA reference
+    # text is usually Simplified, so re-run once primed with a Simplified sentence.
+    segments, info = model.transcribe(audio_path, beam_size=3, temperature=0,
+        condition_on_previous_text=False, vad_filter=True, word_timestamps=True,
+        language='zh', initial_prompt='以下是普通话的句子。')
+    segments = list(segments)
 result = {
     'text': ' '.join(s.text.strip() for s in segments).strip(),
     'language': info.language, 'language_probability': float(info.language_probability),
