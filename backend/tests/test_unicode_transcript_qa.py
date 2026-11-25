@@ -51,3 +51,15 @@ class UnicodeTranscriptQA(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class HanScriptFoldTests(unittest.TestCase):
+    def test_traditional_and_simplified_compare_equal(self):
+        from auk_reliability.core import compare_transcript
+        r = compare_transcript('他没有设定削减数额', '他沒有設定削減數額')
+        self.assertEqual(r['error_rate'], 0.0)
+
+    def test_real_difference_still_counts(self):
+        from auk_reliability.core import compare_transcript
+        r = compare_transcript('他没有设定削减数额', '他沒有設定增加數額')
+        self.assertGreater(r['error_rate'], 0.1)

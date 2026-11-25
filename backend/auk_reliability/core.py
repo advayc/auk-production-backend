@@ -502,6 +502,22 @@ def _is_unspaced_script(c: str) -> bool:
             or 0x0e00 <= o <= 0x0eff or 0x1000 <= o <= 0x109f or 0x1780 <= o <= 0x17ff)
 
 
+_T2S = None
+
+
+def fold_han_script(text: str) -> str:
+    """Fold Traditional Han characters to Simplified for QA comparison only.
+
+    ASR may write Mandarin in either script while the user's reference uses the other. Both
+    sides are folded before comparing; the audio, the edit and the user's text are untouched.
+    Table: OpenCC TSCharacters (Apache-2.0), single-character entries.
+    """
+    global _T2S
+    if _T2S is None:
+        _T2S = json.loads((Path(__file__).with_name('t2s_chars.json')).read_text(encoding='utf-8'))
+    return ''.join(_T2S.get(c, c) for c in text)
+
+
 def compare_transcript(expected: str, observed: str) -> dict:
     a, b = normalized_tokens(expected), normalized_tokens(observed)
     if not a:
@@ -510,7 +526,7 @@ def compare_transcript(expected: str, observed: str) -> dict:
     # Use character comparison for CJK text; English word-error rate is not suitable there.
     is_cjk = any(_is_unspaced_script(c) for c in expected)
     if is_cjk:
-        a, b = list(''.join(a)), list(''.join(b))
+        a, b = list(fold_han_script(''.join(a))), list(fold_han_script(''.join(b)))
     error = edit_distance(a, b) / max(1, len(a))
     return {'metric': 'character_error_rate' if is_cjk else 'word_error_rate',
             'error_rate': round(error, 4), 'word_error_rate': round(wer, 4),

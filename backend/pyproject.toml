@@ -6,5 +6,7 @@ name = "auk-reliability"
 version = "0.6.6"
 requires-python = ">=3.10"
 description = "AuK single-worker reliability and evaluation candidate"
+[tool.setuptools.package-data]
+auk_reliability = ["t2s_chars.json"]
 [tool.setuptools.packages.find]
 include = ["auk_reliability*"]
