@@ -254,7 +254,7 @@ class TranscriptCapTests(unittest.TestCase):
         # Legitimate oversize transcripts are still rejected.
         with self.assertRaises(Exception) as ctx:
             plan_request('voice_enhancer', 'enhance',
-                {'rights_confirmed': True, 'source_text': 'word ' * 4000}, 255.19, limits)
+                {'rights_confirmed': True, 'source_text': 'word ' * 30000}, 255.19, limits)
         self.assertEqual(getattr(ctx.exception, 'code', None), 'invalid_text')
         # Non-transcript text fields keep the tighter 4,000-character bound.
         with self.assertRaises(Exception):
