@@ -33,6 +33,14 @@ A measured 38.5-second enhance took about 6 minutes on T4 and 1.2 minutes on L4,
 
 See [test cases](demos/TEST_CASES.md) and [detailed results and limits](backend/reports/77-STATUS_DETAIL_2026-11-20.md).
 
+## Recovery paths (2026-11-27, CPU-tested only)
+
+- **Emotion edits:** if the raw result fails the transcript or speaker check, the worker also tries the source speech with only the raw result's pitch movement (`stylefix.py`), through the same checks. Intonation only: no whisper, no voice change. A raw result that passes the checks can still sound like the wrong emotion; only listening review catches that. Not yet tested on GPU or by listening.
+- **Dependency:** the fallback needs `pyworld==0.3.5` and `setuptools<81` (pyworld imports `pkg_resources`); `pip install ./backend` installs both, the Colab notebook installs with `--no-deps` and must add them. `auk_reliability.stylefix.prosody_transplant_health()` reports whether it imports; without it the fallback fails safe and the original failure stands.
+- **Localized inserts and replacements:** if the new audio does not fit the fixed interval, the worker retries with another seed. Widening the interval or switching to whole-clip scope is never automatic; the attempt record lists both as options.
+- **Readback of short selections:** an experimental wider-context readback exists in code but is disabled in the production worker (constructor switch `experimental_context_readback`, default off; requests that pass `readback_context_seconds` are refused). ASR word times are approximate and it has no real-audio validation. Use the human-confirmed wider-window flow instead.
+- Whole-sentence replacement words and speaker identity are still unresolved.
+
 ## Notes
 
 This is a voice-editing prototype, not a general music/SFX editor or a production-ready service. Automatic checks and retries do not replace listening review. Quiet-source edits, whole-sentence voice preservation and broader reliability remain unresolved.

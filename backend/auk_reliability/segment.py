@@ -1,7 +1,7 @@
 """Fixed-duration segment replacement. No whole-recording model regeneration."""
 import wave, math, array, sys
 from pathlib import Path
-from .core import EditorError, command, probe_audio, compare_transcript, normalized_tokens, flow_evidence_verify
+from .core import EditorError, command, probe_audio, prepare_audio, compare_transcript, normalized_tokens, flow_evidence_verify
 
 def normalize_recording(source, output, limits):
  meta=probe_audio(source,limits)
@@ -12,7 +12,7 @@ def normalize_recording(source, output, limits):
  if abs(actual-meta['duration_seconds'])>.06: raise EditorError('truncated_input','Full recording failed decode-duration check.')
  return actual
 
-def verify_alignment(source_segment, parameters, transcriber, flow_registry=None):
+def verify_alignment(source_segment, parameters, transcriber, flow_registry=None, context_check=None):
  if parameters.get('alignment_source')=='user_corrected':
   # Correctable-transcript flow (transcriptflow.py): the user's corrected text is the
   # authority, so ASR exact-match would reject legitimate corrections. Correctness comes
@@ -87,6 +87,13 @@ def verify_alignment(source_segment, parameters, transcriber, flow_registry=None
      raise EditorError('segment_transcript_mismatch','Declared ASR variant does not match its documented token position. Review alignment.')
     fixed[pos]=v['expected']
    if fixed==expected:return
+  if context_check is not None and parameters.get('readback_context_seconds'):
+   # Opt-in wider-context readback (2026-11-27). Isolated short crops starve the ASR ("where" heard
+   # as "We're"). The same exact-token comparison still applies to the words inside the cut,
+   # but the recognizer hears the neighbouring audio too. A word that straddles the cut edge
+   # fails closed, so a cut through a neighbouring word is never excused.
+   context_check()
+   return
   raise EditorError('segment_transcript_mismatch','Selected segment does not exactly match normalized segment_text in ASR. Review alignment.')
 
 def splice(normalized, generated, output, start, end):
@@ -110,3 +117,35 @@ def splice(normalized, generated, output, start, end):
  return {'outside_interval_pcm_exact':True,'normalized_format':'mono PCM16 24kHz',
   'boundary_jump_peak':max(jumps,default=0),'boundary_review_required':True,
   'note':'Outside PCM is exact relative to normalized source, not compressed/stereo original. No crossfade alters outside samples.'}
+
+
+READBACK_CONTEXT_MAX_SECONDS = 1.0
+READBACK_EDGE_TOLERANCE_SECONDS = 0.05
+
+def verify_segment_in_context(source, parameters, transcriber, start, end, workdir, limits):
+ """Exact readback of the cut words, transcribed with surrounding audio.
+
+ Opt-in via parameters['readback_context_seconds'] (0 < value <= 1.0). Words that lie inside
+ [start, end] (edge tolerance 50 ms) must equal the normalized segment_text token for token.
+ Any ASR word that overlaps the cut edge by more than the tolerance fails closed."""
+ from .transplant import _flat_word_tokens
+ try:ctx=float(parameters.get('readback_context_seconds'))
+ except (TypeError,ValueError):ctx=-1.0
+ if not (0<ctx<=READBACK_CONTEXT_MAX_SECONDS):
+  raise EditorError('invalid_readback_context','readback_context_seconds must be greater than 0 and at most %.1f.'%READBACK_CONTEXT_MAX_SECONDS)
+ if transcriber is None:raise EditorError('alignment_qa_unavailable','Segment edits require source ASR checking.')
+ meta=probe_audio(Path(source),limits)
+ ctx_start=max(0.0,float(start)-ctx);ctx_end=min(meta['duration_seconds'],float(end)+ctx)
+ wide=Path(workdir)/'readback-context.wav'
+ prepare_audio(Path(source),wide,ctx_start,ctx_end,limits)
+ words=_flat_word_tokens(transcriber(wide))
+ lo=float(start)-ctx_start;hi=float(end)-ctx_start;tol=READBACK_EDGE_TOLERANCE_SECONDS
+ inside=[];
+ for w in words:
+  overlap=min(w['end'],hi)-max(w['start'],lo)
+  if overlap<=0:continue
+  if w['start']>=lo-tol and w['end']<=hi+tol:inside.append(w['token'])
+  else:
+   raise EditorError('segment_transcript_mismatch','A word crosses the edge of the selected segment in the context readback. Review alignment.')
+ if inside!=normalized_tokens(parameters['segment_text']):
+  raise EditorError('segment_transcript_mismatch','Selected segment does not exactly match normalized segment_text in the context readback. Review alignment.')

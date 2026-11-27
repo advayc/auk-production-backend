@@ -5,7 +5,7 @@ from .core import (Limits, EditorError, WallClockAbort, LocalAuKServer, atomic_j
  scoped_limits, probe_audio, prepare_audio, validate_output, decode_response, command, utc_now, normalized_tokens)
 from .policy import plan_request, RETRYABLE, PROFILES
 from .qa import SemanticQAGate
-from .segment import normalize_recording, verify_alignment, splice
+from .segment import normalize_recording, verify_alignment, verify_segment_in_context, splice
 from .transplant import insert_transplant, localized_transplant
 from .diagnostics import outside_interval_pcm_exact, classify_transcript_disagreement
 from .seam import seam_report
@@ -30,11 +30,15 @@ class Result:
 
 class ReliabilityWorker:
  """Single-worker backend with bounded retries and isolated request artifacts."""
- def __init__(self, adapter, root, *, limits=Limits(), semantic_gate=None, runtime_profile=None, max_attempts=3):
+ def __init__(self, adapter, root, *, limits=Limits(), semantic_gate=None, runtime_profile=None, max_attempts=3,
+              experimental_context_readback=False):
   if max_attempts not in (1,2,3): raise ValueError('max_attempts must be 1-3')
   self.adapter=adapter;self.root=Path(root);self.root.mkdir(parents=True,exist_ok=True)
   self.limits=limits;self.gate=semantic_gate or SemanticQAGate();self.runtime_profile=runtime_profile or {}
   self.max_attempts=max_attempts;self.lock=threading.Lock();self.deadline=None
+  # Experimental and unvalidated on real audio (ASR word times are approximate): a constructor-only
+  # switch, never a request parameter. Off in production; requests that ask for it are refused.
+  self.experimental_context_readback=bool(experimental_context_readback)
   # Worker-owned flow registry: corrected-transcript session keys live here, inside
   # the worker's runs root, so verification never follows a caller-supplied path.
   self.flow_registry=self.root/'.flow-registry';self.flow_registry.mkdir(exist_ok=True)
@@ -60,6 +64,8 @@ class ReliabilityWorker:
   limits=scoped_limits(self.limits, operation)
   p=dict(p);profile=p.get('profile','base_f32')
   if profile not in PROFILES: raise EditorError('unknown_profile','Use base_f32, base_q8 or flash_f16.')
+  if p.get('readback_context_seconds') is not None and not self.experimental_context_readback:
+   raise EditorError('experimental_readback_disabled','Context readback is experimental and disabled in this worker; use the human-confirmed wider-window flow.')
   source=Path(input_audio).resolve();meta=probe_audio(source,limits);digest=sha256_file(source)
   start=p.get('segment_start_seconds',0) if mode=='transcript_editor' else p.get('start_seconds',0)
   end=p.get('segment_end_seconds') if mode=='transcript_editor' else p.get('end_seconds')
@@ -84,7 +90,9 @@ class ReliabilityWorker:
    prep=prepare_audio(source,prepared,start,end,limits)
    plan=plan_request(mode,operation,p,prep['signal']['duration_seconds'],limits)
    if sha256_file(source)!=digest:raise EditorError('source_changed','Source changed during preparation.')
-   if mode=='transcript_editor':verify_alignment(prepared,p,self.gate.transcriber,flow_registry=self.flow_registry)
+   if mode=='transcript_editor':
+    verify_alignment(prepared,p,self.gate.transcriber,flow_registry=self.flow_registry,
+     context_check=(lambda:verify_segment_in_context(source,p,self.gate.transcriber,float(start),float(end),folder,limits)) if self.experimental_context_readback else None)
   except Exception as exc:
    atomic_json(folder/'preflight_failure.json',{'reason':getattr(exc,'code',type(exc).__name__),'message':str(exc)})
    exc.request_dir=str(folder)
@@ -187,9 +195,9 @@ class ReliabilityWorker:
    if hasattr(self.adapter,'deadline'):self.adapter.deadline=self.deadline
    ad=folder/f'attempt-{number:02d}';ad.mkdir();began=time.monotonic()
    active_plan['seed']=(p.get('seed',42)+number-1)%(2**31)
-   record={'attempt':number,'seed':plan['seed'],'model_profile':profile,'runtime_profile':self.runtime_profile,
+   record={'attempt':number,'seed':active_plan['seed'],'model_profile':profile,'runtime_profile':self.runtime_profile,
       'started_at':utc_now(),'technical_success':False,'automatic_qa_pass':False,'failure_reason':None,
-      'artifact_paths':[],'plan':dict(plan),'selected':False}
+      'artifact_paths':[],'plan':dict(active_plan),'selected':False}
    raw=ad/'raw.wav';out=ad/'output.wav'
    try:
     response,timing=self.adapter.run(profile,gen_input,active_plan);record['model_timing']=timing
@@ -256,6 +264,25 @@ class ReliabilityWorker:
         record['automatic_qa_pass']=True;record['failure_reason']=None
       except Exception as salvage_exc:
        record['salvage_error']=getattr(salvage_exc,'code',type(salvage_exc).__name__)
+    if (not qa_pass and mode=='voice_editor' and operation=='emotion' and technical
+        and reason in ('qa_failed','qa_unverified')):
+     # 2026-11-27 content-preserving fallback: the raw emotion edit changed words or lost the speaker
+     # (Oct 28 measurements, Nov 27 staging report). Resynthesize the SOURCE with only the raw
+     # generation's pitch movement (stylefix.py). Intonation cues only: no whisper, no timbre.
+     # The candidate passes the identical transcript + speaker gate before it can be selected.
+     try:
+      _emo=ad/'emotion-prosody.wav'
+      _pt=prosody_transplant(prepared,out,_emo)
+      validate_output(_emo,active_plan['target_seconds'],limits)
+      _emo_qa=self.gate.check(prepared,_emo,plan)
+      record['emotion_prosody_fallback']={**_pt,'qa':_emo_qa,'mechanism':'prosody_transplant_intonation_only'}
+      record['artifact_paths'].append(str(_emo))
+      if _emo_qa['automatic_pass']:
+       selected=str(_emo);record['selected']=True;qa_pass=True;reason=None
+       record['automatic_qa_pass']=True;record['failure_reason']=None
+       record['selected_mechanism']='emotion_prosody_transplant'
+     except Exception as _emo_exc:
+      record['emotion_prosody_fallback_error']=getattr(_emo_exc,'code',type(_emo_exc).__name__)
     if localized and reason=='qa_failed':
      try:
       _outside=outside_interval_pcm_exact(full,final,float(start),float(end))
@@ -268,12 +295,25 @@ class ReliabilityWorker:
    except Exception as exc:
     reason=getattr(exc,'code',type(exc).__name__);record['failure_reason']=reason
     record['error_detail']=str(exc)[:1800]
+    if localized and reason=='transplant_duration_mismatch':
+     # 2026-11-27: the fixed-duration patch did not fit. A different seed gives different donor timing, so
+     # retry within the attempt budget. The verified interval is never widened automatically: the
+     # two other recoveries change the contract and need the owner's explicit choice.
+     _span=float(end)-float(start)
+     record['recovery_options']=[
+      {'option':'retry_other_seed','automatic':True,'note':'Remaining attempts use new seeds.'},
+      {'option':'widen_interval','automatic':False,'current_interval_seconds':round(_span,3),
+       'max_interval_seconds':limits.max_input_seconds,
+       'note':'Review a wider segment_start/end explicitly; duration stays frame-exact.'},
+      {'option':'whole_clip_scope','automatic':False,
+       'note':'Output duration scales with the word-count change; whole-clip speaker identity is a known weak spot.'}]
     # A technically valid artifact is never lost merely because later QA failed.
     qa_pass=False
    record['latency_seconds']=time.monotonic()-began;attempts.append(record)
    atomic_json(ad/'attempt.json',record)
    atomic_json(folder/'attempts.json',attempts)
-   if selected or reason not in RETRYABLE:break
+   _retry_ok=reason in RETRYABLE or (localized and reason=='transplant_duration_mismatch')
+   if selected or not _retry_ok:break
    if number<self.max_attempts:
     self.adapter.stop();time.sleep(min(.25*2**(number-1),1))
   result=Result(rid,'qa_pass_review_pending' if selected else ('review_required' if technical else 'failed'),

@@ -56,6 +56,16 @@ def _smooth(x, sigma_frames):
     k /= k.sum()
     return np.convolve(np.pad(x, radius, mode='edge'), k, mode='valid')
 
+def prosody_transplant_health():
+    """Dependency health check: (True, '') when pyworld imports, else (False, reason).
+    pyworld 0.3.5 needs pkg_resources (setuptools<81); a bare `pip install pyworld` on a new
+    setuptools installs but fails at import."""
+    try:
+        import pyworld  # noqa: F401
+    except Exception as exc:
+        return False, type(exc).__name__ + ': ' + str(exc)[:200]
+    return True, ''
+
 def prosody_transplant(source_path, donor_path, out_path, *,
                        max_semitone_shift: float = 5.0,
                        smooth_sigma_frames: float = 6.0) -> dict:
